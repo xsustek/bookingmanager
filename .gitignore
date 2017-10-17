@@ -80,3 +80,10 @@ hs_err_pid*
 *.iml
 out
 gen
+### NetBeans template
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
