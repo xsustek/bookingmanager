@@ -4,11 +4,15 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+/**
+ * @author Viktoria Tibenska
+ */
 @Entity
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    @Column(nullable = false, unique = true)
+    private Long id;
 
     @NotNull
     @ManyToOne
@@ -27,7 +31,7 @@ public class Reservation {
     public Reservation() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -65,5 +69,42 @@ public class Reservation {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+    
+    @Override
+    public int hashCode() {
+        int result = 17;
+        
+        result = 31 * result + ((id == null) ? 0 : id.hashCode());
+        result = 31 * result + ((endTime == null) ? 0 : endTime.hashCode());
+        result = 31 * result + ((room == null) ? 0 : endTime.hashCode());
+        result = 31 * result + ((room == null) ? 0 : room.hashCode());
+        result = 31 * result + ((startTime == null) ? 0 : startTime.hashCode());
+        result = 31 * result + ((user == null) ? 0 : user.hashCode());
+        
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Reservation)) {
+            return false;
+        }
+        
+        Reservation other = (Reservation) obj;
+        
+        boolean result = other.getId().equals(getId()) &&
+                         other.getEndTime().equals(getEndTime()) && 
+                         other.getRoom().equals(getRoom()) && 
+                         other.getStartTime().equals(getStartTime()) && 
+                         other.getUser().equals(getUser());
+        
+        return  result;
     }
 }
