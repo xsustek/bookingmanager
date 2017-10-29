@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -16,10 +17,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.DecimalMin;
 
 @Entity
+@Table(name = "Rooms")
 public class Room {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

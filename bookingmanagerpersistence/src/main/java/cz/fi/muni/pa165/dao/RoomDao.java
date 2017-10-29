@@ -19,7 +19,7 @@ public interface RoomDao {
      * @param id Room's ID.
      * @return Room.
      */
-    Room findById(long id);
+    Room findById(Long id);
 
     /**
      * Updates the given room.
