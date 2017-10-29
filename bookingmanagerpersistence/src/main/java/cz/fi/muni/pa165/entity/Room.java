@@ -155,12 +155,11 @@ public class Room {
 
         Room room = (Room) o;
 
-        if(id == null && ((Room) o).getId() == null) return false;
-        if (capacity != room.capacity) return false;
-        if (price != null ? !price.equals(room.price) : room.price != null) return false;
-        if (type != room.type) return false;
-        if (reservations != null ? !reservations.equals(room.reservations) : room.reservations != null) return false;
-        return hotel != null ? hotel.equals(room.hotel) : room.hotel == null;
+        if (getCapacity() != room.getCapacity()) return false;
+        if (getPrice() != null ? !getPrice().equals(room.getPrice()) : room.getPrice() != null) return false;
+        if (getType() != room.getType()) return false;
+        if (getReservations() != null ? !getReservations().equals(room.getReservations()) : room.getReservations() != null) return false;
+        return getHotel() != null ? getHotel().equals(room.getHotel()) : room.getHotel() == null;
     }
 
     @Override
@@ -171,12 +170,12 @@ public class Room {
     @Override
     public String toString() {
         return "Room{" +
-                "id=" + id +
-                ", price=" + price +
-                ", type=" + type +
-                ", capacity=" + capacity +
-                ", reservations=" + reservations +
-                ", hotel=" + hotel +
+                "id=" + getId() +
+                ", price=" + getPrice() +
+                ", type=" + getType() +
+                ", capacity=" + getCapacity() +
+                ", reservations=" + getReservations() +
+                ", hotel=" + getHotel() +
                 '}';
     }
 }
