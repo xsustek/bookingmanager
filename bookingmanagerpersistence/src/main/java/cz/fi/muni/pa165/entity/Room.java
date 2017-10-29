@@ -20,7 +20,7 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
 
     @NotNull
     private BigDecimal price;
@@ -47,14 +47,14 @@ public class Room {
      *
      * @return Room ID.
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * Sets the room ID.
      */
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -143,5 +143,42 @@ public class Room {
      */
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Room)) return false;
+
+        Room room = (Room) o;
+
+        if(id == null && ((Room) o).getId() == null) return false;
+        if (capacity != room.capacity) return false;
+        if (price != null ? !price.equals(room.price) : room.price != null) return false;
+        if (type != room.type) return false;
+        if (reservations != null ? !reservations.equals(room.reservations) : room.reservations != null) return false;
+        return hotel != null ? hotel.equals(room.hotel) : room.hotel == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = price != null ? price.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + capacity;
+        result = 31 * result + (reservations != null ? reservations.hashCode() : 0);
+        result = 31 * result + (hotel != null ? hotel.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", price=" + price +
+                ", type=" + type +
+                ", capacity=" + capacity +
+                ", reservations=" + reservations +
+                ", hotel=" + hotel +
+                '}';
     }
 }
