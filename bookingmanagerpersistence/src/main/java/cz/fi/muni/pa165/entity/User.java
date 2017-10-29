@@ -5,6 +5,7 @@ import cz.fi.muni.pa165.enums.Role;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -106,33 +107,57 @@ public class User {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof User))
+            return false;
+        User other = (User) obj;
+        if (getFullName() == null) {
+            if (other.getFullName() != null)
+                return false;
+        } else if (!getFullName().equals(other.getFullName()))
+            return false;
+        if (getEmail() == null) {
+            if (other.getEmail() != null)
+                return false;
+        } else if (!getEmail().equals(other.getEmail()))
+            return false;
+        if (getAddress() == null) {
+            if (other.getAddress() != null)
+                return false;
+        } else if (!getAddress().equals(other.getAddress()))
+            return false;
+        if (getPhoneNumber() == null) {
+            if (other.getPhoneNumber() != null)
+                return false;
+        } else if (!getPhoneNumber().equals(other.getPhoneNumber()))
+            return false;
+        if (getPasswordHash() == null) {
+            if (other.getPasswordHash() != null)
+                return false;
+        } else if (!getPasswordHash().equals(other.getPasswordHash()))
+            return false;
+        if (getRole() == null) {
+            if (other.getRole() != null)
+                return false;
+        } else if (!getRole().equals(other.getRole()))
+            return false;
+        if (getReservations() == null) {
+            if (other.getReservations() != null)
+                return false;
+        } else if (!getReservations().equals(other.getReservations()))
+            return false;
 
-        User user = (User) o;
-
-        if (id != user.id) return false;
-        if (!fullName.equals(user.fullName)) return false;
-        if (!email.equals(user.email)) return false;
-        if (phoneNumber != null ? !phoneNumber.equals(user.phoneNumber) : user.phoneNumber != null) return false;
-        if (address != null ? !address.equals(user.address) : user.address != null) return false;
-        if (!passwordHash.equals(user.passwordHash)) return false;
-        if (role != user.role) return false;
-        return reservations != null ? reservations.equals(user.reservations) : user.reservations == null;
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + fullName.hashCode();
-        result = 31 * result + email.hashCode();
-        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + passwordHash.hashCode();
-        result = 31 * result + role.hashCode();
-        result = 31 * result + (reservations != null ? reservations.hashCode() : 0);
-        return result;
+        return Objects.hash(getFullName(), getAddress(), getEmail(), getPasswordHash(), getPhoneNumber(), getReservations(), getRole());
+
     }
 
     @Override
