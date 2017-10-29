@@ -3,6 +3,7 @@ package cz.fi.muni.pa165.entity;
 import cz.fi.muni.pa165.enums.RoomType;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
@@ -164,12 +165,7 @@ public class Room {
 
     @Override
     public int hashCode() {
-        int result = price != null ? price.hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + capacity;
-        result = 31 * result + (reservations != null ? reservations.hashCode() : 0);
-        result = 31 * result + (hotel != null ? hotel.hashCode() : 0);
-        return result;
+        return Objects.hash(getPrice(), getType(), getCapacity(), getReservations(), getHotel());
     }
 
     @Override
