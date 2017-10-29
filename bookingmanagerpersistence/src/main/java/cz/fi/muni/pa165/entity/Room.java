@@ -3,10 +3,12 @@ package cz.fi.muni.pa165.entity;
 import cz.fi.muni.pa165.enums.RoomType;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -16,11 +18,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.DecimalMin;
 
 @Entity
+@Table(name = "Rooms")
 public class Room {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotNull
     private BigDecimal price;
@@ -47,14 +50,14 @@ public class Room {
      *
      * @return Room ID.
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * Sets the room ID.
      */
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -143,5 +146,36 @@ public class Room {
      */
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Room)) return false;
+
+        Room room = (Room) o;
+
+        if (getCapacity() != room.getCapacity()) return false;
+        if (getPrice() != null ? !getPrice().equals(room.getPrice()) : room.getPrice() != null) return false;
+        if (getType() != room.getType()) return false;
+        if (getReservations() != null ? !getReservations().equals(room.getReservations()) : room.getReservations() != null) return false;
+        return getHotel() != null ? getHotel().equals(room.getHotel()) : room.getHotel() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPrice(), getType(), getCapacity(), getReservations(), getHotel());
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + getId() +
+                ", price=" + getPrice() +
+                ", type=" + getType() +
+                ", capacity=" + getCapacity() +
+                ", reservations=" + getReservations() +
+                ", hotel=" + getHotel() +
+                '}';
     }
 }
