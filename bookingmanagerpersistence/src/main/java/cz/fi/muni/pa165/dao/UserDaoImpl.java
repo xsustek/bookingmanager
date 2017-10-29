@@ -2,8 +2,8 @@ package cz.fi.muni.pa165.dao;
 
 import cz.fi.muni.pa165.entity.User;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Tomas Kopecky
  */
-@Repository
+@Named
 public class UserDaoImpl implements UserDao {
 
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(User.class);

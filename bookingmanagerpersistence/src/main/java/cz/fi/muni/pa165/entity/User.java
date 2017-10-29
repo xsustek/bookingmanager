@@ -1,9 +1,6 @@
 package cz.fi.muni.pa165.entity;
 
 import cz.fi.muni.pa165.enums.Role;
-import cz.fi.muni.pa165.exceptions.PasswordException;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,8 +15,6 @@ import java.util.Set;
 @Entity
 @Table(name = "user_table")
 public class User {
-
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(User.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,49 +85,12 @@ public class User {
         return passwordHash;
     }
 
-    /**
-     * Method for encoding raw password in hash
-     *
-     * @param rawPassword raw not encoded password
-     * @throws PasswordException if something went wrong during hashing
-     */
-    public void setPassword(String rawPassword) throws PasswordException {
-        if (rawPassword == null || rawPassword.isEmpty()) {
-            log.warn("User: Raw password is empty");
-            throw new PasswordException("Raw password os null or empty");
-        }
-
-        try {
-            this.passwordHash = new BCryptPasswordEncoder().encode(rawPassword);
-        } catch (Exception ex) {
-            log.error("Exception during hashing: " + ex.getLocalizedMessage());
-            throw new PasswordException("Raw password os null or empty");
-        }
-    }
-
-    /**
-     * Method for checking if password matches
-     *
-     * @param rawPassword raw password from user for matching
-     * @return
-     * @throws PasswordException if something went wrong during matching
-     */
-    public boolean checkPassword(String rawPassword) throws PasswordException {
-        if (rawPassword == null || rawPassword.isEmpty()) {
-            log.warn("User: Raw password is null empty");
-            throw new PasswordException("Raw password os null or empty");
-        }
-
-        try {
-            return new BCryptPasswordEncoder().matches(rawPassword, this.getPasswordHash());
-        } catch (Exception e) {
-            log.warn("Password does not match", e);
-            return false;
-        }
-    }
-
     public Role getRole() {
         return role;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public void setRole(Role role) {
