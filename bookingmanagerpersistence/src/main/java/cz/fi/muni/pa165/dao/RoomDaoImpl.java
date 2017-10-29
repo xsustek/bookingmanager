@@ -22,7 +22,7 @@ public class RoomDaoImpl implements RoomDao {
 
     @Override
     public Room findById(long id) {
-        entityManager.find(Room.class, id);
+        return entityManager.find(Room.class, id);
     }
 
     @Override
