@@ -36,6 +36,7 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private Set<Reservation> reservations = new HashSet<>();
 
+    @NotNull
     @ManyToOne()
     private Hotel hotel;
 
