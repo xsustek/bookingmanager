@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Reservation {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
     private Long id;
 
@@ -106,5 +106,16 @@ public class Reservation {
                          other.getUser().equals(getUser());
         
         return  result;
+    }
+    
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "id = " + id +
+                ", start time = " + startTime +
+                ", end time = " + endTime +
+                ", " + user.toString() +
+                ", " + room.toString() +
+                "}";
     }
 }
