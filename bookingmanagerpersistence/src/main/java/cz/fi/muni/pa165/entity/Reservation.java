@@ -3,6 +3,7 @@ package cz.fi.muni.pa165.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Reservation class represents a booking user can make to book a hotel room.
@@ -125,16 +126,7 @@ public class Reservation {
     
     @Override
     public int hashCode() {
-        int result = 17;
-        
-        result = 31 * result + ((id == null) ? 0 : id.hashCode());
-        result = 31 * result + ((endTime == null) ? 0 : endTime.hashCode());
-        result = 31 * result + ((room == null) ? 0 : endTime.hashCode());
-        result = 31 * result + ((room == null) ? 0 : room.hashCode());
-        result = 31 * result + ((startTime == null) ? 0 : startTime.hashCode());
-        result = 31 * result + ((user == null) ? 0 : user.hashCode());
-        
-        return result;
+        return Objects.hash(getEndTime(), getStartTime(), getRoom(), getUser());
     }
 
     @Override
@@ -151,8 +143,7 @@ public class Reservation {
         
         Reservation other = (Reservation) obj;
         
-        boolean result = other.getId().equals(getId()) &&
-                         other.getEndTime().equals(getEndTime()) && 
+        boolean result = other.getEndTime().equals(getEndTime()) && 
                          other.getRoom().equals(getRoom()) && 
                          other.getStartTime().equals(getStartTime()) && 
                          other.getUser().equals(getUser());

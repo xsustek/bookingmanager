@@ -2,12 +2,14 @@ package cz.fi.muni.pa165.dao;
 
 import cz.fi.muni.pa165.entity.Reservation;
 import java.util.List;
+import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
  * @author Viktoria Tibenska
  */
+@Named
 public class ReservationDaoImpl implements ReservationDao {
 
     @PersistenceContext
@@ -30,7 +32,7 @@ public class ReservationDaoImpl implements ReservationDao {
 
     @Override
     public void remove(Reservation reservation) {
-        entityManager.remove(reservation);
+        entityManager.remove(entityManager.merge(reservation));
     }
 
     @Override
