@@ -16,6 +16,9 @@ import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
 
+/**
+ * @author Tomáš Kopecký
+ */
 @ContextConfiguration(classes = {ApplicationContext.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -167,7 +170,7 @@ public class RoomDaoTest {
         tmpRoom.setHotel(null);
         roomDao.create(tmpRoom);
     }
-    
+
     @Test(expected = ValidationException.class)
     @Transactional
     public void createNullPrice() throws Exception {

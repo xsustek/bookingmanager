@@ -164,7 +164,8 @@ public class Room {
         if (getCapacity() != room.getCapacity()) return false;
         if (getPrice() != null ? !getPrice().equals(room.getPrice()) : room.getPrice() != null) return false;
         if (getType() != room.getType()) return false;
-        if (getReservations() != null ? !getReservations().equals(room.getReservations()) : room.getReservations() != null) return false;
+        if (getReservations() != null ? !getReservations().equals(room.getReservations()) : room.getReservations() != null)
+            return false;
         return getHotel() != null ? getHotel().equals(room.getHotel()) : room.getHotel() == null;
     }
 

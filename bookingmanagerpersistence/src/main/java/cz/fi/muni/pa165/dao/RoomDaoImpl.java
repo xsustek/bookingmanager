@@ -8,6 +8,11 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+/**
+ * RoomDAO implementation class.
+ *
+ * @author Peter Neupauer
+ */
 @Named
 public class RoomDaoImpl implements RoomDao {
 
