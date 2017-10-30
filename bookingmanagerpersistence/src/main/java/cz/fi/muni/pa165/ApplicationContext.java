@@ -22,38 +22,40 @@ import javax.sql.DataSource;
 @EnableJpaRepositories
 @ComponentScan
 public class ApplicationContext {
-	
-	@Bean 
-	public JpaTransactionManager transactionManager(){
-		return  new JpaTransactionManager(entityManagerFactory().getObject());
-	}
-	
-	/**
-	 * Starts up a container that emulates behavior prescribed in JPA spec for container-managed EntityManager
-	 * @return
-	 */
-	@Bean
-	public LocalContainerEntityManagerFactoryBean  entityManagerFactory(){
-		LocalContainerEntityManagerFactoryBean jpaFactoryBean = new LocalContainerEntityManagerFactoryBean ();
-		jpaFactoryBean.setDataSource(db());
-		jpaFactoryBean.setLoadTimeWeaver(instrumentationLoadTimeWeaver());
-		jpaFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-		return jpaFactoryBean;
-	}
-	
-	@Bean 
-	public LocalValidatorFactoryBean localValidatorFactoryBean(){
-		return new LocalValidatorFactoryBean();
-	}
-	@Bean
-	public LoadTimeWeaver instrumentationLoadTimeWeaver() {
-		return new InstrumentationLoadTimeWeaver();
-	}
-	
-	@Bean
-	public DataSource db(){
-		EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-		EmbeddedDatabase db = builder.setType(EmbeddedDatabaseType.DERBY).build();
-		return db;
-	}
+
+    @Bean
+    public JpaTransactionManager transactionManager() {
+        return new JpaTransactionManager(entityManagerFactory().getObject());
+    }
+
+    /**
+     * Starts up a container that emulates behavior prescribed in JPA spec for container-managed EntityManager
+     *
+     * @return
+     */
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean jpaFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        jpaFactoryBean.setDataSource(db());
+        jpaFactoryBean.setLoadTimeWeaver(instrumentationLoadTimeWeaver());
+        jpaFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+        return jpaFactoryBean;
+    }
+
+    @Bean
+    public LocalValidatorFactoryBean localValidatorFactoryBean() {
+        return new LocalValidatorFactoryBean();
+    }
+
+    @Bean
+    public LoadTimeWeaver instrumentationLoadTimeWeaver() {
+        return new InstrumentationLoadTimeWeaver();
+    }
+
+    @Bean
+    public DataSource db() {
+        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+        EmbeddedDatabase db = builder.setType(EmbeddedDatabaseType.DERBY).build();
+        return db;
+    }
 }

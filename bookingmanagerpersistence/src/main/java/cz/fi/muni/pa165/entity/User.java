@@ -157,7 +157,6 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(getFullName(), getAddress(), getEmail(), getPasswordHash(), getPhoneNumber(), getReservations(), getRole());
-
     }
 
     @Override

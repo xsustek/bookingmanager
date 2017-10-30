@@ -7,6 +7,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+/**
+ * HotelDAO implementation class.
+ *
+ * @author Milan Šůstek
+ */
 @Named
 public class HotelDaoImpl implements HotelDao {
 

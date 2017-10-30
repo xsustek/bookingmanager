@@ -5,7 +5,9 @@ import cz.fi.muni.pa165.entity.Hotel;
 import java.util.List;
 
 /**
+ * HotelDAO interface.
  *
+ * @author Milan Šůstek
  */
 public interface HotelDao {
     void create(Hotel hotel);
