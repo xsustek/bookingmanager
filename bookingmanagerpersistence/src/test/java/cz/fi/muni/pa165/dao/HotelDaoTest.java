@@ -4,6 +4,8 @@ import cz.fi.muni.pa165.ApplicationContext;
 import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Reservation;
 import cz.fi.muni.pa165.entity.Room;
+import cz.fi.muni.pa165.enums.RoomType;
+import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,6 +23,7 @@ import javax.persistence.PersistenceUnit;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.assertj.core.api.Assertions.*;
@@ -77,11 +80,75 @@ public class HotelDaoTest {
     @Test
     @Transactional
     public void update() throws Exception {
+        Room single = new Room();
+        single.setCapacity(1);
+        single.setPrice(BigDecimal.valueOf(40));
+        single.setType(RoomType.SINGLE);
+        
+        Hotel royal = new Hotel();
+        royal.setName("Hotel Royal");
+        
+        Set<Room> rooms = new HashSet<Room>();
+        rooms.add(single);
+        
+        single.setHotel(royal);
+        royal.setRooms(rooms);
+        
+        hotelDao.create(royal);
+        
+        royal.setName("Hotel Great Royal");
+        
+        hotelDao.update(royal);
+        
+        assertThat(hotelDao.findById(royal.getId()).getName()).isEqualTo("Hotel Great Royal");
     }
 
     @Test
     @Transactional
+    public void findAll() throws Exception {
+        Hotel hilton = new Hotel();
+        hilton.setName("Hilton Hotel");
+        
+        Hotel holidayInn = new Hotel();
+        holidayInn.setName("Holiday Inn");
+        
+        Hotel bestWestern = new Hotel();
+        bestWestern.setName("Best Western");
+        
+        hotelDao.create(hilton);
+        hotelDao.create(holidayInn);
+        hotelDao.create(bestWestern);
+        
+        assertThat(hotelDao.findAll().size()).isEqualTo(3);
+    }
+    
+    @Test
+    @Transactional
     public void remove() throws Exception {
+        Hotel hilton = new Hotel();
+        hilton.setName("Hilton Hotel");
+        
+        Hotel holidayInn = new Hotel();
+        holidayInn.setName("Holiday Inn");
+        
+        Hotel bestWestern = new Hotel();
+        bestWestern.setName("Best Western");
+        
+        hotelDao.create(hilton);
+        hotelDao.create(holidayInn);
+        hotelDao.create(bestWestern);
+        
+        hotelDao.remove(hilton);
+        
+        List<Hotel> hotels = em.createQuery("select h from Hotel h", Hotel.class).getResultList();
+        
+        assertThat(hotels).hasSize(2)
+                          .containsExactly(holidayInn, bestWestern);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    @Transactional
+    public void createNull() throws Exception {
+        hotelDao.create(null);
+    }
 }
