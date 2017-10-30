@@ -181,6 +181,7 @@ public class ReservationDaoTest {
     private Reservation getReservation(LocalDateTime from, LocalDateTime to) {
         Hotel hotel = new Hotel();
         hotel.setName("Hotel");
+        hotel.setAddress("Brno");
 
         hotelDao.create(hotel);
 

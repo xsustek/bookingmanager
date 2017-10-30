@@ -34,6 +34,7 @@ public class HotelDaoTest {
     @Inject
     private HotelDao hotelDao;
 
+
     @PersistenceContext
     EntityManager em;
 
@@ -42,12 +43,15 @@ public class HotelDaoTest {
     public void create() throws Exception {
         Hotel hilton = new Hotel();
         hilton.setName("Hilton Hotel");
+        hilton.setAddress("Hilton street");
 
         Hotel holidayInn = new Hotel();
         holidayInn.setName("Holiday Inn");
+        holidayInn.setAddress("Holiday street");
 
         Hotel bestWestern = new Hotel();
         bestWestern.setName("Best Western");
+        bestWestern.setAddress("Western street");
 
         hotelDao.create(hilton);
         hotelDao.create(holidayInn);
@@ -63,6 +67,7 @@ public class HotelDaoTest {
     public void findById() throws Exception {
         Hotel tatra = new Hotel();
         tatra.setName("Hotel Tatra");
+        tatra.setAddress("Tatra street");
         hotelDao.create(tatra);
 
         em.persist(tatra);
@@ -83,6 +88,7 @@ public class HotelDaoTest {
 
         Hotel royal = new Hotel();
         royal.setName("Hotel Royal");
+        royal.setAddress("Royal street");
 
         Set<Room> rooms = new HashSet<Room>();
         rooms.add(single);
@@ -104,12 +110,15 @@ public class HotelDaoTest {
     public void findAll() throws Exception {
         Hotel hilton = new Hotel();
         hilton.setName("Hilton Hotel");
+        hilton.setAddress("Hilton street");
 
         Hotel holidayInn = new Hotel();
         holidayInn.setName("Holiday Inn");
+        holidayInn.setAddress("Holiday street");
 
         Hotel bestWestern = new Hotel();
         bestWestern.setName("Best Western");
+        bestWestern.setAddress("Western street");
 
         hotelDao.create(hilton);
         hotelDao.create(holidayInn);
@@ -123,12 +132,15 @@ public class HotelDaoTest {
     public void remove() throws Exception {
         Hotel hilton = new Hotel();
         hilton.setName("Hilton Hotel");
+        hilton.setAddress("Hilton street");
 
         Hotel holidayInn = new Hotel();
         holidayInn.setName("Holiday Inn");
+        holidayInn.setAddress("Holiday street");
 
         Hotel bestWestern = new Hotel();
         bestWestern.setName("Best Western");
+        bestWestern.setAddress("Western street");
 
         hotelDao.create(hilton);
         hotelDao.create(holidayInn);

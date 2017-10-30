@@ -44,6 +44,6 @@ public class HotelDaoImpl implements HotelDao {
 
     @Override
     public List<Hotel> findAll() {
-        return entityManager.createQuery("select h from Hotel h", Hotel.class).setMaxResults(1).getResultList();
+        return entityManager.createQuery("select h from Hotel h", Hotel.class).getResultList();
     }
 }

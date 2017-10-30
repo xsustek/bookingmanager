@@ -35,6 +35,7 @@ public class RoomDaoTest {
     public void create() throws Exception {
         Hotel tmpHotel = new Hotel();
         tmpHotel.setName("Hotel");
+        tmpHotel.setAddress("Brno");
 
         hotelDao.create(tmpHotel);
 
@@ -53,7 +54,7 @@ public class RoomDaoTest {
     public void findById() throws Exception {
         Hotel tmpHotel = new Hotel();
         tmpHotel.setName("Hotel");
-
+        tmpHotel.setAddress("Brno");
         hotelDao.create(tmpHotel);
 
         Room tmpRoom1 = new Room();
@@ -79,7 +80,7 @@ public class RoomDaoTest {
 
         Hotel tmpHotel = new Hotel();
         tmpHotel.setName("Hotel");
-
+        tmpHotel.setAddress("Brno");
         hotelDao.create(tmpHotel);
 
         Room tmpRoom = new Room();
@@ -101,6 +102,7 @@ public class RoomDaoTest {
     public void remove() throws Exception {
         Hotel tmpHotel = new Hotel();
         tmpHotel.setName("Hotel");
+        tmpHotel.setAddress("Brno");
 
         hotelDao.create(tmpHotel);
 
@@ -128,6 +130,7 @@ public class RoomDaoTest {
     public void findAll() throws Exception {
         Hotel tmpHotel = new Hotel();
         tmpHotel.setName("Hotel");
+        tmpHotel.setAddress("Brno");
 
         hotelDao.create(tmpHotel);
 

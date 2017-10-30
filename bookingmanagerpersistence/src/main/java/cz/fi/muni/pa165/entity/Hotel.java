@@ -115,7 +115,7 @@ public class Hotel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getAddress(), getRooms());
+        return Objects.hash(getName(), getAddress());
     }
 
     @Override
@@ -133,8 +133,7 @@ public class Hotel {
         Hotel other = (Hotel) obj;
 
         boolean result = other.getName().equals(getName()) &&
-                         other.getAddress().equals(getAddress()) &&
-                         other.getRooms().equals(getRooms());
+                         other.getAddress().equals(getAddress());
 
         return  result;
     }
