@@ -6,7 +6,6 @@ import java.util.List;
 
 /**
  * Hotel Data Access Object Interface
- *
  * @author Milan Šůstek
  */
 public interface HotelDao {

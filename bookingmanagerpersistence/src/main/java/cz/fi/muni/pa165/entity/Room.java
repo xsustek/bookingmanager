@@ -17,6 +17,11 @@ import javax.persistence.GenerationType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.DecimalMin;
 
+/**
+ * Room entity class.
+ *
+ * @author Peter Neupauer
+ */
 @Entity
 @Table(name = "Rooms")
 public class Room {
@@ -36,6 +41,7 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private Set<Reservation> reservations = new HashSet<>();
 
+    @NotNull
     @ManyToOne()
     private Hotel hotel;
 
@@ -158,7 +164,8 @@ public class Room {
         if (getCapacity() != room.getCapacity()) return false;
         if (getPrice() != null ? !getPrice().equals(room.getPrice()) : room.getPrice() != null) return false;
         if (getType() != room.getType()) return false;
-        if (getReservations() != null ? !getReservations().equals(room.getReservations()) : room.getReservations() != null) return false;
+        if (getReservations() != null ? !getReservations().equals(room.getReservations()) : room.getReservations() != null)
+            return false;
         return getHotel() != null ? getHotel().equals(room.getHotel()) : room.getHotel() == null;
     }
 

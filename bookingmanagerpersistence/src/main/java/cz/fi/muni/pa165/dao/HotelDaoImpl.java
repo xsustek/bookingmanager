@@ -13,7 +13,6 @@ import java.util.List;
  *
  * @author Milan Šůstek
  */
-
 @Named
 public class HotelDaoImpl implements HotelDao {
 
