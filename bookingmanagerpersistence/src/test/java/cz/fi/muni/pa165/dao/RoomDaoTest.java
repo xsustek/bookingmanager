@@ -167,23 +167,7 @@ public class RoomDaoTest {
         tmpRoom.setHotel(null);
         roomDao.create(tmpRoom);
     }
-
-    @Test(expected = ValidationException.class)
-    @Transactional
-    public void createNegativeCapacity() throws Exception {
-        Hotel tmpHotel = new Hotel();
-        tmpHotel.setName("Hotel");
-
-        hotelDao.create(tmpHotel);
-
-        Room tmpRoom = new Room();
-        tmpRoom.setCapacity(-6);
-        tmpRoom.setPrice(BigDecimal.valueOf(666));
-        tmpRoom.setType(RoomType.KING);
-        tmpRoom.setHotel(tmpHotel);
-        roomDao.create(tmpRoom);
-    }
-
+    
     @Test(expected = ValidationException.class)
     @Transactional
     public void createNullPrice() throws Exception {
