@@ -17,6 +17,11 @@ import javax.persistence.GenerationType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.DecimalMin;
 
+/**
+ * Room entity class.
+ *
+ * @author Peter Neupauer
+ */
 @Entity
 @Table(name = "Rooms")
 public class Room {
