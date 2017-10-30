@@ -8,10 +8,11 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
- * HotelDAO implementation class.
+ * Implementation of HotelDao interface
  *
  * @author Milan Šůstek
  */
+
 @Named
 public class HotelDaoImpl implements HotelDao {
 
@@ -20,6 +21,7 @@ public class HotelDaoImpl implements HotelDao {
 
     @Override
     public void create(Hotel hotel) {
+        if(hotel == null) throw new IllegalArgumentException("Hotel entity is null");
         entityManager.persist(hotel);
     }
 
@@ -30,16 +32,18 @@ public class HotelDaoImpl implements HotelDao {
 
     @Override
     public void update(Hotel hotel) {
+        if(hotel == null) throw new IllegalArgumentException("Hotel entity is null");
         entityManager.merge(hotel);
     }
 
     @Override
     public void remove(Hotel hotel) {
+        if(hotel == null) throw new IllegalArgumentException("Hotel entity is null");
         entityManager.remove(entityManager.merge(hotel));
     }
 
     @Override
     public List<Hotel> findAll() {
-        return entityManager.createQuery("select h from Hotel h", Hotel.class).getResultList();
+        return entityManager.createQuery("select h from Hotel h", Hotel.class).setMaxResults(1).getResultList();
     }
 }
