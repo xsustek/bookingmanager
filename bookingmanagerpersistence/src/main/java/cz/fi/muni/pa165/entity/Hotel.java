@@ -1,22 +1,21 @@
 package cz.fi.muni.pa165.entity;
 
-import cz.fi.muni.pa165.enums.Service;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.ManyToOne;
+
 
 /**
  * Hotel entity class
  *
  * @author Milan Šůstek
  */
+
 @Entity
 public class Hotel {
 
@@ -31,13 +30,10 @@ public class Hotel {
     @OneToMany(mappedBy = "hotel")
     private Set<Room> rooms = new HashSet<>();
 
-    private Set<Service> services = new HashSet<>();
-
+    @NotNull
+    @NotEmpty
     private String address;
-    
-    @ManyToOne()
-    private User owner;
-    
+
     /**
      * Hotel's constructor.
      */
@@ -55,7 +51,7 @@ public class Hotel {
 
     /**
      * Sets the hotel ID.
-     * 
+     *
      * @param id New value for id
      */
     public void setId(Long id) {
@@ -73,7 +69,7 @@ public class Hotel {
 
     /**
      * Sets collection of the hotel rooms.
-     * 
+     *
      * @param rooms New value for set of rooms in hotel.
      */
     public void setRooms(Set<Room> rooms) {
@@ -91,35 +87,65 @@ public class Hotel {
 
     /**
      * Sets the hotel name.
-     * 
+     *
      * @param name New value for name.
      */
     public void setName(String name) {
         this.name = name;
     }
-  
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Hotel)) return false;
 
-        Hotel hotel = (Hotel) o;
-
-        return getName() != null ? getName().equals(hotel.getName()) : hotel.getName() == null;
+    /**
+     * Gets address of a hotel.
+     *
+     * @return Address string.
+     */
+    public String getAddress() {
+        return address;
     }
+
+    /**
+     * Sets address of a hotel.
+     *
+     * @param address New string value for address.
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getName());
+        return Objects.hash(getName(), getAddress(), getRooms());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Hotel)) {
+            return false;
+        }
+
+        Hotel other = (Hotel) obj;
+
+        boolean result = other.getName().equals(getName()) &&
+                         other.getAddress().equals(getAddress()) &&
+                         other.getRooms().equals(getRooms());
+
+        return  result;
     }
 
     @Override
     public String toString() {
         return "Hotel{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", rooms=" + rooms +
-                '}';
-
+                "id = " + id +
+                ", name = " + name +
+                ", address = " + address +
+                ", rooms = " + rooms +
+                "}";
     }
 }
