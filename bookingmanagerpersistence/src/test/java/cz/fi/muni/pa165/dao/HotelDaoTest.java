@@ -2,30 +2,23 @@ package cz.fi.muni.pa165.dao;
 
 import cz.fi.muni.pa165.ApplicationContext;
 import cz.fi.muni.pa165.entity.Hotel;
-import cz.fi.muni.pa165.entity.Reservation;
 import cz.fi.muni.pa165.entity.Room;
 import cz.fi.muni.pa165.enums.RoomType;
 import java.math.BigDecimal;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
 import static org.assertj.core.api.Assertions.*;
 
 /**
