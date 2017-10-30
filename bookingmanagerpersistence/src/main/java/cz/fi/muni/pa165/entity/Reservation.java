@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /**
  * Reservation class represents a booking user can make to book a hotel room.
- * 
+ *
  * @author Viktoria Tibenska
  */
 @Entity

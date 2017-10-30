@@ -4,6 +4,11 @@ import java.util.List;
 
 import cz.fi.muni.pa165.entity.Room;
 
+/**
+ * RoomDAO interface.
+ *
+ * @author Peter Neupauer
+ */
 public interface RoomDao {
 
     /**

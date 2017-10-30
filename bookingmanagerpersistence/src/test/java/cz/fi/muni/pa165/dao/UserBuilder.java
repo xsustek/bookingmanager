@@ -7,6 +7,9 @@ import cz.fi.muni.pa165.enums.Role;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author Peter Neupauer
+ */
 public class UserBuilder {
 
     private long id;

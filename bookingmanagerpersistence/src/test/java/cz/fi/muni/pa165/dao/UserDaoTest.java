@@ -16,6 +16,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+/**
+ * @author Peter Neupauer
+ */
 @ContextConfiguration(classes = ApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
