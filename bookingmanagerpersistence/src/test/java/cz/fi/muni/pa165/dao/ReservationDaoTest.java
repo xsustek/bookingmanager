@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.validation.ConstraintViolationException;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
