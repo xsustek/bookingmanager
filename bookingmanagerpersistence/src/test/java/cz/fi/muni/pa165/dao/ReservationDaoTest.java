@@ -1,6 +1,5 @@
 package cz.fi.muni.pa165.dao;
 
-import com.sun.org.apache.regexp.internal.RE;
 import cz.fi.muni.pa165.ApplicationContext;
 import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Reservation;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.validation.ConstraintViolationException;
-import javax.xml.bind.ValidationException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -64,12 +62,12 @@ public class ReservationDaoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createNullReservation() throws Exception{
+    public void createNullReservation() throws Exception {
         reservationDao.create(null);
     }
 
     @Test(expected = ConstraintViolationException.class)
-    public void createWithNullUser(){
+    public void createWithNullUser() {
         Reservation reservation = getReservation(time, time.plusDays(7));
         reservation.setUser(null);
 
@@ -77,7 +75,7 @@ public class ReservationDaoTest {
     }
 
     @Test(expected = ConstraintViolationException.class)
-    public void createWithNullRoom(){
+    public void createWithNullRoom() {
         Reservation reservation = getReservation(time, time.plusDays(7));
         reservation.setRoom(null);
 
@@ -85,7 +83,7 @@ public class ReservationDaoTest {
     }
 
     @Test(expected = ConstraintViolationException.class)
-    public void createWithNullStartTime(){
+    public void createWithNullStartTime() {
         Reservation reservation = getReservation(time, time.plusDays(7));
         reservation.setStartTime(null);
 
@@ -93,7 +91,7 @@ public class ReservationDaoTest {
     }
 
     @Test(expected = ConstraintViolationException.class)
-    public void createWithNullEndTime(){
+    public void createWithNullEndTime() {
         Reservation reservation = getReservation(time, time.plusDays(7));
         reservation.setEndTime(null);
 
@@ -112,7 +110,7 @@ public class ReservationDaoTest {
     }
 
     @Test
-    public void findByNonExistingId(){
+    public void findByNonExistingId() {
         Reservation reservation = getReservation(time, time.plusDays(7));
 
         reservationDao.create(reservation);
@@ -138,7 +136,7 @@ public class ReservationDaoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void updateNull(){
+    public void updateNull() {
         reservationDao.update(null);
     }
 
@@ -158,7 +156,7 @@ public class ReservationDaoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void removeNull(){
+    public void removeNull() {
         reservationDao.remove(null);
     }
 
