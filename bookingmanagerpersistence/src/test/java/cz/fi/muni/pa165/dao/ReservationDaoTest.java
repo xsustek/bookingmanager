@@ -174,6 +174,16 @@ public class ReservationDaoTest {
         assertThat(reservationDao.findAll()).hasSize(3)
                 .containsExactly(reservation1, reservation2, reservation3);
     }
+    
+    @Test
+    public void hashCodeStaysTheSame() {
+      Reservation r = getReservation(LocalDateTime.MIN, LocalDateTime.MAX);   
+      User aUserOutsideOfReservationObject = new User();
+      r.setUser(aUserOutsideOfReservationObject);
+      int hash1 = r.hashCode();
+      aUserOutsideOfReservationObject.setPasswordHash("test");
+      assertThat(hash1).isEqualTo(r.hashCode());
+    }
 
     private Reservation getReservation(LocalDateTime from, LocalDateTime to) {
         Hotel hotel = new Hotel();

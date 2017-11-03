@@ -2,6 +2,7 @@ package cz.fi.muni.pa165.dao;
 
 import cz.fi.muni.pa165.ApplicationContext;
 import cz.fi.muni.pa165.entity.Hotel;
+import cz.fi.muni.pa165.entity.Reservation;
 import cz.fi.muni.pa165.entity.Room;
 import cz.fi.muni.pa165.enums.RoomType;
 import org.junit.Assert;
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Tomáš Kopecký
@@ -189,5 +192,18 @@ public class RoomDaoTest {
         tmpRoom.setHotel(tmpHotel);
         roomDao.create(tmpRoom);
     }
+    
+    @Test
+    @Transactional
+    public void hashCodeStaysTheSame() {
+      Room room = new Room();
+      Set<Reservation> aReservationsSetOutsideOfRoomObject = new HashSet<>();
+      room.setReservations(aReservationsSetOutsideOfRoomObject);
+      int hash1 = room.hashCode();
 
+      // this should not be changing room nor room.reservations
+      aReservationsSetOutsideOfRoomObject.add(new Reservation());
+
+      Assert.assertEquals(hash1, room.hashCode());
+    }
 }
