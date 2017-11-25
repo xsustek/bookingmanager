@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -44,5 +45,20 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> findAll() {
         return entityManager.createQuery("select u from User u", User.class).getResultList();
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        if (email == null || email.isEmpty())
+            throw new IllegalArgumentException("Email os null or empty");
+
+        try {
+            return entityManager
+                    .createQuery("select u from User u where email=:email",
+                            User.class).setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException nre) {
+            return null;
+        }
     }
 }
