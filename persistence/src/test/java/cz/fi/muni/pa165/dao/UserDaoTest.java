@@ -1,6 +1,6 @@
 package cz.fi.muni.pa165.dao;
 
-import cz.fi.muni.pa165.ApplicationContext;
+import cz.fi.muni.pa165.PersistenceApplicationContext;
 import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.enums.Role;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Peter Neupauer
  */
-@ContextConfiguration(classes = ApplicationContext.class)
+@ContextConfiguration(classes = PersistenceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 public class UserDaoTest {

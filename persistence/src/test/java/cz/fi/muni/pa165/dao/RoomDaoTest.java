@@ -1,6 +1,6 @@
 package cz.fi.muni.pa165.dao;
 
-import cz.fi.muni.pa165.ApplicationContext;
+import cz.fi.muni.pa165.PersistenceApplicationContext;
 import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Room;
 import cz.fi.muni.pa165.enums.RoomType;
@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 /**
  * @author Tomáš Kopecký
  */
-@ContextConfiguration(classes = {ApplicationContext.class})
+@ContextConfiguration(classes = {PersistenceApplicationContext.class})
 @RunWith(SpringJUnit4ClassRunner.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class RoomDaoTest {

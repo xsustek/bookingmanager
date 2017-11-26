@@ -1,6 +1,6 @@
 package cz.fi.muni.pa165.dao;
 
-import cz.fi.muni.pa165.ApplicationContext;
+import cz.fi.muni.pa165.PersistenceApplicationContext;
 import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Room;
 import cz.fi.muni.pa165.enums.RoomType;
@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Viktoria Tibenska
  */
-@ContextConfiguration(classes = ApplicationContext.class)
+@ContextConfiguration(classes = PersistenceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 public class HotelDaoTest {
