@@ -87,7 +87,7 @@ public class HotelDaoTest {
         royal.setName("Hotel Royal");
         royal.setAddress("Royal street");
 
-        Set<Room> rooms = new HashSet<Room>();
+        Set<Room> rooms = new HashSet<>();
         rooms.add(single);
 
         single.setHotel(royal);
