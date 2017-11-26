@@ -46,4 +46,11 @@ public class HotelDaoImpl implements HotelDao {
     public List<Hotel> findAll() {
         return entityManager.createQuery("select h from Hotel h", Hotel.class).getResultList();
     }
+
+    @Override
+    public List<Hotel> findByName(String name) {
+        return entityManager.createQuery(
+                "select h from Hotel h where h.name like :name ", Hotel.class)
+                .setParameter("name", "%" + name + "%").getResultList();
+    }
 }

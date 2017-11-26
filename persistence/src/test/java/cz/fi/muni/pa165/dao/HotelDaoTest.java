@@ -156,4 +156,29 @@ public class HotelDaoTest {
     public void createNull() throws Exception {
         hotelDao.create(null);
     }
+
+    @Test
+    @Transactional
+    public void findByName() {
+        Hotel hilton = new Hotel();
+        hilton.setName("Hilton Hotel");
+        hilton.setAddress("Hilton street");
+
+        Hotel holidayInn = new Hotel();
+        holidayInn.setName("Holiday Inn");
+        holidayInn.setAddress("Holiday street");
+
+        Hotel bestWestern = new Hotel();
+        bestWestern.setName("Best Western Hotel");
+        bestWestern.setAddress("Western street");
+
+        hotelDao.create(hilton);
+        hotelDao.create(holidayInn);
+        hotelDao.create(bestWestern);
+        em.flush();
+
+        List<Hotel> hotels = hotelDao.findByName("Hotel");
+
+        assertThat(hotels).hasSize(2).containsExactly(hilton, bestWestern);
+    }
 }
