@@ -1,6 +1,6 @@
 package cz.fi.muni.pa165.dao;
 
-import cz.fi.muni.pa165.ApplicationContext;
+import cz.fi.muni.pa165.PersistenceApplicationContext;
 import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.enums.Role;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Peter Neupauer
  */
-@ContextConfiguration(classes = ApplicationContext.class)
+@ContextConfiguration(classes = PersistenceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 public class UserDaoTest {
@@ -168,5 +168,24 @@ public class UserDaoTest {
                 .hash("670b14728ad9902aecba32e22fa4f6bd") // MD5: 000000
                 .phone("00421901234567")
                 .role(Role.USER);
+    }
+
+    @Test
+    @Transactional
+    public void findUserByEmail() throws Exception {
+        User peter = getTestUser().build();
+        entityManager.persist(peter);
+
+        User user = repository.findByEmail(peter.getEmail());
+
+        assertThat(user)
+                .isNotNull()
+                .isEqualToComparingFieldByField(peter);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Transactional
+    public void findUserByNullEmail() throws Exception {
+        repository.findByEmail(null);
     }
 }

@@ -41,4 +41,6 @@ public interface HotelDao {
      * @return all hotels
      */
     List<Hotel> findAll();
+
+    List<Hotel> findByName(String name);
 }
