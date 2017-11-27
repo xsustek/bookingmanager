@@ -41,4 +41,11 @@ public interface RoomFacade {
      * @return The list of all rooms.
      */
     List<RoomDTO> findAll();
+
+    /**
+     * Creates room.
+     *
+     * @param room Rooms to create.
+     */
+    public void create(RoomDTO room);
 }
