@@ -4,16 +4,16 @@ import cz.fi.muni.pa165.dao.UserDao;
 import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.enums.Role;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
 /**
  * @author Tomas Kopecky
  * Implementation of the {@link UserService}
  */
-@Service
+@Named
 public class UserServiceImpl implements UserService {
 
     @Inject
