@@ -175,6 +175,54 @@ public class ReservationDaoTest {
                 .containsExactly(reservation1, reservation2, reservation3);
     }
 
+    @Test
+    public void getByRoom() throws Exception {
+        Hotel hotel = new Hotel();
+        hotel.setName("Hotel");
+        hotel.setAddress("Brno");
+
+        hotelDao.create(hotel);
+        
+        Room room = new Room();
+        room.setHotel(hotel);
+        room.setCapacity(2);
+        room.setPrice(new BigDecimal("10000"));
+        room.setType(RoomType.STUDIO);
+
+        roomDao.create(room);
+        
+        Reservation reservation1 = getReservation(time, time.plusDays(7), room, hotel);
+        Reservation reservation2 = getReservation(time.plusDays(1), time.plusDays(8), room, hotel);
+        Reservation reservation3 = getReservation(time.plusDays(2), time.plusDays(9), room, hotel);
+        
+        reservationDao.create(reservation1);
+        reservationDao.create(reservation2);
+        reservationDao.create(reservation3);
+        
+        em.flush();
+        
+        assertThat(reservationDao.getReservationsByRoom(room))
+                .hasSize(3)
+                .containsExactly(reservation1, reservation2, reservation3);
+    }
+    
+    @Test
+    public void getByInterval() throws Exception {
+        Reservation reservation1 = getReservation(time, time.plusDays(2));
+        Reservation reservation2 = getReservation(time.plusDays(1), time.plusDays(4));
+        Reservation reservation3 = getReservation(time.plusDays(5), time.plusDays(9));
+
+        reservationDao.create(reservation1);
+        reservationDao.create(reservation2);
+        reservationDao.create(reservation3);
+
+        em.flush();
+        
+        assertThat(reservationDao.getReservationsByInterval(time.plusDays(1), time.plusDays(3)))
+                .hasSize(2)
+                .containsExactly(reservation1, reservation2);
+    }
+    
     private Reservation getReservation(LocalDateTime from, LocalDateTime to) {
         Hotel hotel = new Hotel();
         hotel.setName("Hotel");
@@ -209,4 +257,23 @@ public class ReservationDaoTest {
         return reservation;
     }
 
+    private Reservation getReservation(LocalDateTime from, LocalDateTime to, Room room, Hotel hotel) {
+        User user = new User();
+        user.setAddress("Botanicka 68");
+        user.setEmail("433724@mail.muni.cz");
+        user.setFullName("Milan Šůstek");
+        user.setPasswordHash("abcdef");
+        user.setPhoneNumber("+420445554445");
+        user.setRole(Role.ADMIN);
+
+        userDao.create(user);
+
+        Reservation reservation = new Reservation();
+        reservation.setRoom(room);
+        reservation.setUser(user);
+        reservation.setStartTime(from);
+        reservation.setEndTime(to);
+
+        return reservation;
+    }
 }
