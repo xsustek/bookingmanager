@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 /**
+ * Reservation service providing its business functions and communication with DAO layer
+ * 
  * @author Viktoria Tibenska
  */
 @Service

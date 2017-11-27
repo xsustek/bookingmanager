@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
+ * Interface for reservation service
+ * 
  * @author Viktoria Tibenska
  */
 public interface ReservationService {
