@@ -20,7 +20,6 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public void createReservation(Reservation reservation) {
-        
         boolean error = false;
         List<Reservation> reservations = reservationDao.getReservationsByRoom(reservation.getRoom());
         
