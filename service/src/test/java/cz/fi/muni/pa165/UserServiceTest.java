@@ -27,7 +27,6 @@ import static org.mockito.Mockito.when;
 /**
  * @author Tomas Kopecky
  */
-
 @ContextConfiguration(classes = ServiceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserServiceTest {
@@ -99,7 +98,7 @@ public class UserServiceTest {
     @Test
     public void isUserAdmin() {
         Boolean result = userService.isAdmin(karel);
-        assertThat(result).isEqualTo(Boolean.TRUE);
+        assertThat(result).isTrue();
     }
 
     @Test

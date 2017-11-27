@@ -10,6 +10,11 @@ import java.util.List;
 public interface UserFacade {
 
     /**
+     * Register the given user with the given unhashed password.
+     */
+    void registerUser(UserDTO u, String unencryptedPassword);
+
+    /**
      * Returns user for the given ID.
      *
      * @param id user's ID.

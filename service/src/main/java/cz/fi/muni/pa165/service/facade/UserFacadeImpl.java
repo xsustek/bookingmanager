@@ -25,15 +25,22 @@ public class UserFacadeImpl implements UserFacade {
     private BeanMappingService beanMappingService;
 
     @Override
+    public void registerUser(UserDTO userDTO, String unhashedPassword) {
+        User userEntity = beanMappingService.mapTo(userDTO, User.class);
+        userService.registerUser(userEntity, unhashedPassword);
+        userDTO.setId(userEntity.getId());
+    }
+
+    @Override
     public UserDTO findById(Long id) {
         User user = userService.findUserById(id);
-        return beanMappingService.mapTo(user, UserDTO.class);
+        return (user == null) ? null : beanMappingService.mapTo(user, UserDTO.class);
     }
 
     @Override
     public UserDTO findByEmail(String email) {
         User user = userService.findUserByEmail(email);
-        return beanMappingService.mapTo(user, UserDTO.class);
+        return (user == null) ? null : beanMappingService.mapTo(user, UserDTO.class);
     }
 
     @Override
