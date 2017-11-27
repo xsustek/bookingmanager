@@ -66,13 +66,8 @@ public class HotelDaoTest {
         tatra.setName("Hotel Tatra");
         tatra.setAddress("Tatra street");
         hotelDao.create(tatra);
-
-        em.persist(tatra);
-
-        List<Hotel> hotel = em.createQuery("select h from Hotel h where h.id = :id", Hotel.class).setParameter("id", tatra.getId()).getResultList();
-
-        assertThat(hotel).hasSize(1);
-        assertThat(hotel.get(0)).isEqualTo(tatra);
+        
+        assertThat(hotelDao.findById(tatra.getId())).isEqualTo(tatra);
     }
 
     @Test
