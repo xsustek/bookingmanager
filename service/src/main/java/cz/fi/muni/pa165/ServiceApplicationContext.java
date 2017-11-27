@@ -15,11 +15,6 @@ import org.springframework.context.annotation.Import;
 @Import(PersistenceApplicationContext.class)
 @ComponentScan
 public class ServiceApplicationContext {
-    @Bean
-    public Mapper dozer() {
-        DozerBeanMapper dozer = new DozerBeanMapper();
-        return dozer;
-    }
 
     @Bean
     public Mapper dozer(){
