@@ -92,6 +92,7 @@ public class RoomDTO {
 
         RoomDTO roomDTO = (RoomDTO) o;
 
+
         return getRoomNumber() != null ? getRoomNumber().equals(roomDTO.getRoomNumber()) : roomDTO.getRoomNumber() == null;
     }
 

@@ -135,7 +135,6 @@ public class Hotel {
                 "id = " + id +
                 ", name = " + name +
                 ", address = " + address +
-                ", rooms = " + rooms +
                 "}";
     }
 }

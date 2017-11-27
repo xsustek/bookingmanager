@@ -1,4 +1,4 @@
 package cz.fi.muni.pa165.service.facade;
 
-public class ReservationFacadeImpl {
+public class BookingFacadeImpl {
 }
