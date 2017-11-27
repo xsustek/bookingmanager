@@ -107,56 +107,18 @@ public class User {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof User))
-            return false;
-        User other = (User) obj;
-        if (getFullName() == null) {
-            if (other.getFullName() != null)
-                return false;
-        } else if (!getFullName().equals(other.getFullName()))
-            return false;
-        if (getEmail() == null) {
-            if (other.getEmail() != null)
-                return false;
-        } else if (!getEmail().equals(other.getEmail()))
-            return false;
-        if (getAddress() == null) {
-            if (other.getAddress() != null)
-                return false;
-        } else if (!getAddress().equals(other.getAddress()))
-            return false;
-        if (getPhoneNumber() == null) {
-            if (other.getPhoneNumber() != null)
-                return false;
-        } else if (!getPhoneNumber().equals(other.getPhoneNumber()))
-            return false;
-        if (getPasswordHash() == null) {
-            if (other.getPasswordHash() != null)
-                return false;
-        } else if (!getPasswordHash().equals(other.getPasswordHash()))
-            return false;
-        if (getRole() == null) {
-            if (other.getRole() != null)
-                return false;
-        } else if (!getRole().equals(other.getRole()))
-            return false;
-        if (getReservations() == null) {
-            if (other.getReservations() != null)
-                return false;
-        } else if (!getReservations().equals(other.getReservations()))
-            return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
 
-        return true;
+        User user = (User) o;
+
+        return getEmail() != null ? getEmail().equals(user.getEmail()) : user.getEmail() == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getFullName(), getAddress(), getEmail(), getPasswordHash(), getPhoneNumber(), getReservations(), getRole());
+        return Objects.hash(getEmail());
     }
 
     @Override
