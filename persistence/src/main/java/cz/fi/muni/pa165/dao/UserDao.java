@@ -46,4 +46,12 @@ public interface UserDao {
      * @return List of User objects
      */
     List<User> findAll();
+
+    /**
+     * Simple DAO method for finding user in DB by email
+     *
+     * @param email email of the user
+     * @return User object if found, null otherwise
+     */
+    User findByEmail(String email);
 }
