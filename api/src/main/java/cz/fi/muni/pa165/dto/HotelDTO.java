@@ -98,28 +98,19 @@ public class HotelDTO {
 
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getName(), getAddress());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HotelDTO)) return false;
+
+        HotelDTO hotel = (HotelDTO) o;
+
+        if (getName() != null ? !getName().equals(hotel.getName()) : hotel.getName() != null) return false;
+        return getAddress() != null ? getAddress().equals(hotel.getAddress()) : hotel.getAddress() == null;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof HotelDTO)) {
-            return false;
-        }
-
-        HotelDTO other = (HotelDTO) obj;
-
-        boolean result = other.getName().equals(getName()) &&
-                other.getAddress().equals(getAddress());
-
-        return result;
+    public int hashCode() {
+        return Objects.hash(getName(), getAddress());
     }
 
     @Override
