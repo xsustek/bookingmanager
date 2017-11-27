@@ -6,14 +6,14 @@ import cz.fi.muni.pa165.entity.Room;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.inject.Inject;
-import org.springframework.stereotype.Service;
+import javax.inject.Named;
 
 /**
  * Reservation service providing its business functions and communication with DAO layer
  * 
  * @author Viktoria Tibenska
  */
-@Service
+@Named
 public class ReservationServiceImpl implements ReservationService {
     
     @Inject ReservationDao reservationDao;
