@@ -4,7 +4,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -64,7 +63,7 @@ public class Hotel {
      * @return Room reservations.
      */
     public Set<Room> getRooms() {
-        return Collections.unmodifiableSet(rooms);
+        return rooms;
     }
 
     /**

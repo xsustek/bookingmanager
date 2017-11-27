@@ -1,7 +1,6 @@
 package cz.fi.muni.pa165.dto;
 
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -48,7 +47,7 @@ public class HotelDTO {
      * @return Room reservations.
      */
     public Set<RoomDTO> getRooms() {
-        return Collections.unmodifiableSet(rooms);
+        return rooms;
     }
 
     /**

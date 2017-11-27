@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -117,7 +116,7 @@ public class Room {
      * @return Room reservations.
      */
     public Set<Reservation> getReservations() {
-        return Collections.unmodifiableSet(this.reservations);
+        return this.reservations;
     }
 
     /**
