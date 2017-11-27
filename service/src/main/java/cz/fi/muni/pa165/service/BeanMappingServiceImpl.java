@@ -1,14 +1,14 @@
 package cz.fi.muni.pa165.service;
 
 import org.dozer.Mapper;
-import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Service
+@Named
 public class BeanMappingServiceImpl implements BeanMappingService {
 
     @Inject

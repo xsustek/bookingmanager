@@ -4,9 +4,11 @@ import cz.fi.muni.pa165.dao.HotelDao;
 import cz.fi.muni.pa165.dao.RoomDao;
 import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Room;
+import cz.fi.muni.pa165.exceptions.BookingServiceException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -50,13 +52,24 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public void addRoom(Hotel hotel, Room room) {
         if (room == null) throw new IllegalArgumentException("room is null");
-        if (room.getId() == 0 || roomDao.findById(room.getId()) == null) {
-            roomDao.create(room);
+        if (hotel == null) throw new IllegalArgumentException("hotel is null");
+        if (hotel.getId() == null || hotelDao.findById(hotel.getId()) == null) {
+            hotelDao.create(hotel);
         }
 
         Set<Room> rooms = hotel.getRooms();
-        rooms.add(room);
-        hotel.setRooms(rooms);
+        if (rooms.contains(room)) {
+            throw new BookingServiceException("Room with id " + room.getId() + "already exist in hotel " + hotel.getName());
+        }
+
+        if (room.getId() == null || roomDao.findById(room.getId()) == null) {
+            room.setHotel(hotel);
+            roomDao.create(room);
+        }
+
+        Set<Room> addedRooms = new HashSet<>(rooms);
+        addedRooms.add(room);
+        hotel.setRooms(addedRooms);
         hotelDao.update(hotel);
     }
 
