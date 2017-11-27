@@ -16,7 +16,7 @@ public class RoomDTO {
 
     private RoomType type;
 
-    private String name;
+    private String roomNumber;
 
     private int capacity;
 
@@ -72,18 +72,17 @@ public class RoomDTO {
         this.hotel = hotel;
     }
 
-    public String getName() {
-        return name;
+    public String getRoomNumber() {
+        return roomNumber;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
-
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getName());
+        return Objects.hashCode(getRoomNumber());
     }
 
     @Override
@@ -93,6 +92,9 @@ public class RoomDTO {
 
         RoomDTO roomDTO = (RoomDTO) o;
 
-        return getName() != null ? getName().equals(roomDTO.getName()) : roomDTO.getName() == null;
+
+        return getRoomNumber() != null ? getRoomNumber().equals(roomDTO.getRoomNumber()) : roomDTO.getRoomNumber() == null;
     }
+
+
 }
