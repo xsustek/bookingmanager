@@ -18,6 +18,8 @@ public class RoomDTO {
 
     private int capacity;
 
+    private String name;
+
     private Set<ReservationDTO> reservations = new HashSet<>();
 
     private HotelDTO hotel;

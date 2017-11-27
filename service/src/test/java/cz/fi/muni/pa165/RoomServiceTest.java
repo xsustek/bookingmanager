@@ -1,26 +1,33 @@
 package cz.fi.muni.pa165;
 
+import cz.fi.muni.pa165.dao.HotelDao;
 import cz.fi.muni.pa165.dao.RoomDao;
 import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Reservation;
 import cz.fi.muni.pa165.entity.Room;
 import cz.fi.muni.pa165.enums.RoomType;
 import cz.fi.muni.pa165.service.RoomService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static java.util.Arrays.asList;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = ServiceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,101 +35,104 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RoomServiceTest {
 
     @Inject
+    @InjectMocks
     private RoomService roomService;
 
-    @Inject
-    private RoomDao repository;
+    @Mock
+    private RoomDao roomDao;
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    private Hotel hotelBrno;
+    private Hotel hotelRoyal;
+
+    private Room roomSingle;
+    private Room roomKing;
+    private Room roomDouble;
+
+
+    @Before
+    public void setupFieldAndMocks() {
+        MockitoAnnotations.initMocks(this);
+
+        hotelBrno = new Hotel();
+        hotelBrno.setAddress("Address");
+        hotelBrno.setName("Brno");
+
+        hotelRoyal = new Hotel();
+        hotelRoyal.setAddress("Address 2");
+        hotelRoyal.setName("Royal");
+
+        roomSingle = getTestRoom().type(RoomType.SINGLE).build();
+        roomDouble = getTestRoom().type(RoomType.DOUBLE).build();
+        roomKing = getTestRoom().type(RoomType.KING).build();
+
+        hotelBrno.setRooms(new HashSet<Room>(Arrays.asList(roomDouble)));
+        hotelRoyal.setRooms(new HashSet<Room>(Arrays.asList(roomSingle, roomKing)));
+
+        roomSingle.setHotel(hotelRoyal);
+        roomKing.setHotel(hotelRoyal);
+        roomDouble.setHotel(hotelBrno);
+
+        doAnswer(invocationOnMock -> {
+            roomSingle.setId(1L);
+            return null;
+        }).when(roomDao).create(any(Room.class));
+
+        when(roomDao.findById(1L)).thenReturn(roomSingle);
+        when(roomDao.findAll()).thenReturn(asList(roomSingle, roomDouble, roomKing));
+    }
+
 
     @Test
     public void findAllRooms() {
-        Room kingRoom = getTestRoom().build();
-        Room singleRoom = getTestRoom().type(RoomType.SINGLE).build();
-
-        repository.create(kingRoom);
-        repository.create(singleRoom);
-
         List<Room> rooms = roomService.findAll();
-
-        assertThat(rooms).isNotEmpty().containsExactly(kingRoom, singleRoom);
+        assertThat(rooms)
+                .isNotEmpty()
+                .containsExactly(roomSingle, roomDouble, roomKing);
     }
 
     @Test
-    public void findRoomsByType() {
-        Room kingRoom = getTestRoom().build();
-        Room singleRoom = getTestRoom().type(RoomType.SINGLE).build();
+    public void findById() {
+        Room room = roomService.findById(1L);
+        assertThat(room)
+                .isEqualTo(roomSingle);
+    }
 
-        repository.create(kingRoom);
-        repository.create(singleRoom);
+    @Test
+    public void findByHotel() {
+        List<Room> rooms = roomService.findByHotel(hotelRoyal);
+        assertThat(rooms)
+                .isNotEmpty()
+                .containsExactly(roomSingle, roomKing);
+    }
 
+    @Test
+    public void findByType() {
         List<Room> rooms = roomService.findByType(RoomType.KING);
-
-        assertThat(rooms).isNotEmpty().containsExactly(kingRoom);
-    }
-
-    @Test
-    public void findRoomsByHotel() {
-        Hotel h1 = new Hotel();
-        Hotel h2 = new Hotel();
-
-        Room kingRoom = getTestRoom().hotel(h1).build();
-        Room singleRoom = getTestRoom().type(RoomType.SINGLE).hotel(h2).build();
-
-        repository.create(kingRoom);
-        repository.create(singleRoom);
-
-        List<Room> rooms = roomService.findByHotel(h1);
-
-        assertThat(rooms).isNotEmpty().containsExactly(kingRoom);
+        assertThat(rooms)
+                .isNotEmpty()
+                .containsExactly(roomKing);
     }
 
     @Test
     public void create() {
-        Room expectedRoom = getTestRoom().build();
+        roomService.create(roomSingle);
 
-        roomService.create(expectedRoom);
+        Room room = roomService.findById(1L);
 
-        Room room = repository.findById(expectedRoom.getId());
-
-        assertThat(room).isNotNull().isEqualTo(room);
+        assertThat(room).isEqualTo(roomSingle);
     }
 
     @Test
     public void update() {
-        Room expectedRoom = getTestRoom().build();
+        roomService.create(roomSingle);
 
-        repository.create(expectedRoom);
+        roomSingle.setCapacity(1);
+        roomService.update(roomSingle);
 
-        Room room = repository.findById(expectedRoom.getId());
+        Room room = roomService.findById(1L);
 
-        assertThat(room).isNotNull().isEqualTo(room);
-
-        expectedRoom.setCapacity(1);
-
-        roomService.update(expectedRoom);
-
-        room = repository.findById(expectedRoom.getId());
-
-        assertThat(room).isNotNull().isEqualTo(room);
+        assertThat(room).isEqualTo(roomSingle);
     }
-
-    @Test
-    public void remove() {
-        Room kingRoom = getTestRoom().build();
-        Room singleRoom = getTestRoom().type(RoomType.SINGLE).build();
-
-        repository.create(kingRoom);
-        repository.create(singleRoom);
-
-        roomService.remove(singleRoom);
-
-        List<Room> rooms = roomService.findByType(RoomType.KING);
-
-        assertThat(rooms).isNotEmpty().containsExactly(kingRoom);
-    }
-
 
     private RoomBuilder getTestRoom() {
         return new RoomBuilder()

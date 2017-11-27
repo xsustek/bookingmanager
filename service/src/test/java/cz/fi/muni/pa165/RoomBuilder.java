@@ -15,6 +15,7 @@ public class RoomBuilder {
     private BigDecimal price;
     private RoomType type;
     private int capacity;
+    private String name;
     private Set<Reservation> reservations = new HashSet<>();
     private Hotel hotel;
 
@@ -25,6 +26,11 @@ public class RoomBuilder {
 
     public RoomBuilder price(BigDecimal price) {
         this.price = price;
+        return this;
+    }
+
+    public RoomBuilder name(String name) {
+        this.name = name;
         return this;
     }
 

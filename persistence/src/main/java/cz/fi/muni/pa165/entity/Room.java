@@ -27,6 +27,8 @@ public class Room {
     @NotNull
     private BigDecimal price;
 
+    private String name;
+
     private RoomType type;
 
     @DecimalMin(value = "0")
@@ -148,6 +150,14 @@ public class Room {
         this.hotel = hotel;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -158,6 +168,7 @@ public class Room {
         if (getCapacity() != room.getCapacity()) return false;
         if (getPrice() != null ? !getPrice().equals(room.getPrice()) : room.getPrice() != null) return false;
         if (getType() != room.getType()) return false;
+        if (!getName().equals(room.getName())) return false;
         if (getReservations() != null ? !getReservations().equals(room.getReservations()) : room.getReservations() != null)
             return false;
         return getHotel() != null ? getHotel().equals(room.getHotel()) : room.getHotel() == null;
@@ -165,7 +176,7 @@ public class Room {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPrice(), getType(), getCapacity(), getReservations(), getHotel());
+        return Objects.hash(getPrice(), getType(), getCapacity(), getReservations(), getHotel(), getName());
     }
 
     @Override
@@ -174,9 +185,12 @@ public class Room {
                 "id=" + getId() +
                 ", price=" + getPrice() +
                 ", type=" + getType() +
+                ", name=" + getName() +
                 ", capacity=" + getCapacity() +
                 ", reservations=" + getReservations() +
                 ", hotel=" + getHotel() +
                 '}';
     }
+
+
 }
