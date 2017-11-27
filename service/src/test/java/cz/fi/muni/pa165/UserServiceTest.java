@@ -68,11 +68,10 @@ public class UserServiceTest {
             return null;
         }).when(repository).findById(any(Long.TYPE));
 
-        when(userService.findUserById(1L)).thenReturn(karel);
+        when(repository.findById(1L)).thenReturn(karel);
 
         when(userService.getAllUsers()).thenReturn(asList(karel, petr, jan));
     }
-
 
     @Test(expected = IllegalArgumentException.class)
     public void registerNullPassword() {

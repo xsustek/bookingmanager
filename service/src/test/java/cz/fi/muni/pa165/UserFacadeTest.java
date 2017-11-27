@@ -1,43 +1,36 @@
 package cz.fi.muni.pa165;
 
-import cz.fi.muni.pa165.dao.UserDao;
 import cz.fi.muni.pa165.dto.UserDTO;
 import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.enums.Role;
 import cz.fi.muni.pa165.facade.UserFacade;
-import cz.fi.muni.pa165.service.BeanMappingService;
 import cz.fi.muni.pa165.service.UserService;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Tomas Kopecky
  */
 @ContextConfiguration(classes = ServiceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
 public class UserFacadeTest {
 
-    @Mock
+    @Inject
     private UserService userService;
 
-    @Mock
+    @Inject
     private UserFacade userFacade;
 
     private User karel;
@@ -86,22 +79,9 @@ public class UserFacadeTest {
         dtoJan.setPhoneNumber(jan.getPhoneNumber());
         dtoJan.setRole(jan.getRole());
 
-        doAnswer(invocationOnMock -> {
-            karel.setId(1L);
-            return null;
-        }).when(userService).registerUser(any(User.class), any(String.class));
-
-        when(userFacade.findById(1L)).thenReturn(dtoKarel);
-
-        when(userFacade.findByEmail("karel@kroll.cz")).thenReturn(dtoKarel);
-
-        when(userFacade.getAllUsers()).thenReturn(asList(dtoKarel, dtoPetr, dtoJan));
-
-        when(userFacade.authenticate(dtoKarel, "123456789")).thenReturn(Boolean.TRUE);
-
-        when(userFacade.isAdmin(dtoKarel)).thenReturn(dtoKarel.getRole().equals(Role.ADMIN));
-
-        when(userService.getAllUsers()).thenReturn(asList(karel, petr, jan));
+        userService.registerUser(karel, "123456789");
+        userService.registerUser(petr, "123456789");
+        userService.registerUser(jan, "123456789");
     }
 
     @Test
@@ -135,12 +115,14 @@ public class UserFacadeTest {
 
     @Test
     public void authenticate() {
+        dtoKarel.setId(karel.getId());
         Boolean bool = userFacade.authenticate(dtoKarel, "123456789");
         assertThat(bool).isTrue();
     }
 
     @Test
     public void isAdmin() {
+        dtoKarel.setId(karel.getId());
         Boolean bool = userFacade.isAdmin(dtoKarel);
         assertThat(bool).isFalse();
     }

@@ -32,7 +32,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean authenticate(User user, String password) {
-        return checkPassword(password, user.getPasswordHash());
+        User found = userDao.findById(user.getId());
+        return checkPassword(password, found.getPasswordHash());
     }
 
     @Override
