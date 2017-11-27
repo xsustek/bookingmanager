@@ -165,12 +165,18 @@ public class Room {
 
         Room room = (Room) o;
 
-        return getRoomNumber() != null ? getRoomNumber().equals(room.getRoomNumber()) : room.getRoomNumber() == null;
+        if (getCapacity() != room.getCapacity()) return false;
+        if (getPrice() != null ? !getPrice().equals(room.getPrice()) : room.getPrice() != null) return false;
+        if (getType() != room.getType()) return false;
+        if (!getRoomNumber().equals(room.getRoomNumber())) return false;
+        if (getReservations() != null ? !getReservations().equals(room.getReservations()) : room.getReservations() != null)
+            return false;
+        return getHotel() != null ? getHotel().equals(room.getHotel()) : room.getHotel() == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRoomNumber());
+        return Objects.hash(getPrice(), getType(), getCapacity(), getReservations(), getHotel(), getRoomNumber());
     }
 
     @Override
@@ -179,6 +185,7 @@ public class Room {
                 "id=" + getId() +
                 ", price=" + getPrice() +
                 ", type=" + getType() +
+                ", number=" + getRoomNumber() +
                 ", capacity=" + getCapacity() +
                 ", reservations=" + getReservations() +
                 ", hotel=" + getHotel() +

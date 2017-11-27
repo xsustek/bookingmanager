@@ -21,4 +21,8 @@ public class ServiceApplicationContext {
         return dozer;
     }
 
+    @Bean
+    public Mapper dozer(){
+        return new DozerBeanMapper();
+    }
 }
