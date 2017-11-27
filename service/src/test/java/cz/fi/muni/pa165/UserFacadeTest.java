@@ -89,10 +89,16 @@ public class UserFacadeTest {
         UserDTO dto = new UserDTO();
         dto.setFullName(karel.getFullName());
         dto.setAddress(karel.getAddress());
-        dto.setEmail(karel.getEmail());
+        dto.setEmail("test@mail.com");
         dto.setPhoneNumber(karel.getPhoneNumber());
         dto.setRole(karel.getRole());
         userFacade.registerUser(dto, "123456789");
+
+        User found = userService.findUserByEmail("test@mail.com");
+
+        assertThat(found.getEmail()).isEqualTo("test@mail.com");
+        assertThat(found.getRole()).isEqualTo(karel.getRole());
+        assertThat(found.getFullName()).isEqualTo(karel.getFullName());
     }
 
     @Test
