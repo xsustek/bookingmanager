@@ -130,27 +130,16 @@ public class Reservation {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Reservation)) {
-            return false;
-        }
-        
-        Reservation other = (Reservation) obj;
-        
-        boolean result = other.getEndTime().equals(getEndTime()) && 
-                         other.getRoom().equals(getRoom()) && 
-                         other.getStartTime().equals(getStartTime()) && 
-                         other.getUser().equals(getUser());
-        
-        return  result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Reservation)) return false;
+
+        Reservation that = (Reservation) o;
+
+        if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null) return false;
+        return getRoom() != null ? getRoom().equals(that.getRoom()) : that.getRoom() == null;
     }
-    
+
     @Override
     public String toString() {
         return "Reservation{" +
