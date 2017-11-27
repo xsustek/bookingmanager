@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @EnableJpaRepositories
 @ComponentScan
-public class ApplicationContext {
+public class PersistenceApplicationContext {
 
     @Bean
     public JpaTransactionManager transactionManager() {
