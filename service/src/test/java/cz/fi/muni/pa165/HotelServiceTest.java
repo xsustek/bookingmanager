@@ -34,7 +34,6 @@ public class HotelServiceTest {
     @Mock
     private RoomDao roomDao;
 
-
     @Inject
     @InjectMocks
     private HotelService hotelService;
