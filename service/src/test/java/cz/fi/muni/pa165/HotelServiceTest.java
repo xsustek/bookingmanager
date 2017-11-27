@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,7 +57,7 @@ public class HotelServiceTest {
         room.setType(RoomType.KING);
         room.setHotel(hotel);
 
-        hotel.setRooms(new HashSet<Room>(Arrays.asList(room)));
+        hotel.setRooms(new HashSet<>(Collections.singletonList(room)));
 
         doAnswer(invocationOnMock -> {
             hotel.setId(1L);

@@ -67,9 +67,9 @@ public class HotelServiceImpl implements HotelService {
             roomDao.create(room);
         }
 
-        Set<Room> addedRooms = new HashSet<>(rooms);
-        addedRooms.add(room);
-        hotel.setRooms(addedRooms);
+        rooms = new HashSet<>(rooms);
+        rooms.add(room);
+        hotel.setRooms(rooms);
         hotelDao.update(hotel);
     }
 
