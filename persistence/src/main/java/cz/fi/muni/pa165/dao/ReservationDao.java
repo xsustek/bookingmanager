@@ -1,6 +1,8 @@
 package cz.fi.muni.pa165.dao;
 
 import cz.fi.muni.pa165.entity.Reservation;
+import cz.fi.muni.pa165.entity.Room;
+import java.time.LocalDateTime;
 
 import java.util.List;
 
@@ -46,4 +48,23 @@ public interface ReservationDao {
      * @return {@code List<Reservation>} containing all {@code Reservation} object in database
      */
     List<Reservation> findAll();
+    
+    /**
+     * Method to get the reservations in specified interval
+     * 
+     * @param fromTime {@code LocalDateTime fromTime} of the beginning of the interval
+     * @param tillTime {@code LocalDateTime endTime} of the end of the interval
+     * 
+     * @return {@code List<Reservation>} of all reservations which are active in the interval defined by parameters
+     */
+    List<Reservation> getReservationsByInterval(LocalDateTime fromTime, LocalDateTime tillTime);
+    
+    /**
+     * Method to get all reservations for specific room
+     * 
+     * @param room {@code Room room} of a hotel to filter the reservations by
+     * 
+     * @return {@code List<Reservation>} of all reservations of a specified {@code room}
+     */
+    List<Reservation> getReservationsByRoom(Room room);
 }

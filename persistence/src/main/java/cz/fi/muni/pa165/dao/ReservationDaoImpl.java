@@ -1,6 +1,8 @@
 package cz.fi.muni.pa165.dao;
 
 import cz.fi.muni.pa165.entity.Reservation;
+import cz.fi.muni.pa165.entity.Room;
+import java.time.LocalDateTime;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -39,6 +41,21 @@ public class ReservationDaoImpl implements ReservationDao {
     @Override
     public List<Reservation> findAll() {
         return entityManager.createQuery("select r from Reservation r", Reservation.class).getResultList();
+    }
+
+    @Override
+    public List<Reservation> getReservationsByInterval(LocalDateTime fromTime, LocalDateTime tillTime) {
+        return entityManager.createQuery("select r from Reservation r where startTime between :from and :till or endTime between :from and :till", Reservation.class)
+                            .setParameter("from", fromTime)
+                            .setParameter("till", tillTime)
+                            .getResultList();
+    }
+
+    @Override
+    public List<Reservation> getReservationsByRoom(Room room) {
+        return entityManager.createQuery("select r from Reservation r where room_id = :room", Reservation.class)
+                            .setParameter("room", room.getId())
+                            .getResultList();
     }
     
 }
