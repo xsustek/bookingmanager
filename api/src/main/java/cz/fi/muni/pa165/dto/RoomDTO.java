@@ -3,7 +3,6 @@ package cz.fi.muni.pa165.dto;
 import cz.fi.muni.pa165.enums.RoomType;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -59,7 +58,7 @@ public class RoomDTO {
     }
 
     public Set<ReservationDTO> getReservations() {
-        return Collections.unmodifiableSet(reservations);
+        return reservations;
     }
 
     public void setReservations(Set<ReservationDTO> reservations) {
