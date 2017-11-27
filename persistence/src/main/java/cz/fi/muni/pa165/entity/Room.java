@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -26,6 +25,8 @@ public class Room {
 
     @NotNull
     private BigDecimal price;
+
+    private String roomNumber;
 
     private RoomType type;
 
@@ -115,7 +116,7 @@ public class Room {
      * @return Room reservations.
      */
     public Set<Reservation> getReservations() {
-        return Collections.unmodifiableSet(this.reservations);
+        return this.reservations;
     }
 
     /**
@@ -148,16 +149,25 @@ public class Room {
         this.hotel = hotel;
     }
 
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof Room)) return false;
+        if (!(o instanceof Room)) return false;
 
         Room room = (Room) o;
 
         if (getCapacity() != room.getCapacity()) return false;
         if (getPrice() != null ? !getPrice().equals(room.getPrice()) : room.getPrice() != null) return false;
         if (getType() != room.getType()) return false;
+        if (!getRoomNumber().equals(room.getRoomNumber())) return false;
         if (getReservations() != null ? !getReservations().equals(room.getReservations()) : room.getReservations() != null)
             return false;
         return getHotel() != null ? getHotel().equals(room.getHotel()) : room.getHotel() == null;
@@ -165,7 +175,7 @@ public class Room {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPrice(), getType(), getCapacity(), getReservations(), getHotel());
+        return Objects.hash(getPrice(), getType(), getCapacity(), getReservations(), getHotel(), getRoomNumber());
     }
 
     @Override
@@ -174,9 +184,12 @@ public class Room {
                 "id=" + getId() +
                 ", price=" + getPrice() +
                 ", type=" + getType() +
+                ", number=" + getRoomNumber() +
                 ", capacity=" + getCapacity() +
                 ", reservations=" + getReservations() +
                 ", hotel=" + getHotel() +
                 '}';
     }
+
+
 }

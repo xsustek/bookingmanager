@@ -169,4 +169,23 @@ public class UserDaoTest {
                 .phone("00421901234567")
                 .role(Role.USER);
     }
+
+    @Test
+    @Transactional
+    public void findUserByEmail() throws Exception {
+        User peter = getTestUser().build();
+        entityManager.persist(peter);
+
+        User user = repository.findByEmail(peter.getEmail());
+
+        assertThat(user)
+                .isNotNull()
+                .isEqualToComparingFieldByField(peter);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @Transactional
+    public void findUserByNullEmail() throws Exception {
+        repository.findByEmail(null);
+    }
 }

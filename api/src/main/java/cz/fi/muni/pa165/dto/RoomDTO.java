@@ -3,7 +3,6 @@ package cz.fi.muni.pa165.dto;
 import cz.fi.muni.pa165.enums.RoomType;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -16,7 +15,11 @@ public class RoomDTO {
 
     private RoomType type;
 
+    private String roomNumber;
+
     private int capacity;
+
+    private String name;
 
     private Set<ReservationDTO> reservations = new HashSet<>();
 
@@ -55,7 +58,7 @@ public class RoomDTO {
     }
 
     public Set<ReservationDTO> getReservations() {
-        return Collections.unmodifiableSet(reservations);
+        return reservations;
     }
 
     public void setReservations(Set<ReservationDTO> reservations) {
@@ -70,22 +73,29 @@ public class RoomDTO {
         this.hotel = hotel;
     }
 
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(getPrice(), getType(), getCapacity(), getReservations(), getHotel());
+        return Objects.hashCode(getRoomNumber());
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof RoomDTO)) return false;
+        if (!(o instanceof RoomDTO)) return false;
 
-        RoomDTO room = (RoomDTO) o;
+        RoomDTO roomDTO = (RoomDTO) o;
 
-        if (getCapacity() != room.getCapacity()) return false;
-        if (getPrice() != null ? !getPrice().equals(room.getPrice()) : room.getPrice() != null) return false;
-        if (getType() != room.getType()) return false;
-        if (getReservations() != null ? !getReservations().equals(room.getReservations()) : room.getReservations() != null) return false;
-        return getHotel() != null ? getHotel().equals(room.getHotel()) : room.getHotel() == null;
+
+        return getRoomNumber() != null ? getRoomNumber().equals(roomDTO.getRoomNumber()) : roomDTO.getRoomNumber() == null;
     }
+
+
 }

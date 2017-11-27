@@ -188,6 +188,7 @@ public class ReservationDaoTest {
         room.setCapacity(2);
         room.setPrice(new BigDecimal("10000"));
         room.setType(RoomType.STUDIO);
+        room.setRoomNumber("007");
 
         roomDao.create(room);
         
@@ -235,6 +236,7 @@ public class ReservationDaoTest {
         room.setCapacity(2);
         room.setPrice(new BigDecimal("10000"));
         room.setType(RoomType.STUDIO);
+        room.setRoomNumber("007");
 
         roomDao.create(room);
 

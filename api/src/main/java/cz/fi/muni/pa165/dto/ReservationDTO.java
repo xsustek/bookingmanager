@@ -118,27 +118,19 @@ public class ReservationDTO {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReservationDTO)) return false;
+
+        ReservationDTO that = (ReservationDTO) o;
+
+        if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null) return false;
+        if (getRoom() != null ? !getRoom().equals(that.getRoom()) : that.getRoom() != null) return false;
+        if (getStartTime() != null ? !getStartTime().equals(that.getStartTime()) : that.getStartTime() != null)
             return false;
-        }
-        if (!(obj instanceof ReservationDTO)) {
-            return false;
-        }
-        
-        ReservationDTO other = (ReservationDTO) obj;
-        
-        boolean result = other.getEndTime().equals(getEndTime()) && 
-                         other.getRoom().equals(getRoom()) && 
-                         other.getStartTime().equals(getStartTime()) && 
-                         other.getUser().equals(getUser());
-        
-        return  result;
+        return getEndTime() != null ? getEndTime().equals(that.getEndTime()) : that.getEndTime() == null;
     }
-    
+
     @Override
     public String toString() {
         return "ReservationDTO{" +

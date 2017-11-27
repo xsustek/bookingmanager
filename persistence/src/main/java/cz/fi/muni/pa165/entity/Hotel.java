@@ -4,7 +4,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -64,7 +63,7 @@ public class Hotel {
      * @return Room reservations.
      */
     public Set<Room> getRooms() {
-        return Collections.unmodifiableSet(rooms);
+        return rooms;
     }
 
     /**
@@ -114,28 +113,19 @@ public class Hotel {
 
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getName(), getAddress());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Hotel)) return false;
+
+        Hotel hotel = (Hotel) o;
+
+        if (getName() != null ? !getName().equals(hotel.getName()) : hotel.getName() != null) return false;
+        return getAddress() != null ? getAddress().equals(hotel.getAddress()) : hotel.getAddress() == null;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Hotel)) {
-            return false;
-        }
-
-        Hotel other = (Hotel) obj;
-
-        boolean result = other.getName().equals(getName()) &&
-                         other.getAddress().equals(getAddress());
-
-        return  result;
+    public int hashCode() {
+        return Objects.hash(getName(), getAddress());
     }
 
     @Override
@@ -144,7 +134,6 @@ public class Hotel {
                 "id = " + id +
                 ", name = " + name +
                 ", address = " + address +
-                ", rooms = " + rooms +
                 "}";
     }
 }
