@@ -61,11 +61,14 @@ public class UserServiceImpl implements UserService {
     }
 
     private String hashPassword(String unHashedPassword) {
+        if (unHashedPassword == null || unHashedPassword.isEmpty() || unHashedPassword.length() < 7) {
+            throw new IllegalArgumentException("Raw password os null or empty");
+        }
         return new BCryptPasswordEncoder().encode(unHashedPassword);
     }
 
     private boolean checkPassword(String rawPassword, String hash) {
-        if (rawPassword == null || rawPassword.isEmpty()) {
+        if (rawPassword == null || rawPassword.isEmpty() || rawPassword.length() < 7) {
             throw new IllegalArgumentException("Raw password os null or empty");
         }
         return new BCryptPasswordEncoder().matches(rawPassword, hash);

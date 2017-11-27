@@ -1,42 +1,43 @@
 package cz.fi.muni.pa165;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import cz.fi.muni.pa165.dao.UserDao;
 import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.enums.Role;
 import cz.fi.muni.pa165.service.UserService;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import javax.inject.Inject;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 
 /**
  * @author Tomas Kopecky
  */
+
 @ContextConfiguration(classes = ServiceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
 public class UserServiceTest {
-
-    @Autowired
-    @Mock
-    private UserService userService;
 
     @Mock
     private UserDao repository;
+
+    @Inject
+    @InjectMocks
+    private UserService userService;
 
     private User karel;
 
@@ -44,49 +45,69 @@ public class UserServiceTest {
 
     private User jan;
 
-    @Before
+    @org.testng.annotations.BeforeClass
     public void setup() throws ServiceException {
         MockitoAnnotations.initMocks(this);
     }
 
-    @BeforeMethod
-    public void prepareTestProduct() {
-        karel = getTestUser().id(1L).build();
+    @Before
+    public void setupFieldAndMocks() {
+        MockitoAnnotations.initMocks(this);
+
+        karel = getTestUser().build();
+        petr = getTestUser().name("Petr Kroll").build();
+        jan = getTestUser().name("Jan Kroll").build();
+
+        doAnswer(invocationOnMock -> {
+            karel.setId(1L);
+            return null;
+        }).when(repository).create(any(User.class));
+
+        doAnswer(invocationOnMock -> {
+            karel.setId(1L);
+            karel.setRole(Role.ADMIN);
+            return null;
+        }).when(repository).findById(any(Long.TYPE));
 
         when(userService.findUserById(1L)).thenReturn(karel);
-    }
-
-    @BeforeMethod
-    public void prepareTestProducts() {
-        karel = getTestUser().id(1L).build();
-        petr = getTestUser().name("Petr").build();
-        jan = getTestUser().name("Jan").build();
 
         when(userService.getAllUsers()).thenReturn(asList(karel, petr, jan));
     }
 
+
+    @Test(expected = IllegalArgumentException.class)
+    public void registerNullPassword() {
+        userService.registerUser(karel, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void registerEmptyPassword() {
+        userService.registerUser(karel, "");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void registerShortPassword() {
+        userService.registerUser(karel, "123");
+    }
+
     @Test
-    public void registerUser() {
-        User expectedUser = getTestUser().build();
+    public void findUserById() {
+        User found = userService.findUserById(1L);
+        assertThat(found).isEqualTo(karel);
+    }
 
-        userService.registerUser(expectedUser, "heslo");
-
-        User foundUser = repository.findById(expectedUser.getId());
-
-        assertThat(expectedUser)
-                .isNotNull()
-                .isEqualTo(foundUser);
+    @Test
+    public void isUserAdmin() {
+        Boolean result = userService.isAdmin(karel);
+        assertThat(result).isEqualTo(Boolean.TRUE);
     }
 
     @Test
     public void getAllUsers() {
-        List<User> foundUsers = userService.getAllUsers();
+        List<User> found = userService.getAllUsers();
 
-        assertThat(foundUsers)
-                .isNotNull()
-                .containsExactly(karel, petr, jan);
+        assertThat(found).containsExactly(karel, petr, jan);
     }
-
 
     private UserBuilder getTestUser() {
         return new UserBuilder()
