@@ -2,19 +2,18 @@ package cz.fi.muni.pa165.service.facade;
 
 import cz.fi.muni.pa165.dto.HotelDTO;
 import cz.fi.muni.pa165.dto.RoomDTO;
-import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Room;
 import cz.fi.muni.pa165.enums.RoomType;
 import cz.fi.muni.pa165.facade.RoomFacade;
 import cz.fi.muni.pa165.service.BeanMappingService;
 import cz.fi.muni.pa165.service.RoomService;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.List;
 
-@Service
+@Named
 @Transactional
 public class RoomFacadeImpl implements RoomFacade {
 

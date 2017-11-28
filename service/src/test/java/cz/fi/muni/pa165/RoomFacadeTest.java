@@ -1,50 +1,33 @@
 package cz.fi.muni.pa165;
 
-import cz.fi.muni.pa165.dao.HotelDao;
-import cz.fi.muni.pa165.dao.RoomDao;
-import cz.fi.muni.pa165.dto.HotelDTO;
 import cz.fi.muni.pa165.dto.RoomDTO;
 import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Reservation;
 import cz.fi.muni.pa165.entity.Room;
 import cz.fi.muni.pa165.enums.RoomType;
-import cz.fi.muni.pa165.facade.HotelFacade;
 import cz.fi.muni.pa165.facade.RoomFacade;
 import cz.fi.muni.pa165.service.HotelService;
 import cz.fi.muni.pa165.service.RoomService;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = ServiceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 public class RoomFacadeTest {
-
-    @Inject
-    private RoomDao roomDao;
-
-    @Inject
-    private HotelDao hotelDao;
 
     @Inject
     private RoomFacade roomFacade;
@@ -141,10 +124,12 @@ public class RoomFacadeTest {
         hotelA.setAddress("Address");
         hotelService.create(hotelA);
 
+        System.err.print(hotelA.getId());
         Hotel hotelB = new Hotel();
         hotelB.setName("Hotel");
         hotelB.setAddress("Address");
         hotelService.create(hotelB);
+        System.err.print(hotelB.getId());
 
         Room room = new Room();
         room.setHotel(hotelA);
@@ -152,6 +137,9 @@ public class RoomFacadeTest {
         room.setPrice(BigDecimal.valueOf(100L));
         room.setRoomNumber("7C");
         room.setCapacity(3);
+        Set<Room> rooms = hotelA.getRooms();
+        rooms.add(room);
+        hotelA.setRooms(rooms);
         roomService.create(room);
 
         Room room2 = new Room();

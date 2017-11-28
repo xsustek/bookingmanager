@@ -6,9 +6,9 @@ import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Room;
 import cz.fi.muni.pa165.enums.RoomType;
 
-import java.util.List;
-import javax.inject.Named;
 import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -59,6 +59,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void create(Room room) {
+        Hotel hotel = room.getHotel();
+        if (hotel.getId() == null) hotelDao.create(hotel);
         roomDao.create(room);
     }
 

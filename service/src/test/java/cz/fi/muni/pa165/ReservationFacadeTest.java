@@ -10,22 +10,22 @@ import cz.fi.muni.pa165.facade.HotelFacade;
 import cz.fi.muni.pa165.facade.ReservationFacade;
 import cz.fi.muni.pa165.facade.RoomFacade;
 import cz.fi.muni.pa165.facade.UserFacade;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import javax.inject.Inject;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Viktoria Tibenska
  */
 @ContextConfiguration(classes = ServiceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
 public class ReservationFacadeTest {
     @Inject
     private ReservationFacade reservationFacade;
@@ -132,6 +132,8 @@ public class ReservationFacadeTest {
         hotel.setAddress("Brno");
 
         hotelFacade.create(hotel);
+
+        hotel = hotelFacade.findByName("Hotel").get(0);
 
         RoomDTO room = new RoomDTO();
         room.setHotel(hotel);

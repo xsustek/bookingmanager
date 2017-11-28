@@ -15,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -23,15 +22,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = ServiceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@Transactional
 public class RoomServiceTest {
 
     @Inject
@@ -40,6 +37,9 @@ public class RoomServiceTest {
 
     @Mock
     private RoomDao roomDao;
+
+    @Mock
+    private HotelDao hotelDao;
 
     private Hotel hotelBrno;
     private Hotel hotelRoyal;
@@ -76,6 +76,8 @@ public class RoomServiceTest {
             roomSingle.setId(1L);
             return null;
         }).when(roomDao).create(any(Room.class));
+
+        doNothing().when(roomDao).create(any(Room.class));
 
         when(roomDao.findById(1L)).thenReturn(roomSingle);
         when(roomDao.findAll()).thenReturn(asList(roomSingle, roomDouble, roomKing));

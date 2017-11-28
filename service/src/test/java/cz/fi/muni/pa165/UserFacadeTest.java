@@ -5,9 +5,7 @@ import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.enums.Role;
 import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.service.UserService;
-import org.hibernate.service.spi.ServiceException;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -46,10 +44,6 @@ public class UserFacadeTest {
 
     private UserDTO dtoJan;
 
-    @BeforeClass
-    public void setup() throws ServiceException {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Before
     public void setupFieldAndMocks() {
