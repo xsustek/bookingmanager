@@ -51,29 +51,79 @@ public class ReservationFacadeTest {
 
     @Test
     public void update() {
-        int num = 1;
+        ReservationDTO reservation = getReservation(time, time.plusDays(5));
+        reservationFacade.createReservation(reservation);
         
-        assertThat(num).isEqualTo(1);
+        reservation.setEndTime(time.plusDays(3));
+        reservationFacade.updateReservation(reservation);
+        
+        assertThat(reservationFacade.getReservationById(reservation.getId()).getEndTime()).isEqualTo(time.plusDays(3));
     }
     
     @Test
     public void getById() {
+        ReservationDTO reservation = getReservation(time, time.plusDays(5));
+        reservationFacade.createReservation(reservation);
+        
+        reservation = reservationFacade.getAllReservations().get(0);
+        assertThat(reservationFacade.getReservationById(reservation.getId())).isEqualTo(reservation);
     }
     
     @Test
     public void getByRoom() {
+        ReservationDTO reservation1 = getReservation(time, time.plusDays(5));
+        reservationFacade.createReservation(reservation1);
+        
+        ReservationDTO reservation2 = getReservation(time.plusDays(6), time.plusDays(10));
+        reservationFacade.createReservation(reservation2);
+        
+        assertThat(reservationFacade.getReservationsByRoom(reservation1.getRoom())).hasSize(2);
     }
     
     @Test
     public void getByInterval() {
+        ReservationDTO reservation1 = getReservation(time, time.plusDays(5));
+        reservationFacade.createReservation(reservation1);
+        
+        ReservationDTO reservation2 = getReservation(time.plusDays(7), time.plusDays(10));
+        reservationFacade.createReservation(reservation2);
+        
+        ReservationDTO reservation3 = getReservation(time.plusDays(2), time.plusDays(6));
+        reservationFacade.createReservation(reservation3);
+    
+        assertThat(reservationFacade.getReservationsByInterval(time.plusDays(6), time.plusDays(8))).hasSize(2);
     }
     
     @Test
     public void getAll() {
+        ReservationDTO reservation1 = getReservation(time, time.plusDays(5));
+        reservationFacade.createReservation(reservation1);
+        
+        ReservationDTO reservation2 = getReservation(time.plusDays(7), time.plusDays(10));
+        reservationFacade.createReservation(reservation2);
+        
+        ReservationDTO reservation3 = getReservation(time.plusDays(2), time.plusDays(6));
+        reservationFacade.createReservation(reservation3);
+        
+        assertThat(reservationFacade.getAllReservations()).hasSize(3);
     }
     
     @Test
     public void remove() {
+        ReservationDTO reservation1 = getReservation(time, time.plusDays(5));
+        reservationFacade.createReservation(reservation1);
+        
+        ReservationDTO reservation2 = getReservation(time.plusDays(7), time.plusDays(10));
+        reservationFacade.createReservation(reservation2);
+        
+        ReservationDTO reservation3 = getReservation(time.plusDays(2), time.plusDays(6));
+        reservationFacade.createReservation(reservation3);
+        
+        assertThat(reservationFacade.getAllReservations()).hasSize(3);
+        
+        reservationFacade.removeReservation(reservation3);
+        
+        assertThat(reservationFacade.getAllReservations()).hasSize(2).containsExactly(reservation1, reservation2);
     }
 
     private ReservationDTO getReservation(LocalDateTime from, LocalDateTime to) {
