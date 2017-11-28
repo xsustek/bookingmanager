@@ -1,11 +1,9 @@
 package cz.fi.muni.pa165;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import cz.fi.muni.pa165.dao.UserDao;
 import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.enums.Role;
 import cz.fi.muni.pa165.service.UserService;
-import org.hibernate.service.spi.ServiceException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,10 +42,6 @@ public class UserServiceTest {
 
     private User jan;
 
-    @org.testng.annotations.BeforeClass
-    public void setup() throws ServiceException {
-        MockitoAnnotations.initMocks(this);
-    }
 
     @Before
     public void setupFieldAndMocks() {

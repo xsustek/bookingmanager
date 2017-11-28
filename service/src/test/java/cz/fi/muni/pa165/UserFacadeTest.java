@@ -7,6 +7,7 @@ import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.service.UserService;
 import org.hibernate.service.spi.ServiceException;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
@@ -45,7 +46,7 @@ public class UserFacadeTest {
 
     private UserDTO dtoJan;
 
-    @org.testng.annotations.BeforeClass
+    @BeforeClass
     public void setup() throws ServiceException {
         MockitoAnnotations.initMocks(this);
     }
