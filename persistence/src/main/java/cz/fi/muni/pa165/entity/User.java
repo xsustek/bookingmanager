@@ -126,12 +126,6 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", fullName='" + fullName + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", passwordHash='" + passwordHash + '\'' +
-                ", role=" + role +
-                ", reservations=" + reservations +
                 '}';
     }
 }

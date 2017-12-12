@@ -10,10 +10,12 @@ import cz.fi.muni.pa165.service.ReservationService;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Named
+@Transactional
 public class ReservationFacadeImpl implements ReservationFacade {
 
     @Inject
@@ -24,7 +26,10 @@ public class ReservationFacadeImpl implements ReservationFacade {
 
     @Override
     public void createReservation(ReservationDTO reservation) {
-        reservationService.createReservation(beanMappingService.mapTo(reservation, Reservation.class));
+        Reservation entity = beanMappingService.mapTo(reservation, Reservation.class);
+
+        reservationService.createReservation(entity);
+        reservation.setId(entity.getId());
     }
 
     @Override

@@ -137,8 +137,6 @@ public class ReservationDTO {
                 "id = " + id +
                 ", start time = " + startTime +
                 ", end time = " + endTime +
-                ", " + user.toString() +
-                ", " + room.toString() +
                 "}";
     }
 }

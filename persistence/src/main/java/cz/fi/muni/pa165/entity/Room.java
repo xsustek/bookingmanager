@@ -174,7 +174,7 @@ public class Room {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPrice(), getType(), getCapacity(), getReservations(), getHotel(), getRoomNumber());
+        return Objects.hash(getPrice(), getType(), getCapacity(), getHotel(), getRoomNumber());
     }
 
     @Override
@@ -184,9 +184,6 @@ public class Room {
                 ", price=" + getPrice() +
                 ", type=" + getType() +
                 ", number=" + getRoomNumber() +
-                ", capacity=" + getCapacity() +
-                ", reservations=" + getReservations() +
-                ", hotel=" + getHotel() +
                 '}';
     }
 

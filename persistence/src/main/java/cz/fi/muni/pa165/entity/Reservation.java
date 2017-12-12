@@ -146,8 +146,6 @@ public class Reservation {
                 "id = " + id +
                 ", start time = " + startTime +
                 ", end time = " + endTime +
-                ", " + user.toString() +
-                ", " + room.toString() +
                 "}";
     }
 }

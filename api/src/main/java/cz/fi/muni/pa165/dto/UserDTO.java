@@ -1,11 +1,9 @@
 package cz.fi.muni.pa165.dto;
 
+import cz.fi.muni.pa165.entity.Reservation;
 import cz.fi.muni.pa165.enums.Role;
 
 import java.util.HashSet;
-
-import cz.fi.muni.pa165.entity.Reservation;
-
 import java.util.Objects;
 import java.util.Set;
 
@@ -145,7 +143,6 @@ public class UserDTO {
                 ", role='" + role + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address='" + address + '\'' +
-                ", joinedDate=" + reservations +
                 '}';
     }
 }

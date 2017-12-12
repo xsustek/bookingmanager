@@ -27,6 +27,7 @@ public class HotelFacadeImpl implements HotelFacade {
     public void create(HotelDTO hotel) {
         Hotel hotelEntity = beanMappingService.mapTo(hotel, Hotel.class);
         hotelService.create(hotelEntity);
+        hotel.setId(hotelEntity.getId());
     }
 
     @Override

@@ -118,7 +118,6 @@ public class HotelDTO {
                 "id = " + id +
                 ", name = " + name +
                 ", address = " + address +
-                ", rooms = " + rooms +
                 "}";
     }
 }
