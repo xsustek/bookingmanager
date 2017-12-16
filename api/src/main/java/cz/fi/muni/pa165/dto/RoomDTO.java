@@ -19,8 +19,6 @@ public class RoomDTO {
 
     private int capacity;
 
-    private String name;
-
     private Set<ReservationDTO> reservations = new HashSet<>();
 
     private HotelDTO hotel;
@@ -82,20 +80,29 @@ public class RoomDTO {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode(getRoomNumber());
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof RoomDTO)) return false;
-
         RoomDTO roomDTO = (RoomDTO) o;
-
-
-        return getRoomNumber() != null ? getRoomNumber().equals(roomDTO.getRoomNumber()) : roomDTO.getRoomNumber() == null;
+        return getType() == roomDTO.getType() &&
+                Objects.equals(getRoomNumber(), roomDTO.getRoomNumber()) &&
+                Objects.equals(getHotel(), roomDTO.getHotel());
     }
 
+    @Override
+    public int hashCode() {
 
+        return Objects.hash(getType(), getRoomNumber(), getHotel());
+    }
+
+    @Override
+    public String toString() {
+        return "RoomDTO{" +
+                "price=" + price +
+                ", type=" + type +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", capacity=" + capacity +
+                ", hotel=" + hotel +
+                '}';
+    }
 }

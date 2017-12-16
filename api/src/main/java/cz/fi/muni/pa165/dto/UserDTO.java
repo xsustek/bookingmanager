@@ -87,62 +87,31 @@ public class UserDTO {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getFullName(), getAddress(), getEmail(), getPhoneNumber(), getReservations(), getRole());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserDTO)) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return Objects.equals(getFullName(), userDTO.getFullName()) &&
+                Objects.equals(getEmail(), userDTO.getEmail()) &&
+                Objects.equals(getPhoneNumber(), userDTO.getPhoneNumber()) &&
+                Objects.equals(getAddress(), userDTO.getAddress()) &&
+                getRole() == userDTO.getRole();
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof UserDTO))
-            return false;
-        UserDTO other = (UserDTO) obj;
-        if (getFullName() == null) {
-            if (other.getFullName() != null)
-                return false;
-        } else if (!getFullName().equals(other.getFullName()))
-            return false;
-        if (getEmail() == null) {
-            if (other.getEmail() != null)
-                return false;
-        } else if (!getEmail().equals(other.getEmail()))
-            return false;
-        if (getAddress() == null) {
-            if (other.getAddress() != null)
-                return false;
-        } else if (!getAddress().equals(other.getAddress()))
-            return false;
-        if (getPhoneNumber() == null) {
-            if (other.getPhoneNumber() != null)
-                return false;
-        } else if (!getPhoneNumber().equals(other.getPhoneNumber()))
-            return false;
-        if (getRole() == null) {
-            if (other.getRole() != null)
-                return false;
-        } else if (!getRole().equals(other.getRole()))
-            return false;
-        if (getReservations() == null) {
-            if (other.getReservations() != null)
-                return false;
-        } else if (!getReservations().equals(other.getReservations()))
-            return false;
+    public int hashCode() {
 
-        return true;
+        return Objects.hash(getFullName(), getEmail(), getPhoneNumber(), getAddress(), getRole());
     }
 
     @Override
     public String toString() {
         return "UserDTO{" +
-                "id=" + id +
+                "fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", role='" + role + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address='" + address + '\'' +
+                ", role=" + role +
                 '}';
     }
 }

@@ -2,7 +2,12 @@ package cz.fi.muni.pa165.entity;
 
 import cz.fi.muni.pa165.enums.Role;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
@@ -110,22 +115,29 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
-
         User user = (User) o;
-
-        return getEmail() != null ? getEmail().equals(user.getEmail()) : user.getEmail() == null;
+        return getId() == user.getId() &&
+                Objects.equals(getFullName(), user.getFullName()) &&
+                Objects.equals(getEmail(), user.getEmail()) &&
+                Objects.equals(getPhoneNumber(), user.getPhoneNumber()) &&
+                Objects.equals(getAddress(), user.getAddress()) &&
+                getRole() == user.getRole();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getEmail());
+
+        return Objects.hash(getId(), getFullName(), getEmail(), getPhoneNumber(), getAddress(), getRole());
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", fullName='" + fullName + '\'' +
+                "fullName='" + fullName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", role=" + role +
                 '}';
     }
 }

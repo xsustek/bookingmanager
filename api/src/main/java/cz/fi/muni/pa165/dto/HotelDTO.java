@@ -100,24 +100,22 @@ public class HotelDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof HotelDTO)) return false;
-
-        HotelDTO hotel = (HotelDTO) o;
-
-        if (getName() != null ? !getName().equals(hotel.getName()) : hotel.getName() != null) return false;
-        return getAddress() != null ? getAddress().equals(hotel.getAddress()) : hotel.getAddress() == null;
+        HotelDTO hotelDTO = (HotelDTO) o;
+        return Objects.equals(getName(), hotelDTO.getName()) &&
+                Objects.equals(getAddress(), hotelDTO.getAddress());
     }
 
     @Override
     public int hashCode() {
+
         return Objects.hash(getName(), getAddress());
     }
 
     @Override
     public String toString() {
-        return "Hotel{" +
-                "id = " + id +
-                ", name = " + name +
-                ", address = " + address +
-                "}";
+        return "HotelDTO{" +
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }

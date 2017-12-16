@@ -34,7 +34,8 @@ public class ReservationFacadeImpl implements ReservationFacade {
 
     @Override
     public void removeReservation(ReservationDTO reservation) {
-        reservationService.removeReservation(beanMappingService.mapTo(reservation, Reservation.class));
+        Reservation entity = beanMappingService.mapTo(reservation, Reservation.class);
+        reservationService.removeReservation(entity);
     }
 
     @Override

@@ -7,7 +7,6 @@ import cz.fi.muni.pa165.enums.RoomType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +18,9 @@ import java.math.BigDecimal;
 /**
  * @author Tomáš Kopecký
  */
-@ContextConfiguration(classes = {PersistenceApplicationContext.class})
+@ContextConfiguration(classes = PersistenceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@Transactional
 public class RoomDaoTest {
 
     @Inject
@@ -31,8 +30,7 @@ public class RoomDaoTest {
     private HotelDao hotelDao;
 
     @Test
-    @Transactional
-    public void create() throws Exception {
+    public void create() {
         Hotel tmpHotel = new Hotel();
         tmpHotel.setName("Hotel");
         tmpHotel.setAddress("Brno");
@@ -46,12 +44,11 @@ public class RoomDaoTest {
         tmpRoom.setHotel(tmpHotel);
         roomDao.create(tmpRoom);
 
-        Assert.assertEquals(tmpRoom, roomDao.findById(1L));
+        Assert.assertEquals(tmpRoom, roomDao.findById(tmpRoom.getId()));
     }
 
     @Test
-    @Transactional
-    public void findById() throws Exception {
+    public void findById() {
         Hotel tmpHotel = new Hotel();
         tmpHotel.setName("Hotel");
         tmpHotel.setAddress("Brno");
@@ -71,12 +68,11 @@ public class RoomDaoTest {
         tmpRoom2.setHotel(tmpHotel);
         roomDao.create(tmpRoom2);
 
-        Assert.assertEquals(tmpRoom2, roomDao.findById(2L));
+        Assert.assertEquals(tmpRoom2, roomDao.findById(tmpRoom2.getId()));
     }
 
     @Test
-    @Transactional
-    public void update() throws Exception {
+    public void update() {
 
         Hotel tmpHotel = new Hotel();
         tmpHotel.setName("Hotel");
@@ -98,8 +94,7 @@ public class RoomDaoTest {
     }
 
     @Test
-    @Transactional
-    public void remove() throws Exception {
+    public void remove() {
         Hotel tmpHotel = new Hotel();
         tmpHotel.setName("Hotel");
         tmpHotel.setAddress("Brno");
@@ -126,8 +121,7 @@ public class RoomDaoTest {
     }
 
     @Test
-    @Transactional
-    public void findAll() throws Exception {
+    public void findAll() {
         Hotel tmpHotel = new Hotel();
         tmpHotel.setName("Hotel");
         tmpHotel.setAddress("Brno");
@@ -152,20 +146,17 @@ public class RoomDaoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @Transactional
-    public void createNull() throws Exception {
+    public void createNull() {
         roomDao.create(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @Transactional
-    public void updateNull() throws Exception {
+    public void updateNull() {
         roomDao.update(null);
     }
 
     @Test(expected = ValidationException.class)
-    @Transactional
-    public void createNullHotel() throws Exception {
+    public void createNullHotel() {
         Room tmpRoom = new Room();
         tmpRoom.setCapacity(6);
         tmpRoom.setPrice(BigDecimal.valueOf(666));
@@ -175,8 +166,7 @@ public class RoomDaoTest {
     }
 
     @Test(expected = ValidationException.class)
-    @Transactional
-    public void createNullPrice() throws Exception {
+    public void createNullPrice() {
         Hotel tmpHotel = new Hotel();
         tmpHotel.setName("Hotel");
 

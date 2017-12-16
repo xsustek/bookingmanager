@@ -9,11 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = ServiceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class UserFacadeTest {
 
     @Inject
@@ -50,8 +52,8 @@ public class UserFacadeTest {
         MockitoAnnotations.initMocks(this);
 
         karel = getTestUser().build();
-        petr = getTestUser().name("Petr Kroll").build();
-        jan = getTestUser().name("Jan Kroll").build();
+        petr = getTestUser().name("Petr Kroll").email("petr@kroll.cz").build();
+        jan = getTestUser().name("Jan Kroll").email("jan@kroll.cz").build();
 
         dtoKarel = new UserDTO();
         dtoKarel.setFullName(karel.getFullName());
@@ -98,12 +100,13 @@ public class UserFacadeTest {
 
     @Test
     public void findById() {
-        UserDTO dto = userFacade.findById(1L);
+        UserDTO dto = userFacade.findById(karel.getId());
         assertThat(dto.getFullName()).isEqualTo("Karel Kroll");
     }
 
     @Test
     public void findByEmail() {
+        List<UserDTO> use = userFacade.getAllUsers();
         UserDTO dto = userFacade.findByEmail(karel.getEmail());
         assertThat(dto.getFullName()).isEqualTo("Karel Kroll");
     }

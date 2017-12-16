@@ -2,7 +2,11 @@ package cz.fi.muni.pa165.entity;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
@@ -116,24 +120,22 @@ public class Hotel {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Hotel)) return false;
-
         Hotel hotel = (Hotel) o;
-
-        if (getName() != null ? !getName().equals(hotel.getName()) : hotel.getName() != null) return false;
-        return getAddress() != null ? getAddress().equals(hotel.getAddress()) : hotel.getAddress() == null;
+        return Objects.equals(getName(), hotel.getName()) &&
+                Objects.equals(getAddress(), hotel.getAddress());
     }
 
     @Override
     public int hashCode() {
+
         return Objects.hash(getName(), getAddress());
     }
 
     @Override
     public String toString() {
         return "Hotel{" +
-                "id = " + id +
-                ", name = " + name +
-                ", address = " + address +
-                "}";
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }

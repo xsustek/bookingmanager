@@ -31,8 +31,7 @@ public class UserDaoTest {
     private EntityManager entityManager;
 
     @Test
-    @Transactional
-    public void createOneUser() throws Exception {
+    public void createOneUser() {
         User expectedUser = getTestUser().build();
 
         repository.create(expectedUser);
@@ -45,8 +44,7 @@ public class UserDaoTest {
     }
 
     @Test
-    @Transactional
-    public void createManyUsers() throws Exception {
+    public void createManyUsers() {
         User peter = getTestUser().build();
         User john = getTestUser().name("John Doe").build();
         User jean = getTestUser().name("Jean Doe").build();
@@ -63,8 +61,7 @@ public class UserDaoTest {
     }
 
     @Test
-    @Transactional
-    public void updateUser() throws Exception {
+    public void updateUser() {
         User peter = getTestUser().build();
         User john = getTestUser().name("John Doe").build();
         User jean = getTestUser().name("Jean Doe").build();
@@ -93,8 +90,7 @@ public class UserDaoTest {
     }
 
     @Test
-    @Transactional
-    public void removeUser() throws Exception {
+    public void removeUser() {
         User peter = getTestUser().build();
         User john = getTestUser().name("John Doe").build();
         User jean = getTestUser().name("Jean Doe").build();
@@ -112,8 +108,7 @@ public class UserDaoTest {
     }
 
     @Test
-    @Transactional
-    public void removeManyUsers() throws Exception {
+    public void removeManyUsers() {
         User peter = getTestUser().build();
         User john = getTestUser().name("John Doe").build();
         User jean = getTestUser().name("Jean Doe").build();
@@ -131,8 +126,7 @@ public class UserDaoTest {
     }
 
     @Test
-    @Transactional
-    public void findUser() throws Exception {
+    public void findUser() {
         User peter = getTestUser().build();
         entityManager.persist(peter);
 
@@ -144,8 +138,7 @@ public class UserDaoTest {
     }
 
     @Test
-    @Transactional
-    public void findAllUsers() throws Exception {
+    public void findAllUsers() {
         User peter = getTestUser().build();
         User john = getTestUser().name("John Doe").build();
         User jean = getTestUser().name("Jean Doe").build();
@@ -171,8 +164,7 @@ public class UserDaoTest {
     }
 
     @Test
-    @Transactional
-    public void findUserByEmail() throws Exception {
+    public void findUserByEmail() {
         User peter = getTestUser().build();
         entityManager.persist(peter);
 
@@ -184,8 +176,7 @@ public class UserDaoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @Transactional
-    public void findUserByNullEmail() throws Exception {
+    public void findUserByNullEmail() {
         repository.findByEmail(null);
     }
 }
