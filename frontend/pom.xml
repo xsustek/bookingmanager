@@ -8,72 +8,41 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <properties>
-        <spring.version>4.1.3.RELEASE</spring.version>
-        <jetty.version>9.2.11.v20150529</jetty.version>
-        <slf4j.version>1.7.5</slf4j.version>
-        <jackson.version>2.4.4</jackson.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <artifactId>frontend</artifactId>
     <packaging>war</packaging>
 
     <name>frontend</name>
     <url>http://maven.apache.org</url>
-    <build>
-        <resources>
-            <resource>
-                <targetPath>webapp</targetPath>
-                <directory>src/main/webapp</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-
-        <plugins>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-            <!--  embedded tomcat -->
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <path>/pa165</path>
-                </configuration>
-            </plugin>
-
-        </plugins>
-    </build>
-
     <dependencies>
+        <dependency>
+            <groupId>cz.fi.muni.pa165</groupId>
+            <artifactId>service</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>cz.fi.muni.pa165</groupId>
+            <artifactId>sample-data</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 
         <!-- servlet, JSP, JSTL -->
         <!-- must be this instead of javaee-web for the springmvc-tests to succeed -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-api</artifactId>
-            <version>8.5.23</version>
+            <version>9.0.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.taglibs</groupId>
             <artifactId>taglibs-standard-spec</artifactId>
-            <version>1.2.5</version>
+            <version>${taglibs-standard.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.taglibs</groupId>
             <artifactId>taglibs-standard-impl</artifactId>
-            <version>1.2.5</version>
+            <version>${taglibs-standard.version}</version>
         </dependency>
 
         <!-- Spring MVC -->
@@ -92,7 +61,7 @@
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
-            <version>2.2.0</version>
+            <version>${json-path.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -112,14 +81,65 @@
             <artifactId>hibernate-validator</artifactId>
         </dependency>
 
-        <!-- must provide logging implementation, this is a runnable project -->
-        <!-- see viz http://docs.spring.io/platform/docs/1.1.4.RELEASE/reference/htmlsingle/#getting-started-logging -->
+        <!-- libraries needed for unit tests -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <scope>test</scope> <!-- conflicts with tomcat libraries, but needed for tests to run -->
+        </dependency>
     </dependencies>
+
+
+    <build>
+        <!-- what to do when only "mvn" is run -->
+        <defaultGoal>tomcat7:run</defaultGoal>
+        <plugins>
+            <!-- Servlet 3.0 allows no web.xml deployment descriptor -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+            <!--  embedded tomcat -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>/pa165</path>
+                </configuration>
+            </plugin>
+            <!-- try "mavn javadoc:javadoc" and see target/site/apidocs -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                    <detectLinks>false</detectLinks>
+                    <links>
+                        <link>http://docs.oracle.com/javaee/6/api/</link>
+                        <link>http://docs.spring.io/spring/docs/current/javadoc-api/</link>
+                        <link>http://docs.spring.io/spring-hateoas/docs/current/api/</link>
+                        <link>http://fasterxml.github.io/jackson-annotations/javadoc/2.5/</link>
+                        <!--<link>http://docs.oracle.com/javase/8/docs/api/</link>-->
+                    </links>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>

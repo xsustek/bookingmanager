@@ -51,6 +51,16 @@ public class HotelFacadeImpl implements HotelFacade {
         hotelService.delete(beanMappingService.mapTo(hotel, Hotel.class));
     }
 
+    /**
+     * Deletes hotel from DB
+     *
+     * @param id hotel id to delete
+     */
+    @Override
+    public void delete(long id) {
+        hotelService.delete(hotelService.findById(id));
+    }
+
     @Override
     public void addRoom(HotelDTO hotel, RoomDTO room) {
         hotelService.addRoom(beanMappingService.mapTo(hotel, Hotel.class), beanMappingService.mapTo(room, Room.class));
