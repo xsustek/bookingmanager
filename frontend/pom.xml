@@ -97,6 +97,11 @@
             <artifactId>javax.el</artifactId>
             <scope>test</scope> <!-- conflicts with tomcat libraries, but needed for tests to run -->
         </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
+        </dependency>
     </dependencies>
 
 
