@@ -7,6 +7,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by milan on 26.11.2017.
@@ -17,8 +20,12 @@ import org.springframework.context.annotation.Import;
 public class ServiceApplicationContext {
 
     @Bean
-    public Mapper dozer(){
-        return new DozerBeanMapper();
+    public Mapper dozer() {
+        List<String> mappingFiles = new ArrayList();
+        mappingFiles.add("dozerJdk8Converters.xml");
+        DozerBeanMapper mapper = new DozerBeanMapper();
+        mapper.setMappingFiles(mappingFiles);
+        return mapper;
     }
 
 

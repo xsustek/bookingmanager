@@ -36,8 +36,7 @@ public class HotelDaoTest {
     EntityManager em;
 
     @Test
-    @Transactional
-    public void create() throws Exception {
+    public void create() {
         Hotel hilton = new Hotel();
         hilton.setName("Hilton Hotel");
         hilton.setAddress("Hilton street");
@@ -60,8 +59,7 @@ public class HotelDaoTest {
     }
 
     @Test
-    @Transactional
-    public void findById() throws Exception {
+    public void findById() {
         Hotel tatra = new Hotel();
         tatra.setName("Hotel Tatra");
         tatra.setAddress("Tatra street");
@@ -71,8 +69,7 @@ public class HotelDaoTest {
     }
 
     @Test
-    @Transactional
-    public void update() throws Exception {
+    public void update() {
         Room single = new Room();
         single.setCapacity(1);
         single.setPrice(BigDecimal.valueOf(40));
@@ -98,8 +95,7 @@ public class HotelDaoTest {
     }
 
     @Test
-    @Transactional
-    public void findAll() throws Exception {
+    public void findAll() {
         Hotel hilton = new Hotel();
         hilton.setName("Hilton Hotel");
         hilton.setAddress("Hilton street");
@@ -120,8 +116,7 @@ public class HotelDaoTest {
     }
 
     @Test
-    @Transactional
-    public void remove() throws Exception {
+    public void remove() {
         Hotel hilton = new Hotel();
         hilton.setName("Hilton Hotel");
         hilton.setAddress("Hilton street");
@@ -147,13 +142,11 @@ public class HotelDaoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @Transactional
-    public void createNull() throws Exception {
+    public void createNull() {
         hotelDao.create(null);
     }
 
     @Test
-    @Transactional
     public void findByName() {
         Hotel hilton = new Hotel();
         hilton.setName("Hilton Hotel");

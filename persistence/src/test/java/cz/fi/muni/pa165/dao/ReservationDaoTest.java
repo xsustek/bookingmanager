@@ -9,7 +9,6 @@ import cz.fi.muni.pa165.enums.Role;
 import cz.fi.muni.pa165.enums.RoomType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @ContextConfiguration(classes = PersistenceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @Transactional
 public class ReservationDaoTest {
 
@@ -51,7 +49,7 @@ public class ReservationDaoTest {
 
 
     @Test
-    public void create() throws Exception {
+    public void create() {
         Reservation reservation = getReservation(time, time.plusDays(7));
         reservationDao.create(reservation);
 
@@ -61,7 +59,7 @@ public class ReservationDaoTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void createNullReservation() throws Exception {
+    public void createNullReservation() {
         reservationDao.create(null);
     }
 
@@ -98,14 +96,14 @@ public class ReservationDaoTest {
     }
 
     @Test
-    public void findById() throws Exception {
+    public void findById() {
         Reservation reservation = getReservation(time, time.plusDays(1));
 
         reservationDao.create(reservation);
 
         em.flush();
 
-        assertThat(reservationDao.findById(1L)).isEqualTo(reservation);
+        assertThat(reservationDao.findById(reservation.getId())).isEqualTo(reservation);
     }
 
     @Test
@@ -120,7 +118,7 @@ public class ReservationDaoTest {
     }
 
     @Test
-    public void update() throws Exception {
+    public void update() {
         Reservation reservation = getReservation(time, time.plusDays(7));
 
         reservationDao.create(reservation);
@@ -131,7 +129,7 @@ public class ReservationDaoTest {
         reservation.setStartTime(newTime);
         reservationDao.update(reservation);
 
-        assertThat(reservationDao.findById(1L).getStartTime()).isEqualTo(newTime);
+        assertThat(reservationDao.findById(reservation.getId()).getStartTime()).isEqualTo(newTime);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -140,7 +138,7 @@ public class ReservationDaoTest {
     }
 
     @Test
-    public void remove() throws Exception {
+    public void remove() {
         Reservation reservation = getReservation(time, time.plusDays(7));
 
         reservationDao.create(reservation);
@@ -160,7 +158,7 @@ public class ReservationDaoTest {
     }
 
     @Test
-    public void findAll() throws Exception {
+    public void findAll() {
         Reservation reservation1 = getReservation(time, time.plusDays(7));
         Reservation reservation2 = getReservation(time.plusDays(1), time.plusDays(8));
         Reservation reservation3 = getReservation(time.plusDays(2), time.plusDays(9));
@@ -176,7 +174,7 @@ public class ReservationDaoTest {
     }
 
     @Test
-    public void getByRoom() throws Exception {
+    public void getByRoom() {
         Hotel hotel = new Hotel();
         hotel.setName("Hotel");
         hotel.setAddress("Brno");
@@ -208,7 +206,7 @@ public class ReservationDaoTest {
     }
     
     @Test
-    public void getByInterval() throws Exception {
+    public void getByInterval() {
         Reservation reservation1 = getReservation(time, time.plusDays(2));
         Reservation reservation2 = getReservation(time.plusDays(1), time.plusDays(4));
         Reservation reservation3 = getReservation(time.plusDays(5), time.plusDays(9));

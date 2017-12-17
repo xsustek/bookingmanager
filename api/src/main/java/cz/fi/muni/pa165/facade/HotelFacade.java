@@ -50,6 +50,13 @@ public interface HotelFacade {
     void delete(HotelDTO hotel);
 
     /**
+     * Deletes hotel from DB
+     *
+     * @param id hotel id to delete
+     */
+    void delete(long id);
+
+    /**
      * Adds room to hotel
      *
      * @param hotel to which may be add room

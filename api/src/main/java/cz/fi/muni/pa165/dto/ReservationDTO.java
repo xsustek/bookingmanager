@@ -9,6 +9,7 @@ import java.util.Objects;
  * @author Viktoria Tibenska
  */
 public class ReservationDTO {
+
     private Long id;
 
     private UserDTO user;
@@ -36,7 +37,7 @@ public class ReservationDTO {
      * 
      * @param id New value for id
      */
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -111,34 +112,29 @@ public class ReservationDTO {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
-    
-    @Override
-    public int hashCode() {
-        return Objects.hash(getEndTime(), getStartTime(), getRoom(), getUser());
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ReservationDTO)) return false;
-
         ReservationDTO that = (ReservationDTO) o;
+        return Objects.equals(getUser(), that.getUser()) &&
+                Objects.equals(getRoom(), that.getRoom());
+    }
 
-        if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null) return false;
-        if (getRoom() != null ? !getRoom().equals(that.getRoom()) : that.getRoom() != null) return false;
-        if (getStartTime() != null ? !getStartTime().equals(that.getStartTime()) : that.getStartTime() != null)
-            return false;
-        return getEndTime() != null ? getEndTime().equals(that.getEndTime()) : that.getEndTime() == null;
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getUser(), getRoom());
     }
 
     @Override
     public String toString() {
         return "ReservationDTO{" +
-                "id = " + id +
-                ", start time = " + startTime +
-                ", end time = " + endTime +
-                ", " + user.toString() +
-                ", " + room.toString() +
-                "}";
+                "user=" + user +
+                ", room=" + room +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
     }
 }

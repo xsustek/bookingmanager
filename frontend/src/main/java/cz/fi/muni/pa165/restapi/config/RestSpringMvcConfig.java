@@ -3,6 +3,7 @@ package cz.fi.muni.pa165.restapi.config;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import cz.fi.muni.pa165.SampleDataApplicationContext;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.validation.Validator;
@@ -28,8 +30,15 @@ import static org.springframework.hateoas.config.EnableHypermediaSupport.Hyperme
 @EnableHypermediaSupport(type = HypermediaType.HAL)
 @EnableWebMvc
 @Configuration
+@Import(SampleDataApplicationContext.class)
 @ComponentScan(basePackages = {"cz.fi.muni.pa165.restapi.controllers"})
 public class RestSpringMvcConfig extends WebMvcConfigurerAdapter {
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AllowOriginInterceptor());
+    }
+
 
     @Bean
     public MappingJackson2HttpMessageConverter customJackson2HttpMessageConverter() {

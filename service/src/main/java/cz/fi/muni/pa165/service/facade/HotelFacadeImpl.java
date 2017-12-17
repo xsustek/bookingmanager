@@ -27,6 +27,7 @@ public class HotelFacadeImpl implements HotelFacade {
     public void create(HotelDTO hotel) {
         Hotel hotelEntity = beanMappingService.mapTo(hotel, Hotel.class);
         hotelService.create(hotelEntity);
+        hotel.setId(hotelEntity.getId());
     }
 
     @Override
@@ -48,6 +49,16 @@ public class HotelFacadeImpl implements HotelFacade {
     @Override
     public void delete(HotelDTO hotel) {
         hotelService.delete(beanMappingService.mapTo(hotel, Hotel.class));
+    }
+
+    /**
+     * Deletes hotel from DB
+     *
+     * @param id hotel id to delete
+     */
+    @Override
+    public void delete(long id) {
+        hotelService.delete(hotelService.findById(id));
     }
 
     @Override

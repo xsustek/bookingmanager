@@ -56,5 +56,6 @@ public class RoomFacadeImpl implements RoomFacade {
     public void create(RoomDTO room) {
         Room roomEntity = beanMappingService.mapTo(room, Room.class);
         roomService.create(roomEntity);
+        room.setId(roomEntity.getId());
     }
 }

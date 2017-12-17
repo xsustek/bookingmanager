@@ -2,7 +2,13 @@ package cz.fi.muni.pa165.entity;
 
 import cz.fi.muni.pa165.enums.RoomType;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -161,34 +167,25 @@ public class Room {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Room)) return false;
-
         Room room = (Room) o;
-
-        if (getCapacity() != room.getCapacity()) return false;
-        if (getPrice() != null ? !getPrice().equals(room.getPrice()) : room.getPrice() != null) return false;
-        if (getRoomNumber() != null ? !getRoomNumber().equals(room.getRoomNumber()) : room.getRoomNumber() != null)
-            return false;
-        if (getType() != room.getType()) return false;
-        return getHotel() != null ? getHotel().equals(room.getHotel()) : room.getHotel() == null;
+        return Objects.equals(getRoomNumber(), room.getRoomNumber()) &&
+                getType() == room.getType() &&
+                Objects.equals(getHotel(), room.getHotel());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPrice(), getType(), getCapacity(), getReservations(), getHotel(), getRoomNumber());
+
+        return Objects.hash(getRoomNumber(), getType(), getHotel());
     }
 
     @Override
     public String toString() {
         return "Room{" +
-                "id=" + getId() +
-                ", price=" + getPrice() +
-                ", type=" + getType() +
-                ", number=" + getRoomNumber() +
-                ", capacity=" + getCapacity() +
-                ", reservations=" + getReservations() +
-                ", hotel=" + getHotel() +
+                "price=" + price +
+                ", roomNumber='" + roomNumber + '\'' +
+                ", type=" + type +
+                ", capacity=" + capacity +
                 '}';
     }
-
-
 }

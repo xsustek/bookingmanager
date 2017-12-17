@@ -1,6 +1,10 @@
 package cz.fi.muni.pa165.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,7 +18,6 @@ import java.util.Objects;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, unique = true)
     private Long id;
 
     @NotNull
@@ -48,7 +51,7 @@ public class Reservation {
      * 
      * @param id New value for id
      */
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -123,31 +126,29 @@ public class Reservation {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
-    
-    @Override
-    public int hashCode() {
-        return Objects.hash(getEndTime(), getStartTime(), getRoom(), getUser());
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Reservation)) return false;
-
         Reservation that = (Reservation) o;
+        return Objects.equals(getUser(), that.getUser()) &&
+                Objects.equals(getRoom(), that.getRoom());
+    }
 
-        if (getUser() != null ? !getUser().equals(that.getUser()) : that.getUser() != null) return false;
-        return getRoom() != null ? getRoom().equals(that.getRoom()) : that.getRoom() == null;
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getUser(), getRoom());
     }
 
     @Override
     public String toString() {
         return "Reservation{" +
-                "id = " + id +
-                ", start time = " + startTime +
-                ", end time = " + endTime +
-                ", " + user.toString() +
-                ", " + room.toString() +
-                "}";
+                "user=" + user +
+                ", room=" + room +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
     }
 }

@@ -12,12 +12,14 @@ import cz.fi.muni.pa165.facade.RoomFacade;
 import cz.fi.muni.pa165.facade.UserFacade;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @ContextConfiguration(classes = ServiceApplicationContext.class)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class ReservationFacadeTest {
     @Inject
     private ReservationFacade reservationFacade;
@@ -75,9 +78,15 @@ public class ReservationFacadeTest {
         reservationFacade.createReservation(reservation1);
         
         ReservationDTO reservation2 = getReservation(time.plusDays(6), time.plusDays(10));
+        reservation2.setRoom(reservation1.getRoom());
         reservationFacade.createReservation(reservation2);
-        
-        assertThat(reservationFacade.getReservationsByRoom(reservation1.getRoom())).hasSize(2);
+
+        ReservationDTO reservation3 = getReservation(time.plusDays(11), time.plusDays(15));
+        reservationFacade.createReservation(reservation3);
+
+        assertThat(reservationFacade.getReservationsByRoom(reservation1.getRoom())).hasSize(2).containsExactly(reservation1, reservation2);
+
+        assertThat(reservationFacade.getReservationsByRoom(reservation3.getRoom())).hasSize(1).containsExactly(reservation3);
     }
     
     @Test
@@ -118,10 +127,13 @@ public class ReservationFacadeTest {
         
         ReservationDTO reservation3 = getReservation(time.plusDays(2), time.plusDays(6));
         reservationFacade.createReservation(reservation3);
-        
-        assertThat(reservationFacade.getAllReservations()).hasSize(3);
+
+        List<ReservationDTO> reservationDTOList = reservationFacade.getAllReservations();
+
+        assertThat(reservationDTOList).hasSize(3);
         
         reservationFacade.removeReservation(reservation3);
+        reservationDTOList = reservationFacade.getAllReservations();
         
         assertThat(reservationFacade.getAllReservations()).hasSize(2).containsExactly(reservation1, reservation2);
     }
