@@ -12,11 +12,13 @@
   "devDependencies": {
     "axios": "^0.17.1",
     "babel-preset-react": "^6.24.1",
-    "laravel-mix": "^1.7.2",
-    "cross-env": "^5.1.1"
+    "cross-env": "^5.1.1",
+    "laravel-mix": "^1.7.2"
   },
   "dependencies": {
+    "bullet-pubsub": "^2.3.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2"
   }
 }
