@@ -54,7 +54,16 @@ const HotelStore = {
                 axios.delete('http://localhost:8080/pa165/rest/hotels/' + payload.data.id)
                     .then(function (response) {
                         HotelStore.emitChangeListener();
-                        console.log('Hotel deleted');
+                        console.log('Hotel deleted.');
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                break;
+            case HotelConstants.HOTEL_CREATE:
+                axios.post('http://localhost:8080/pa165/rest/hotels/create', payload.data)
+                    .then(function (response) {
+                        HotelStore.emitChangeListener();
+                        console.log('Hotel created.');
                     }).catch(function (error) {
                         console.log(error);
                     });

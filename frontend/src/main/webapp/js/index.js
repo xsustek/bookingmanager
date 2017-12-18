@@ -2360,7 +2360,15 @@ var HotelStore = {
             case __WEBPACK_IMPORTED_MODULE_4__HotelConstants__["a" /* default */].HOTEL_DELETE:
                 __WEBPACK_IMPORTED_MODULE_1_axios___default.a.delete('http://localhost:8080/pa165/rest/hotels/' + payload.data.id).then(function (response) {
                     HotelStore.emitChangeListener();
-                    console.log('Hotel deleted');
+                    console.log('Hotel deleted.');
+                }).catch(function (error) {
+                    console.log(error);
+                });
+                break;
+            case __WEBPACK_IMPORTED_MODULE_4__HotelConstants__["a" /* default */].HOTEL_CREATE:
+                __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('http://localhost:8080/pa165/rest/hotels/create', payload.data).then(function (response) {
+                    HotelStore.emitChangeListener();
+                    console.log('Hotel created.');
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -3395,7 +3403,8 @@ module.exports = Cancel;
     // events
     EVENT_CHANGE: 'HOTEL_EVENT_CHANGE',
 
-    HOTEL_DELETE: 'HOTEL_DELETE'
+    HOTEL_DELETE: 'HOTEL_DELETE',
+    HOTEL_CREATE: 'HOTEL_CREATE'
 });
 
 /***/ }),
@@ -27130,11 +27139,15 @@ var HotelScreen = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (HotelScreen.__proto__ || Object.getPrototypeOf(HotelScreen)).call(this, props));
 
         _this.state = {
-            items: null
+            items: null,
+            formName: '',
+            formAddress: '',
+            errors: null
         };
 
         _this.loadItems = _this.loadItems.bind(_this);
         _this.handleOnRemove = _this.handleOnRemove.bind(_this);
+        _this.handleCreate = _this.handleCreate.bind(_this);
 
         // init
         __WEBPACK_IMPORTED_MODULE_2__stores_Hotel_HotelStore__["a" /* default */].addChangeListener(_this.loadItems);
@@ -27161,14 +27174,67 @@ var HotelScreen = function (_React$Component) {
     }, {
         key: 'handleOnRemove',
         value: function handleOnRemove(id) {
-            Object(__WEBPACK_IMPORTED_MODULE_3__stores_Hotel_HotelAction__["a" /* removeHotelItem */])({
+            Object(__WEBPACK_IMPORTED_MODULE_3__stores_Hotel_HotelAction__["b" /* removeHotelItem */])({
                 id: id
             });
         }
     }, {
+        key: 'handleCreate',
+        value: function handleCreate(e) {
+            e.preventDefault();
+
+            if (!this.validateForm()) {
+                return;
+            }
+
+            Object(__WEBPACK_IMPORTED_MODULE_3__stores_Hotel_HotelAction__["a" /* createHotelItem */])({
+                'name': this.state.formName,
+                'address': this.state.formAddress,
+                'rooms': []
+            });
+
+            this.setState({
+                formName: '',
+                formAddress: '',
+                errors: null
+            });
+        }
+    }, {
+        key: 'validateForm',
+        value: function validateForm() {
+            var _state = this.state,
+                formName = _state.formName,
+                formAddress = _state.formAddress;
+
+
+            if (formName.trim().length <= 3) {
+                this.setState({
+                    errors: {
+                        name: 'The name must be at least 3 characters.'
+                    }
+                });
+                return false;
+            }
+
+            if (formAddress.trim().length <= 3) {
+                this.setState({
+                    errors: {
+                        address: 'The address must be at least 3 characters.'
+                    }
+                });
+                return false;
+            }
+
+            return true;
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var items = this.state.items;
+            var _this3 = this;
+
+            var _state2 = this.state,
+                items = _state2.items,
+                errors = _state2.errors;
 
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -27179,6 +27245,96 @@ var HotelScreen = function (_React$Component) {
                     null,
                     'Hotels'
                 ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'h4',
+                    null,
+                    'Create new one'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'row' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-6' },
+                        errors && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'alert alert-dismissible alert-danger' },
+                            errors.name && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                null,
+                                errors.name
+                            ),
+                            errors.address && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'p',
+                                null,
+                                errors.address
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'form',
+                            { className: 'form-horizontal', onSubmit: this.handleCreate },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: "form-group" + (errors && errors.name ? ' has-error' : '') },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'label',
+                                    { htmlFor: 'inputName', className: 'col-lg-2 control-label' },
+                                    'Name'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'col-lg-10' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
+                                        type: 'text',
+                                        className: 'form-control',
+                                        id: 'inputName',
+                                        placeholder: 'Name',
+                                        onChange: function onChange(e) {
+                                            return _this3.setState({ formName: e.target.value });
+                                        },
+                                        value: this.state.formName,
+                                        name: 'name' })
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: "form-group" + (errors && errors.address ? ' has-error' : '') },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'label',
+                                    { htmlFor: 'inputAddress', className: 'col-lg-2 control-label' },
+                                    'Address'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'col-lg-10' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', { name: 'address',
+                                        onChange: function onChange(e) {
+                                            return _this3.setState({ formAddress: e.target.value });
+                                        },
+                                        value: this.state.formAddress,
+                                        type: 'text',
+                                        className: 'form-control',
+                                        id: 'inputAddress',
+                                        placeholder: 'Address' })
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'form-group' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'col-lg-10 col-lg-offset-2' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'button',
+                                        { type: 'submit', className: 'btn btn-success' },
+                                        'Create'
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('hr', null),
                 items && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__components_HotelList__["a" /* default */], { items: items, onRemove: this.handleOnRemove })
             );
         }
@@ -27270,7 +27426,7 @@ var HotelList = function HotelList(_ref) {
                         null,
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             "button",
-                            { onClick: function onClick() {
+                            { className: "btn btn-danger btn-xs", onClick: function onClick() {
                                     return onRemove(item.getId());
                                 } },
                             "DELETE"
@@ -27289,7 +27445,8 @@ var HotelList = function HotelList(_ref) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return removeHotelItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return removeHotelItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return createHotelItem; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Dispatcher__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__HotelConstants__ = __webpack_require__(40);
 
@@ -27304,6 +27461,20 @@ var HotelList = function HotelList(_ref) {
 function removeHotelItem(data) {
     Object(__WEBPACK_IMPORTED_MODULE_0__Dispatcher__["a" /* default */])({
         type: __WEBPACK_IMPORTED_MODULE_1__HotelConstants__["a" /* default */].HOTEL_DELETE,
+        data: data
+    });
+}
+
+/**
+ * Removes hotel item.
+ *
+ * @param {Object} data
+ * @param {number} data.name - Hotel's name.
+ * @param {string} data.address - Hotel's address.
+ */
+function createHotelItem(data) {
+    Object(__WEBPACK_IMPORTED_MODULE_0__Dispatcher__["a" /* default */])({
+        type: __WEBPACK_IMPORTED_MODULE_1__HotelConstants__["a" /* default */].HOTEL_CREATE,
         data: data
     });
 }
