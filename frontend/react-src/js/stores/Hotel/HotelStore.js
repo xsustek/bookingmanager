@@ -7,7 +7,11 @@ const HotelStore = {
 
     async getItemById(id) {
         try {
-            const result = await axios('http://localhost:8080/pa165/rest/hotels/' + id);
+            const result = await axios('http://localhost:8080/pa165/rest/hotels/' + id, {
+                headers: {
+                    'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYXJlbEBtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWQiOjE1MTM2MjgxMTI1ODMsImV4cCI6MTUxMzk4ODExMn0.ks-8T2nutC439GyyPVbd07hZGHJMRc9prOCzGuX4Y9k'
+                }
+            });
             return Object.assign(new HotelItem, result.data);
         } catch (e) {
             console.log('Hotel Not Found');
@@ -16,7 +20,11 @@ const HotelStore = {
 
     async getAllItems() {
         try {
-            const result = await axios('http://localhost:8080/pa165/rest/hotels');
+            const result = await axios('http://localhost:8080/pa165/rest/hotels', {
+                headers: {
+                    'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYXJlbEBtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWQiOjE1MTM2MjgxMTI1ODMsImV4cCI6MTUxMzk4ODExMn0.ks-8T2nutC439GyyPVbd07hZGHJMRc9prOCzGuX4Y9k'
+                }
+            });
             return _mapToItem(result.data._embedded.hotelWithoutRoomsDTOList);
         } catch (e) {
             //
@@ -51,7 +59,11 @@ const HotelStore = {
     dispatchIndex: (payload) => {
         switch (payload.type) {
             case HotelConstants.HOTEL_DELETE:
-                axios.delete('http://localhost:8080/pa165/rest/hotels/' + payload.data.id)
+                axios.delete('http://localhost:8080/pa165/rest/hotels/' + payload.data.id, {
+                    headers: {
+                        'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYXJlbEBtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWQiOjE1MTM2MjgxMTI1ODMsImV4cCI6MTUxMzk4ODExMn0.ks-8T2nutC439GyyPVbd07hZGHJMRc9prOCzGuX4Y9k'
+                    }
+                })
                     .then(function (response) {
                         HotelStore.emitChangeListener();
                         console.log('Hotel deleted.');
@@ -60,7 +72,12 @@ const HotelStore = {
                     });
                 break;
             case HotelConstants.HOTEL_CREATE:
-                axios.post('http://localhost:8080/pa165/rest/hotels/create', payload.data)
+
+                axios.post('http://localhost:8080/pa165/rest/hotels/create', payload.data, {
+                    headers: {
+                        'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYXJlbEBtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWQiOjE1MTM2MjgxMTI1ODMsImV4cCI6MTUxMzk4ODExMn0.ks-8T2nutC439GyyPVbd07hZGHJMRc9prOCzGuX4Y9k'
+                    }
+                })
                     .then(function (response) {
                         HotelStore.emitChangeListener();
                         console.log('Hotel created.');

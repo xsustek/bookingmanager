@@ -10,12 +10,15 @@ const AppStore = {
 
     signin(credentials) {
 
+        console.log(credentials);
+
+        // todo - login
+        if (credentials.email != 'admin@gmail.com' || credentials.password != '000000') {
+            return false;
+        }
         if (db.auth) {
             return true;
         }
-
-        // todo make login
-
         db.auth = true;
         AppStore.emitChangeListener();
         return true;

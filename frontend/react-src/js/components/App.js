@@ -89,7 +89,7 @@ export default class App extends React.Component {
 
                             <div className="collapse navbar-collapse">
                                 <ul className="nav navbar-nav">
-                                    <li><Link to="/reservations">Reservations</Link></li>
+                                    {/* <li><Link to="/reservations">Reservations</Link></li> */}
                                     <li><Link to="/hotels">Hotels</Link></li>
                                     <li><Link to="/users">Users</Link></li>
                                 </ul>
@@ -103,7 +103,7 @@ export default class App extends React.Component {
                     </nav>
                     <div className="container">
                         <Route exact path="/" component={HomeScreen} />
-                        <Route exact path="/reservations" component={ReservationScreen} />
+                        {/* <Route exact path="/reservations" component={ReservationScreen} /> */}
                         <PrivateRoute exact path="/hotels" component={HotelScreen} />
                         <PrivateRoute path="/hotels/:id" component={HotelDetailScreen} />
                         <PrivateRoute exact path="/users" component={UsersScreen} />
