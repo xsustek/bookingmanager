@@ -23,8 +23,7 @@ export default class LoginScreen extends React.Component {
             password: ''
         });
 
-        console.log(result);
-        if(result) {
+        if (result) {
             this.setState({
                 error: false,
                 redirectToReferrer: true
@@ -42,11 +41,9 @@ export default class LoginScreen extends React.Component {
         const { from } = this.props.location.state || { from: { pathname: '/' } };
         const { error, redirectToReferrer } = this.state;
 
-        console.log(from);
-
         if (redirectToReferrer) {
             return (
-                <Redirect to={from}/>
+                <Redirect to={from} />
             )
         }
 
@@ -62,10 +59,10 @@ export default class LoginScreen extends React.Component {
                                 <label htmlFor="email">E-mail address</label>
 
                                 <div className="input-group">
-                                <span className="input-group-addon">
-                                    <i className="fa fa-user"></i>
-                                </span>
-                                    <input id="email" type="email" className="form-control" name="email" placeholder="E-mail address"/>
+                                    <span className="input-group-addon">
+                                        <i className="fa fa-user"></i>
+                                    </span>
+                                    <input id="email" type="email" className="form-control" name="email" placeholder="E-mail address" />
                                 </div>
 
                             </div>
@@ -74,10 +71,10 @@ export default class LoginScreen extends React.Component {
                                 <label htmlFor="password">Password</label>
 
                                 <div className="input-group">
-                                <span className="input-group-addon">
-                                    <i className="fa fa-lock"></i>
-                                </span>
-                                    <input id="password" type="password" className="form-control" name="password" placeholder="Password"/>
+                                    <span className="input-group-addon">
+                                        <i className="fa fa-lock"></i>
+                                    </span>
+                                    <input id="password" type="password" className="form-control" name="password" placeholder="Password" />
                                 </div>
 
                             </div>

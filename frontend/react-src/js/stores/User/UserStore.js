@@ -7,7 +7,13 @@ const UserStore = {
 
     async getItemById(id) {
         try {
-            return await axios('/pa165/rest/users/' + id);
+            const result = await axios('http://localhost:8080/pa165/rest/users/' + id,
+                {
+                    headers: {
+                        'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYXJlbEBtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWQiOjE1MTM2MjgxMTI1ODMsImV4cCI6MTUxMzk4ODExMn0.ks-8T2nutC439GyyPVbd07hZGHJMRc9prOCzGuX4Y9k'
+                    }
+                });
+            return Object.assign(new UserItem, result.data);
         } catch (e) {
             //
         }
@@ -15,7 +21,12 @@ const UserStore = {
 
     async getAllItems() {
         try {
-            return await axios.get('/pa165/rest/users', { headers: { Authorization: localStorage.getItem("token") } });
+            const result = await axios.get('http://localhost:8080/pa165/rest/users/', {
+                headers: {
+                    'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYXJlbEBtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWQiOjE1MTM2MjgxMTI1ODMsImV4cCI6MTUxMzk4ODExMn0.ks-8T2nutC439GyyPVbd07hZGHJMRc9prOCzGuX4Y9k'
+                }
+            });
+            return _mapToItem(result.data._embedded.userDTOList);
         } catch (e) {
             //
         }
@@ -48,17 +59,23 @@ const UserStore = {
 
     dispatchIndex: (payload) => {
         switch (payload.type) {
+            case UserConstants.USER_REMOVE:
+                break;
             case UserConstants.USER_REGISTER:
                 // Create room
-                axios.post('/api/v1/users', {
+                axios.post('http://localhost:8080/pa165/rest/users/register', {
+                    headers: {
+                        'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYXJlbEBtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWQiOjE1MTM2MjgxMTI1ODMsImV4cCI6MTUxMzk4ODExMn0.ks-8T2nutC439GyyPVbd07hZGHJMRc9prOCzGuX4Y9k'
+                    },
                     fullName: payload.data.fullName,
                     email: payload.data.email,
                     phoneNumber: payload.data.phoneNumber,
                     address: payload.data.address,
                     resevations: [],
-                    role: "USER",
+                    role: payload.data.role,
                     password: payload.data.password
                 }).then(function (response) {
+                    UserStore.emitChangeListener();
                     console.log(response);
                 }).catch(function (error) {
                     console.log(error);
@@ -67,6 +84,11 @@ const UserStore = {
         }
     },
 };
+
+
+function _mapToItem(data) {
+    return data.map(obj => Object.assign(new UserItem, obj));
+}
 
 export default UserStore;
 
