@@ -1,13 +1,13 @@
 import axios from 'axios';
 import Bullet from 'bullet-pubsub';
-import RoomItem from './RoomItem';
-import RoomConstants from './RoomConstants';
+import UserItem from './UserItem';
+import UserConstants from './UserConstants';
 
-const RoomStore = {
+const UserStore = {
 
     async getItemById(id) {
         try {
-            return await axios('/api/v1/rooms/' + id);
+            return await axios('/pa165/rest/users/' + id);
         } catch (e) {
             //
         }
@@ -15,7 +15,7 @@ const RoomStore = {
 
     async getAllItems() {
         try {
-            return await axios('/api/v1/rooms');
+            return await axios.get('/pa165/rest/users', { headers: { Authorization: localStorage.getItem("token") } });
         } catch (e) {
             //
         }
@@ -25,7 +25,7 @@ const RoomStore = {
      * Emits the change event listener.
      */
     emitChangeListener() {
-        Bullet.trigger(RoomConstants.EVENT_CHANGE);
+        Bullet.trigger(UserConstants.EVENT_CHANGE);
     },
 
     /**
@@ -34,7 +34,7 @@ const RoomStore = {
      * @param {Function} callback
      */
     addChangeListener(callback) {
-        Bullet.on(RoomConstants.EVENT_CHANGE, callback);
+        Bullet.on(UserConstants.EVENT_CHANGE, callback);
     },
 
     /**
@@ -43,17 +43,21 @@ const RoomStore = {
      * @param {Function} callback
      */
     removeChangeListener(callback) {
-        Bullet.off(RoomConstants.EVENT_CHANGE, callback);
+        Bullet.off(UserConstants.EVENT_CHANGE, callback);
     },
 
     dispatchIndex: (payload) => {
         switch (payload.type) {
-            case RoomConstants.ROOM_CREATE:
+            case UserConstants.USER_REGISTER:
                 // Create room
-                axios.post('/api/v1/rooms', {
-                    price: payload.data.price,
-                    capacity: payload.data.capacity,
-                    type: payload.data.type,
+                axios.post('/api/v1/users', {
+                    fullName: payload.data.fullName,
+                    email: payload.data.email,
+                    phoneNumber: payload.data.phoneNumber,
+                    address: payload.data.address,
+                    resevations: [],
+                    role: "USER",
+                    password: payload.data.password
                 }).then(function (response) {
                     console.log(response);
                 }).catch(function (error) {
@@ -64,5 +68,5 @@ const RoomStore = {
     },
 };
 
-export default RoomStore;
+export default UserStore;
 
