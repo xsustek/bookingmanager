@@ -38,7 +38,7 @@ export default class HotelDetailScreen extends React.Component {
                 <h2>{item.getName()}</h2>
 
                 <p>Address: {item.getAddress()}</p>
-                <p>Rooms: {item.getRooms().length}</p>
+                <p>Rooms: {item.getRooms()}</p>
             </div>
         );
     }

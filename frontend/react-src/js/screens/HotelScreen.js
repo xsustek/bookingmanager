@@ -140,8 +140,9 @@ export default class HotelScreen extends React.Component {
                             </div>
                         </form>
                     </div>
-                    <hr />
                 </div>
+
+                <hr />
 
                 {items && <HotelList items={items} onRemove={this.handleOnRemove} />}
 
