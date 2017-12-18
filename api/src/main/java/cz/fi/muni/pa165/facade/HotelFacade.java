@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.facade;
 
 import cz.fi.muni.pa165.dto.HotelDTO;
+import cz.fi.muni.pa165.dto.HotelWithoutRoomsDTO;
 import cz.fi.muni.pa165.dto.RoomDTO;
 
 import java.util.List;
@@ -26,7 +27,15 @@ public interface HotelFacade {
      * @return hotel with specified id
      */
     HotelDTO findById(long id);
-
+    
+    /**
+     * Finds hotel with provided id
+     *
+     * @param id of searched hotel
+     * @return hotel with specified id
+     */
+    HotelWithoutRoomsDTO findByIdWithoutRooms(long id);
+    
     /**
      * Finds hotel with provided name
      *
@@ -34,6 +43,14 @@ public interface HotelFacade {
      * @return hotel with specified name
      */
     List<HotelDTO> findByName(String name);
+    
+    /**
+     * Finds hotel with provided name
+     *
+     * @param name of the hotel
+     * @return hotel with specified name
+     */
+    List<HotelWithoutRoomsDTO> findByNameWithoutRooms(String name);
 
     /**
      * Updates hotel in DB
@@ -70,4 +87,11 @@ public interface HotelFacade {
      * @return all hotels in DB
      */
     List<HotelDTO> findAll();
+    
+    /**
+     * Finds all hotels
+     *
+     * @return all hotels in DB
+     */
+    List<HotelWithoutRoomsDTO> findAllWithoutRooms();
 }
