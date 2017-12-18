@@ -8,12 +8,15 @@ import {
 } from 'react-router-dom'
 
 import AppStore from './../stores/AppStore';
+import HotelStore from './../stores/Hotel/HotelStore';
 
 import HomeScreen from './../screens/HomeScreen';
 import AboutScreen from './../screens/AboutScreen';
 import AdminScreen from './../screens/AdminScreen';
 import LoginScreen from './../screens/LoginScreen';
 import UsersScreen from "../screens/UsersScreen";
+import HotelScreen from "../screens/HotelScreen";
+import HotelDetailScreen from "../screens/HotelDetailScreen";
 
 const SignOutButton = withRouter(({ history }) => {
     return (
@@ -27,14 +30,14 @@ const SignOutButton = withRouter(({ history }) => {
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (
         AppStore.isSignedIn() ? (
-            <Component {...props}/>
+            <Component {...props} />
         ) : (
-            <Redirect to={{
-                pathname: '/login',
-                state: { from: props.location }
-            }}/>
-        )
-    )}/>
+                <Redirect to={{
+                    pathname: '/login',
+                    state: { from: props.location }
+                }} />
+            )
+    )} />
 );
 
 export default class App extends React.Component {
@@ -46,22 +49,22 @@ export default class App extends React.Component {
             isSignedIn: false
         };
 
-        this.init = this.init.bind(this);
+        // this.init = this.init.bind(this);
 
         // Initialization
-        AppStore.addChangeListener(this.init);
-        this.init();
+        // AppStore.addChangeListener(this.init);
+        // this.init();
     }
 
-    init() {
-        this.setState({
-            isSignedIn: AppStore.isSignedIn()
-        });
-    }
+    // init() {
+    //     this.setState({
+    //         isSignedIn: AppStore.isSignedIn()
+    //     });
+    // }
 
-    componentWillUnmount() {
-        AppStore.removeChangeListener(this.init);
-    }
+    // componentWillUnmount() {
+    //     AppStore.removeChangeListener(this.init);
+    // }
 
     render() {
 
@@ -86,24 +89,27 @@ export default class App extends React.Component {
                                 <ul className="nav navbar-nav">
                                     <li><Link to="/">Home</Link></li>
                                     <li><Link to="/admin">Administration</Link></li>
+                                    <li><Link to="/hotels">Hotels</Link></li>
                                     <li><Link to="/users">Users</Link></li>
                                     <li><Link to="/about">About</Link></li>
                                 </ul>
                                 <ul className="nav navbar-nav navbar-right">
                                     {isSignedIn
-                                        ? <li><SignOutButton/></li>
+                                        ? <li><SignOutButton /></li>
                                         : <li><Link to="/login">Sign In</Link></li>}
                                 </ul>
                             </div>
                         </div>
                     </nav>
                     <div className="container">
-                        <Route exact path="/" component={HomeScreen}/>
-                        <PrivateRoute path="/admin" component={AdminScreen}/>
-                        <Route path="/about" component={AboutScreen}/>
-                        <Route path="/users" component={UsersScreen}/>
+                        <Route exact path="/" component={HomeScreen} />
+                        <PrivateRoute path="/admin" component={AdminScreen} />
+                        <Route path="/about" component={AboutScreen} />
+                        <Route exact path="/hotels" component={HotelScreen} />
+                        <Route path="/hotels/:id" component={HotelDetailScreen} />
+                        <Route path="/users" component={UsersScreen} />
 
-                        <Route path="/login" component={LoginScreen}/>
+                        <Route path="/login" component={LoginScreen} />
                     </div>
                 </div>
             </Router>
