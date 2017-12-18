@@ -49,22 +49,22 @@ export default class App extends React.Component {
             isSignedIn: false
         };
 
-        this.init = this.init.bind(this);
+        // this.init = this.init.bind(this);
 
         // Initialization
-        AppStore.addChangeListener(this.init);
-        this.init();
+        // AppStore.addChangeListener(this.init);
+        // this.init();
     }
 
-    init() {
-        this.setState({
-            isSignedIn: AppStore.isSignedIn()
-        });
-    }
+    // init() {
+    //     this.setState({
+    //         isSignedIn: AppStore.isSignedIn()
+    //     });
+    // }
 
-    componentWillUnmount() {
-        AppStore.removeChangeListener(this.init);
-    }
+    // componentWillUnmount() {
+    //     AppStore.removeChangeListener(this.init);
+    // }
 
     render() {
 

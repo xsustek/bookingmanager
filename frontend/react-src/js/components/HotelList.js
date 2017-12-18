@@ -3,7 +3,7 @@ import {
     Link,
 } from 'react-router-dom'
 
-const HotelList = ({ items }) => (
+const HotelList = ({ items, onRemove }) => (
     <table className="table">
         <thead>
             <tr>
@@ -27,6 +27,9 @@ const HotelList = ({ items }) => (
                     </td>
                     <td>
                         {item.getRooms().length}
+                    </td>
+                    <td>
+                        <button onClick={() => onRemove(item.getId())}>DELETE</button>
                     </td>
                 </tr>
             ))}

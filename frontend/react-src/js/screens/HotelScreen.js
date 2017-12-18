@@ -1,6 +1,7 @@
 import React from "react";
-import HotelStore from './../stores/Hotel/HotelStore';
 import HotelList from './../components/HotelList';
+import HotelStore from './../stores/Hotel/HotelStore';
+import { removeHotelItem } from './../stores/Hotel/HotelAction';
 
 export default class HotelScreen extends React.Component {
 
@@ -12,6 +13,7 @@ export default class HotelScreen extends React.Component {
         }
 
         this.loadItems = this.loadItems.bind(this);
+        this.handleOnRemove = this.handleOnRemove.bind(this);
 
         // init
         HotelStore.addChangeListener(this.loadItems);
@@ -30,16 +32,20 @@ export default class HotelScreen extends React.Component {
         });
     }
 
+    handleOnRemove(id) {
+        removeHotelItem({
+            id: id
+        });
+    }
+
     render() {
 
         const { items } = this.state;
 
         return (
             <div>
-                <h2>Hotel</h2>
-
-                {!items && <p>NIC</p>}
-                {items && <HotelList items={items} />}
+                <h2>Hotels</h2>
+                {items && <HotelList items={items} onRemove={this.handleOnRemove} />}
             </div>
         );
     }
