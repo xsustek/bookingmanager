@@ -3,15 +3,16 @@ import {
     Link,
 } from 'react-router-dom'
 
-const HotelList = ({ items, onRemove }) => (
+const UserList = ({ items, onRemove }) => (
     <table className="table">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
                 <th>Address</th>
-                <th>Rooms</th>
-                <th></th>
+                <th>Reservations</th>
             </tr>
         </thead>
         <tbody>
@@ -21,21 +22,27 @@ const HotelList = ({ items, onRemove }) => (
                         {i}
                     </td>
                     <td>
-                        <Link to={`/hotels/${item.getId()}`}>{item.getName()}</Link>
+                        <Link to={`/users/${item.getId()}`}>{item.getName()}</Link>
+                    </td>
+                    <td>
+                        {item.getEmail()}
+                    </td>
+                    <td>
+                        {item.getPhoneNumber()}
                     </td>
                     <td>
                         {item.getAddress()}
                     </td>
                     <td>
-                        {item.getRooms().length}
+                        {item.getReservations().length}
                     </td>
-                    <td>
+                    {/* <td>
                         <button className="btn btn-danger btn-xs" onClick={() => onRemove(item.getId())}>DELETE</button>
-                    </td>
+                    </td> */}
                 </tr>
             ))}
         </tbody>
     </table>
 );
 
-export default HotelList;
+export default UserList;
