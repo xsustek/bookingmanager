@@ -1,14 +1,19 @@
 package cz.fi.muni.pa165.restapi.controllers;
 
+import cz.fi.muni.pa165.dto.UserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Tomas Kopecky
@@ -17,6 +22,10 @@ import java.util.Date;
 public class JwtTokenUtils implements Serializable {
 
     final static Logger logger = LoggerFactory.getLogger(JwsHeader.class);
+
+    private static final String CLAIM_KEY_ID = "id";
+    private static final String CLAIM_KEY_CREATED = "created";
+    private static final String CLAIM_KEY_ROLE = "role";
 
     /**
      * Check from token, if token can be refreshed
@@ -27,7 +36,7 @@ public class JwtTokenUtils implements Serializable {
     public Boolean isTokenValid(String token) {
         try {
             return !isTokenExpired(token);
-        } catch (Exception e ){
+        } catch (Exception e) {
             throw new IllegalArgumentException("Token is invalid");
         }
     }
@@ -78,5 +87,55 @@ public class JwtTokenUtils implements Serializable {
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
+    }
+
+    /**
+     * Token generator which uses userDetails and device for generating
+     *
+     * @return generated token
+     */
+    public String generateToken(UserDTO dto) throws UnsupportedEncodingException {
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(CLAIM_KEY_ID, dto.getId());
+        claims.put(CLAIM_KEY_CREATED, new Date());
+        claims.put(CLAIM_KEY_ROLE, dto.getRole());
+        return generateToken(claims);
+    }
+
+    /**
+     * Private method for generating token using SignatureAlgorithm.HS512
+     *
+     * @param claims claims object for token generating
+     * @return generated token
+     */
+    private String generateToken(Map<String, Object> claims) throws UnsupportedEncodingException {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setExpiration(generateExpirationDate())
+                .signWith(SignatureAlgorithm.HS256, "secret".getBytes("UTF-8"))
+                .compact();
+    }
+
+    /**
+     * Generator for expiration time
+     *
+     * @return expiration time
+     */
+    private Date generateExpirationDate() {
+        return new Date(System.currentTimeMillis() + 36000 * 1000);
+    }
+
+    /**
+     * Is user ADMIN
+     *
+     * @return expiration time
+     */
+    public Boolean checkRole(String token) {
+        Claims claims = getClaimsFromToken(token);
+
+        logger.error(claims.toString());
+
+        return claims.get("role").equals("ADMIN");
     }
 }

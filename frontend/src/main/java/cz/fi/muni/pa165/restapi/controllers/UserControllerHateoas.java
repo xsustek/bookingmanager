@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,8 @@ public class UserControllerHateoas {
     @RequestMapping(method = RequestMethod.GET)
     public final HttpEntity<Resources<Resource<UserDTO>>> getAllUsers(HttpServletRequest request) {
         try {
-            if (jwtTokenUtils.isTokenValid(request.getHeader("Authorization"))) {
+            String token = request.getHeader("Authorization");
+            if (jwtTokenUtils.isTokenValid(token) && jwtTokenUtils.checkRole(token)) {
                 List<UserDTO> users = userFacade.getAllUsers();
                 List<Resource<UserDTO>> resourceList = new ArrayList<>();
 
@@ -64,7 +66,7 @@ public class UserControllerHateoas {
                 return new ResponseEntity<>(userResource, HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -78,7 +80,8 @@ public class UserControllerHateoas {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final HttpEntity<Resource<UserDTO>> getUser(@PathVariable long id, HttpServletRequest request) {
         try {
-            if (jwtTokenUtils.isTokenValid(request.getHeader("Authorization"))) {
+            String token = request.getHeader("Authorization");
+            if (jwtTokenUtils.isTokenValid(token) && jwtTokenUtils.checkRole(token)) {
                 try {
                     Resource<UserDTO> userDTOResource = userResourceAssembler.toResource(userFacade.findById(id));
                     return new ResponseEntity<>(userDTOResource, HttpStatus.OK);
@@ -86,11 +89,12 @@ public class UserControllerHateoas {
                     logger.error("getUser exception", e);
                 }
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -114,12 +118,13 @@ public class UserControllerHateoas {
      * Method to find user by mail, in request . was problem, so replaced by * and subsequently replaced by dot
      *
      * @param mail mail of the user we are looking for in user@mail*com
-     * @return UserDTO if user found, NOT_FOUND (404) otherwise
+     * @return UserDTO if user found, NOT_FOUND (404) if not found, FORBIDDEN if not signed in, BAD_REQUEST otherwise
      */
     @RequestMapping(value = "/mail/{mail}", method = RequestMethod.GET)
     public final HttpEntity<Resource<UserDTO>> findeUserByMail(@PathVariable String mail, HttpServletRequest request) {
         try {
-            if (jwtTokenUtils.isTokenValid(request.getHeader("Authorization"))) {
+            String token = request.getHeader("Authorization");
+            if (jwtTokenUtils.isTokenValid(token) && jwtTokenUtils.checkRole(token)) {
                 try {
                     mail = mail.replace("*", ".");
                     Resource<UserDTO> userDTOResource = userResourceAssembler.toResource(userFacade.findByEmail(mail));
@@ -127,13 +132,13 @@ public class UserControllerHateoas {
                 } catch (Exception e) {
                     logger.error("getUserByMail exception", e);
                 }
-
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -144,16 +149,19 @@ public class UserControllerHateoas {
      * @return Static token valid to the next year, just for app simplification, in real case it would be more difficult
      */
     @RequestMapping(value = "/auth", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<JSONObject> authenticateUser(@RequestBody UserAuthDTO dto, BindingResult bindingResult) {
+    public final HttpEntity<JSONObject> authenticateUser(@RequestBody UserAuthDTO dto, BindingResult bindingResult) throws UnsupportedEncodingException {
         logger.debug("rest authenticateUser()");
 
         UserDTO user = new UserDTO();
         user.setEmail(dto.getEmail());
 
         if (userFacade.authenticate(user, dto.getPassword())) {
+            UserDTO userDTO = userFacade.findByEmail(dto.getEmail());
+
+            String token = jwtTokenUtils.generateToken(userDTO);
 
             JSONObject json = new JSONObject();
-            json.put("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJjei5maS5tdW5pLnBhMTY1LmJvb2tpbmdtYW5hZ2VyIiwiaWF0IjoxNTEzNTMzNjU2LCJleHAiOjIwMDgyMjgwNTYsImF1ZCI6IiIsInN1YiI6IiIsIkdpdmVuTmFtZSI6IkpvaG4iLCJTdXJuYW1lIjoiRG9lIiwiRW1haWwiOiJkb2VAbWFpbC5jb20iLCJSb2xlIjoiQWRtaW4ifQ.eISxtSBvf-xUPJPNCFHEYB9AhNBL0Am8TpQ-kOsfON4");
+            json.put("token", token);
             return new ResponseEntity<>(json, HttpStatus.OK);
         }
         JSONObject json = new JSONObject();
@@ -174,7 +182,8 @@ public class UserControllerHateoas {
         logger.debug("rest isUserAdmin()");
 
         try {
-            if (jwtTokenUtils.isTokenValid(request.getHeader("Authorization"))) {
+            String token = request.getHeader("Authorization");
+            if (jwtTokenUtils.isTokenValid(token) && jwtTokenUtils.checkRole(token)) {
                 JSONObject json = new JSONObject();
                 json.put("isAdmin", userFacade.isAdmin(user));
                 return new ResponseEntity<>(json, HttpStatus.OK);
