@@ -2,3 +2,4 @@
 mix-manifest.json
 yarn.lock
 package-lock.json
+src/main/webapp/js/index.js

@@ -14,6 +14,7 @@ class HotelItem {
     }
 
     getRooms() {
+        if (!this.rooms) return [];
         return this.rooms;
     }
 }

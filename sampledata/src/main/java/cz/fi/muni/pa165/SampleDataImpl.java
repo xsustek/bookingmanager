@@ -1,8 +1,10 @@
 package cz.fi.muni.pa165;
 
 import cz.fi.muni.pa165.dto.HotelDTO;
+import cz.fi.muni.pa165.dto.RoomDTO;
 import cz.fi.muni.pa165.dto.UserDTO;
 import cz.fi.muni.pa165.enums.Role;
+import cz.fi.muni.pa165.enums.RoomType;
 import cz.fi.muni.pa165.facade.HotelFacade;
 import cz.fi.muni.pa165.facade.ReservationFacade;
 import cz.fi.muni.pa165.facade.RoomFacade;
@@ -10,6 +12,7 @@ import cz.fi.muni.pa165.facade.UserFacade;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.math.BigDecimal;
 
 @Named
 public class SampleDataImpl implements SampleData {
@@ -39,6 +42,30 @@ public class SampleDataImpl implements SampleData {
         hotelHilton.setAddress("Hilton street");
         hotelFacade.create(hotelHilton);
 
+        RoomDTO roomKing = new RoomDTO();
+        roomKing.setHotel(hotelHilton);
+        roomKing.setPrice(BigDecimal.TEN);
+        roomKing.setCapacity(2);
+        roomKing.setRoomNumber("11A");
+        roomKing.setType(RoomType.KING);
+        roomFacade.create(roomKing);
+
+        RoomDTO roomQuad = new RoomDTO();
+        roomQuad.setHotel(hotelHilton);
+        roomQuad.setPrice(BigDecimal.TEN);
+        roomQuad.setCapacity(4);
+        roomQuad.setRoomNumber("11B");
+        roomQuad.setType(RoomType.QUAD);
+        roomFacade.create(roomQuad);
+
+        RoomDTO roomDouble = new RoomDTO();
+        roomDouble.setHotel(hotelHilton);
+        roomDouble.setPrice(BigDecimal.TEN);
+        roomDouble.setCapacity(2);
+        roomDouble.setRoomNumber("11C");
+        roomDouble.setType(RoomType.DOUBLE);
+        roomFacade.create(roomDouble);
+
         HotelDTO hotelSlovan = new HotelDTO();
         hotelSlovan.setName("Slovan");
         hotelSlovan.setAddress("Slovan street");
@@ -48,6 +75,22 @@ public class SampleDataImpl implements SampleData {
         hotelInter.setName("InterHotel");
         hotelInter.setAddress("Inter street");
         hotelFacade.create(hotelInter);
+
+        RoomDTO roomSingle = new RoomDTO();
+        roomSingle.setHotel(hotelInter);
+        roomSingle.setPrice(BigDecimal.TEN);
+        roomSingle.setCapacity(1);
+        roomSingle.setRoomNumber("11D");
+        roomSingle.setType(RoomType.SINGLE);
+        roomFacade.create(roomSingle);
+
+        RoomDTO roomTriple = new RoomDTO();
+        roomTriple.setHotel(hotelInter);
+        roomTriple.setPrice(BigDecimal.TEN);
+        roomTriple.setCapacity(2);
+        roomTriple.setRoomNumber("11C");
+        roomTriple.setType(RoomType.TRIPLE);
+        roomFacade.create(roomTriple);
 
         HotelDTO hotelContinental = new HotelDTO();
         hotelContinental.setName("Continental");

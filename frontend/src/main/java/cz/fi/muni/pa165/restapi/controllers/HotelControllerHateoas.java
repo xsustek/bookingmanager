@@ -2,9 +2,12 @@ package cz.fi.muni.pa165.restapi.controllers;
 
 import cz.fi.muni.pa165.dto.HotelDTO;
 import cz.fi.muni.pa165.dto.HotelWithoutRoomsDTO;
+import cz.fi.muni.pa165.dto.RoomApiDTO;
 import cz.fi.muni.pa165.facade.HotelFacade;
+import cz.fi.muni.pa165.facade.RoomFacade;
 import cz.fi.muni.pa165.restapi.hateoas.HotelResourceAssembler;
 import cz.fi.muni.pa165.restapi.hateoas.HotelWithoutRoomResourceAssembler;
+import cz.fi.muni.pa165.restapi.hateoas.RoomResourceAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
@@ -14,11 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -38,17 +37,23 @@ public class HotelControllerHateoas {
     private HotelFacade hotelFacade;
 
     @Inject
+    private RoomFacade roomFacade;
+
+    @Inject
     private HotelResourceAssembler hotelResourceAssembler;
     
     @Inject
     private HotelWithoutRoomResourceAssembler hotelWithoutRoomResourceAssembler;
+
+    @Inject
+    private RoomResourceAssembler roomResourceAssembler;
 
     @RequestMapping(method = RequestMethod.GET)
     public final HttpEntity<Resources<Resource<HotelWithoutRoomsDTO>>> getAllHotels() {
         List<HotelWithoutRoomsDTO> hotels = hotelFacade.findAllWithoutRooms();
         List<Resource<HotelWithoutRoomsDTO>> resourceList = new ArrayList<>();
 
-        hotels.stream().forEach(h -> resourceList.add(hotelWithoutRoomResourceAssembler.toResource(h)));
+        hotels.forEach(h -> resourceList.add(hotelWithoutRoomResourceAssembler.toResource(h)));
 
         Resources<Resource<HotelWithoutRoomsDTO>> hotelResources = new Resources<>(resourceList);
         hotelResources.add(linkTo(HotelControllerHateoas.class).withSelfRel());
@@ -66,6 +71,21 @@ public class HotelControllerHateoas {
         }
 
         return null;
+    }
+
+    @RequestMapping(value = "/room/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final HttpEntity<Resources<Resource<RoomApiDTO>>> getHotelRooms(@PathVariable("id") long id) {
+        HotelWithoutRoomsDTO hotelWithoutRoomsDTO = new HotelWithoutRoomsDTO();
+        hotelWithoutRoomsDTO.setId(id);
+        List<RoomApiDTO> rooms = roomFacade.findByHotel(hotelWithoutRoomsDTO);
+        List<Resource<RoomApiDTO>> resourceList = new ArrayList<>();
+
+        rooms.forEach(r -> resourceList.add(roomResourceAssembler.toResource(r)));
+
+        Resources<Resource<RoomApiDTO>> roomResource = new Resources<>(resourceList);
+        roomResource.add(linkTo(HotelControllerHateoas.class).withSelfRel());
+
+        return new ResponseEntity<>(roomResource, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
