@@ -63,6 +63,7 @@ public class UserServiceTest {
         }).when(repository).findById(any(Long.TYPE));
 
         when(repository.findById(1L)).thenReturn(karel);
+        when(repository.findByEmail("karel@kroll.cz")).thenReturn(karel);
 
         when(userService.getAllUsers()).thenReturn(asList(karel, petr, jan));
     }
@@ -92,6 +93,11 @@ public class UserServiceTest {
     public void isUserAdmin() {
         Boolean result = userService.isAdmin(karel);
         assertThat(result).isTrue();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void isUserAdminNull() {
+        userService.isAdmin(new User());
     }
 
     @Test
