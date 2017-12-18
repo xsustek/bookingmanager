@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.service.facade;
 
 import cz.fi.muni.pa165.dto.HotelDTO;
+import cz.fi.muni.pa165.dto.HotelWithoutRoomsDTO;
 import cz.fi.muni.pa165.dto.RoomDTO;
 import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Room;
@@ -31,13 +32,13 @@ public class HotelFacadeImpl implements HotelFacade {
     }
 
     @Override
-    public HotelDTO findById(long id) {
-        return beanMappingService.mapTo(hotelService.findById(id), HotelDTO.class);
+    public HotelWithoutRoomsDTO findByIdWithoutRooms(long id) {
+        return beanMappingService.mapTo(hotelService.findById(id), HotelWithoutRoomsDTO.class);
     }
 
     @Override
-    public List<HotelDTO> findByName(String name) {
-        return beanMappingService.mapTo(hotelService.findByName(name), HotelDTO.class);
+    public List<HotelWithoutRoomsDTO> findByNameWithoutRooms(String name) {
+        return beanMappingService.mapTo(hotelService.findByName(name), HotelWithoutRoomsDTO.class);
     }
 
     @Override
@@ -64,6 +65,21 @@ public class HotelFacadeImpl implements HotelFacade {
     @Override
     public void addRoom(HotelDTO hotel, RoomDTO room) {
         hotelService.addRoom(beanMappingService.mapTo(hotel, Hotel.class), beanMappingService.mapTo(room, Room.class));
+    }
+
+    @Override
+    public List<HotelWithoutRoomsDTO> findAllWithoutRooms() {
+        return beanMappingService.mapTo(hotelService.findAll(), HotelWithoutRoomsDTO.class);
+    }
+
+    @Override
+    public HotelDTO findById(long id) {
+        return beanMappingService.mapTo(hotelService.findById(id), HotelDTO.class);
+    }
+
+    @Override
+    public List<HotelDTO> findByName(String name) {
+        return beanMappingService.mapTo(hotelService.findByName(name), HotelDTO.class);
     }
 
     @Override
