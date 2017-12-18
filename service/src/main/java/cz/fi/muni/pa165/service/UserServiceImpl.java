@@ -32,13 +32,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean authenticate(User user, String password) {
-        User found = userDao.findById(user.getId());
+        User found = userDao.findByEmail(user.getEmail());
         return checkPassword(password, found.getPasswordHash());
     }
 
     @Override
     public boolean isAdmin(User user) {
-        return findUserById(user.getId()).getRole().equals(Role.ADMIN);
+        User tmpUser = findUserByEmail(user.getEmail());
+
+        if (tmpUser != null) {
+            return findUserByEmail(user.getEmail()).getRole().equals(Role.ADMIN);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
