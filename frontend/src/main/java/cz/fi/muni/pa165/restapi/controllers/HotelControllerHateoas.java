@@ -1,8 +1,10 @@
 package cz.fi.muni.pa165.restapi.controllers;
 
 import cz.fi.muni.pa165.dto.HotelDTO;
+import cz.fi.muni.pa165.dto.HotelWithoutRoomsDTO;
 import cz.fi.muni.pa165.facade.HotelFacade;
 import cz.fi.muni.pa165.restapi.hateoas.HotelResourceAssembler;
+import cz.fi.muni.pa165.restapi.hateoas.HotelWithoutRoomResourceAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
@@ -37,25 +39,28 @@ public class HotelControllerHateoas {
 
     @Inject
     private HotelResourceAssembler hotelResourceAssembler;
+    
+    @Inject
+    private HotelWithoutRoomResourceAssembler hotelWithoutRoomResourceAssembler;
 
     @RequestMapping(method = RequestMethod.GET)
-    public final HttpEntity<Resources<Resource<HotelDTO>>> getAllHotels() {
-        List<HotelDTO> hotels = hotelFacade.findAll();
-        List<Resource<HotelDTO>> resourceList = new ArrayList<>();
+    public final HttpEntity<Resources<Resource<HotelWithoutRoomsDTO>>> getAllHotels() {
+        List<HotelWithoutRoomsDTO> hotels = hotelFacade.findAllWithoutRooms();
+        List<Resource<HotelWithoutRoomsDTO>> resourceList = new ArrayList<>();
 
-        hotels.stream().forEach(h -> resourceList.add(hotelResourceAssembler.toResource(h)));
+        hotels.stream().forEach(h -> resourceList.add(hotelWithoutRoomResourceAssembler.toResource(h)));
 
-        Resources<Resource<HotelDTO>> hotelResources = new Resources<>(resourceList);
+        Resources<Resource<HotelWithoutRoomsDTO>> hotelResources = new Resources<>(resourceList);
         hotelResources.add(linkTo(HotelControllerHateoas.class).withSelfRel());
 
         return new ResponseEntity<>(hotelResources, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<HotelDTO>> getHotel(@PathVariable("id") long id) {
+    public final HttpEntity<Resource<HotelWithoutRoomsDTO>> getHotel(@PathVariable("id") long id) {
         try {
-            Resource<HotelDTO> hotelDTOResource = hotelResourceAssembler.toResource(hotelFacade.findById(id));
-            return new ResponseEntity<>(hotelDTOResource, HttpStatus.OK);
+            Resource<HotelWithoutRoomsDTO> resource = hotelWithoutRoomResourceAssembler.toResource(hotelFacade.findByIdWithoutRooms(id));
+            return new ResponseEntity<>(resource, HttpStatus.OK);
         } catch (Exception e) {
             logger.error("getHotel exception", e);
         }
@@ -64,11 +69,11 @@ public class HotelControllerHateoas {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<HotelDTO>> createHotel(@RequestBody @Valid HotelDTO hotel, BindingResult bindingResult) {
+    public final HttpEntity<Resource<HotelWithoutRoomsDTO>> createHotel(@RequestBody @Valid HotelDTO hotel, BindingResult bindingResult) {
         logger.debug("rest createHotel()");
 
         hotelFacade.create(hotel);
-        Resource<HotelDTO> resource = hotelResourceAssembler.toResource(hotelFacade.findById(hotel.getId()));
+        Resource<HotelWithoutRoomsDTO> resource = hotelWithoutRoomResourceAssembler.toResource(hotelFacade.findByIdWithoutRooms(hotel.getId()));
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 
