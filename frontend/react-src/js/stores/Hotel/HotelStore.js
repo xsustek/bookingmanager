@@ -7,10 +7,8 @@ const HotelStore = {
 
     async getItemById(id) {
         try {
-            const rooms = await
-            axios('/pa165/rest/hotels/room/' + id);
-            const result = await
-            axios('/pa165/rest/hotels/' + id);
+            const rooms = await axios('/pa165/rest/hotels/room/' + id);
+            const result = await axios('/pa165/rest/hotels/' + id);
             result.data.rooms = rooms.data._embedded.roomApiDTOList;
             return Object.assign(new HotelItem, result.data);
         } catch (e) {
@@ -20,25 +18,17 @@ const HotelStore = {
 
     async getAllItems() {
         try {
-            const result = await
-            axios('/pa165/rest/hotels');
-            let hotels = await
-            result.data._embedded.hotelWithoutRoomsDTOList.map(async
-            h =
-        >
-            {
-                let rooms = await
-                axios('/pa165/rest/hotels/room/' + h.id);
-                if (rooms.data._embedded && rooms.data._embedded.roomApiDTOList) {
+            const result = await axios('/pa165/rest/hotels');
+            let hotels = await result.data._embedded.hotelWithoutRoomsDTOList.map(async h => {
+                let rooms = await axios('/pa165/rest/hotels/room/' + h.id);
+                if(rooms.data._embedded && rooms.data._embedded.roomApiDTOList){
                     h.rooms = rooms.data._embedded.roomApiDTOList;
                 }
                 else {
                     h.rooms = [];
                 }
-                return h;
-            }
-        )
-            ;
+                return h;  
+            });
             return _mapToItem(hotels);
         } catch (e) {
             //
@@ -95,11 +85,9 @@ const HotelStore = {
 };
 
 function _mapToItem(data) {
-    return data.map(obj = > {
+    return data.map(obj => {
         return Object.assign(new HotelItem, obj)
-    }
-)
-    ;
+    });
 }
 
 export default HotelStore;
