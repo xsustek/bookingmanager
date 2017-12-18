@@ -7,6 +7,7 @@ import cz.fi.muni.pa165.facade.HotelFacade;
 import cz.fi.muni.pa165.facade.RoomFacade;
 import cz.fi.muni.pa165.restapi.hateoas.HotelResourceAssembler;
 import cz.fi.muni.pa165.restapi.hateoas.HotelWithoutRoomResourceAssembler;
+import cz.fi.muni.pa165.restapi.hateoas.RoomResourceAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
