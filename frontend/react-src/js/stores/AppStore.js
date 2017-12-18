@@ -16,8 +16,8 @@ const AppStore = {
 
         // todo make login
 
-        AppStore.emitChangeListener();
         db.auth = true;
+        AppStore.emitChangeListener();
         return true;
     },
 

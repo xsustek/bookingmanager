@@ -1,6 +1,7 @@
 import React from "react";
 import HotelList from './../components/HotelList';
 import HotelStore from './../stores/Hotel/HotelStore';
+import AppStore from './../stores/AppStore';
 import { removeHotelItem, createHotelItem } from './../stores/Hotel/HotelAction';
 
 export default class HotelScreen extends React.Component {
@@ -12,7 +13,7 @@ export default class HotelScreen extends React.Component {
             items: null,
             formName: '',
             formAddress: '',
-            errors: null
+            errors: null,
         }
 
         this.loadItems = this.loadItems.bind(this);
@@ -27,6 +28,7 @@ export default class HotelScreen extends React.Component {
     componentWillUnmount() {
         HotelStore.removeChangeListener(this.loadItems);
     }
+
 
     loadItems() {
         HotelStore.getAllItems().then(items => {
@@ -88,14 +90,13 @@ export default class HotelScreen extends React.Component {
 
     render() {
 
-        const { items, errors } = this.state;
+        const { items, errors, isSignedIn } = this.state;
 
         return (
             <div>
                 <h2>Hotels</h2>
 
                 <h4>Create new one</h4>
-
                 <div className="row">
                     <div className="col-md-6">
                         {errors && (
@@ -139,8 +140,8 @@ export default class HotelScreen extends React.Component {
                             </div>
                         </form>
                     </div>
+                    <hr />
                 </div>
-                <hr />
 
                 {items && <HotelList items={items} onRemove={this.handleOnRemove} />}
 

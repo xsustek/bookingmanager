@@ -17,6 +17,8 @@ import LoginScreen from './../screens/LoginScreen';
 import UsersScreen from "../screens/UsersScreen";
 import HotelScreen from "../screens/HotelScreen";
 import HotelDetailScreen from "../screens/HotelDetailScreen";
+import UsersDetailScreen from "../screens/UsersDetailScreen";
+import ReservationScreen from "../screens/ReservationScreen";
 
 const SignOutButton = withRouter(({ history }) => {
     return (
@@ -49,22 +51,22 @@ export default class App extends React.Component {
             isSignedIn: false
         };
 
-        // this.init = this.init.bind(this);
+        this.init = this.init.bind(this);
 
         // Initialization
-        // AppStore.addChangeListener(this.init);
-        // this.init();
+        AppStore.addChangeListener(this.init);
+        this.init();
     }
 
-    // init() {
-    //     this.setState({
-    //         isSignedIn: AppStore.isSignedIn()
-    //     });
-    // }
+    init() {
+        this.setState({
+            isSignedIn: AppStore.isSignedIn()
+        });
+    }
 
-    // componentWillUnmount() {
-    //     AppStore.removeChangeListener(this.init);
-    // }
+    componentWillUnmount() {
+        AppStore.removeChangeListener(this.init);
+    }
 
     render() {
 
@@ -82,16 +84,14 @@ export default class App extends React.Component {
                                     <span className="icon-bar"></span>
                                     <span className="icon-bar"></span>
                                 </button>
-                                <a className="navbar-brand" href="#">Bookingmanager</a>
+                                <Link className="navbar-brand" to="/">Bookingmanager</Link>
                             </div>
 
                             <div className="collapse navbar-collapse">
                                 <ul className="nav navbar-nav">
-                                    <li><Link to="/">Home</Link></li>
-                                    <li><Link to="/admin">Administration</Link></li>
+                                    <li><Link to="/reservations">Reservations</Link></li>
                                     <li><Link to="/hotels">Hotels</Link></li>
                                     <li><Link to="/users">Users</Link></li>
-                                    <li><Link to="/about">About</Link></li>
                                 </ul>
                                 <ul className="nav navbar-nav navbar-right">
                                     {isSignedIn
@@ -103,11 +103,12 @@ export default class App extends React.Component {
                     </nav>
                     <div className="container">
                         <Route exact path="/" component={HomeScreen} />
-                        <PrivateRoute path="/admin" component={AdminScreen} />
-                        <Route path="/about" component={AboutScreen} />
-                        <Route exact path="/hotels" component={HotelScreen} />
-                        <Route path="/hotels/:id" component={HotelDetailScreen} />
-                        <Route path="/users" component={UsersScreen} />
+                        <Route exact path="/reservations" component={ReservationScreen} />
+                        <PrivateRoute exact path="/hotels" component={HotelScreen} />
+                        <PrivateRoute path="/hotels/:id" component={HotelDetailScreen} />
+                        <PrivateRoute exact path="/users" component={UsersScreen} />
+                        <PrivateRoute path="/users/:id" component={UsersDetailScreen} />
+                        {/* <Route path="/about" component={AboutScreen} /> */}
 
                         <Route path="/login" component={LoginScreen} />
                     </div>

@@ -1,4 +1,4 @@
-import Dispatcher from './../Dispatcher';
+import Dispatcher from './../../Dispatcher';
 import UserConstants from './UserConstants';
 
 /**
@@ -20,6 +20,20 @@ function resgisterUserItem(data) {
     });
 }
 
+/**
+ * Remove user item
+ *
+ * @param {Object} data
+ * @param {string} data.id
+ */
+function removeUserItem(data) {
+    Dispatcher({
+        type: UserConstants.USER_REMOVE,
+        data: data
+    });
+}
+
 export {
     resgisterUserItem,
+    removeUserItem
 };
