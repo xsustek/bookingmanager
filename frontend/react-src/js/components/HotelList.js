@@ -29,7 +29,7 @@ const HotelList = ({ items, onRemove }) => (
                         {item.getRooms().length}
                     </td>
                     <td>
-                        <button onClick={() => onRemove(item.getId())}>DELETE</button>
+                        <button className="btn btn-danger btn-xs" onClick={() => onRemove(item.getId())}>DELETE</button>
                     </td>
                 </tr>
             ))}

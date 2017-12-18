@@ -7,8 +7,7 @@ const HotelStore = {
 
     async getItemById(id) {
         try {
-            const result = await
-            axios('/pa165/rest/hotels/' + id);
+            const result = await axios('http://localhost:8080/pa165/rest/hotels/' + id);
             return Object.assign(new HotelItem, result.data);
         } catch (e) {
             console.log('Hotel Not Found');
@@ -17,8 +16,7 @@ const HotelStore = {
 
     async getAllItems() {
         try {
-            const result = await
-            axios('/pa165/rest/hotels');
+            const result = await axios('http://localhost:8080/pa165/rest/hotels');
             return _mapToItem(result.data._embedded.hotelWithoutRoomsDTOList);
         } catch (e) {
             //
@@ -50,22 +48,28 @@ const HotelStore = {
         Bullet.off(HotelConstants.EVENT_CHANGE, callback);
     },
 
-// dispatchIndex: (payload) => {
-//     switch (payload.type) {
-//         case HotelConstants.Hotel_CREATE:
-//             // Create Hotel
-//             axios.post('/api/v1/hotels', {
-//                 price: payload.data.price,
-//                 capacity: payload.data.capacity,
-//                 type: payload.data.type,
-//             }).then(function (response) {
-//                 console.log(response);
-//             }).catch(function (error) {
-//                 console.log(error);
-//             });
-//             break;
-//     }
-// },
+    dispatchIndex: (payload) => {
+        switch (payload.type) {
+            case HotelConstants.HOTEL_DELETE:
+                axios.delete('http://localhost:8080/pa165/rest/hotels/' + payload.data.id)
+                    .then(function (response) {
+                        HotelStore.emitChangeListener();
+                        console.log('Hotel deleted.');
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                break;
+            case HotelConstants.HOTEL_CREATE:
+                axios.post('http://localhost:8080/pa165/rest/hotels/create', payload.data)
+                    .then(function (response) {
+                        HotelStore.emitChangeListener();
+                        console.log('Hotel created.');
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                break;
+        }
+    },
 };
 
 function _mapToItem(data) {

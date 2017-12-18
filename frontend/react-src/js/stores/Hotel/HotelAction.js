@@ -14,6 +14,21 @@ function removeHotelItem(data) {
     });
 }
 
+/**
+ * Removes hotel item.
+ *
+ * @param {Object} data
+ * @param {number} data.name - Hotel's name.
+ * @param {string} data.address - Hotel's address.
+ */
+function createHotelItem(data) {
+    Dispatcher({
+        type: HotelConstants.HOTEL_CREATE,
+        data: data
+    });
+}
+
 export {
     removeHotelItem,
+    createHotelItem
 };
