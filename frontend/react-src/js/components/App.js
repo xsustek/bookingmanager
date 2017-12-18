@@ -13,6 +13,7 @@ import HomeScreen from './../screens/HomeScreen';
 import AboutScreen from './../screens/AboutScreen';
 import AdminScreen from './../screens/AdminScreen';
 import LoginScreen from './../screens/LoginScreen';
+import UsersScreen from "../screens/UsersScreen";
 
 const SignOutButton = withRouter(({ history }) => {
     return (
@@ -85,6 +86,7 @@ export default class App extends React.Component {
                                 <ul className="nav navbar-nav">
                                     <li><Link to="/">Home</Link></li>
                                     <li><Link to="/admin">Administration</Link></li>
+                                    <li><Link to="/users">Users</Link></li>
                                     <li><Link to="/about">About</Link></li>
                                 </ul>
                                 <ul className="nav navbar-nav navbar-right">
@@ -99,6 +101,7 @@ export default class App extends React.Component {
                         <Route exact path="/" component={HomeScreen}/>
                         <PrivateRoute path="/admin" component={AdminScreen}/>
                         <Route path="/about" component={AboutScreen}/>
+                        <Route path="/users" component={UsersScreen}/>
 
                         <Route path="/login" component={LoginScreen}/>
                     </div>
