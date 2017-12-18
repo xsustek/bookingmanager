@@ -1,8 +1,10 @@
 package cz.fi.muni.pa165;
 
 import cz.fi.muni.pa165.dto.HotelDTO;
+import cz.fi.muni.pa165.dto.RoomDTO;
 import cz.fi.muni.pa165.dto.UserDTO;
 import cz.fi.muni.pa165.enums.Role;
+import cz.fi.muni.pa165.enums.RoomType;
 import cz.fi.muni.pa165.facade.HotelFacade;
 import cz.fi.muni.pa165.facade.ReservationFacade;
 import cz.fi.muni.pa165.facade.RoomFacade;
@@ -10,6 +12,7 @@ import cz.fi.muni.pa165.facade.UserFacade;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.math.BigDecimal;
 
 @Named
 public class SampleDataImpl implements SampleData {
@@ -64,6 +67,40 @@ public class SampleDataImpl implements SampleData {
         hotelPasaz.setAddress("Pasaz street");
         hotelFacade.create(hotelPasaz);
 
+
+        // rooms
+
+        RoomDTO roomHilton1 = new RoomDTO();
+        roomHilton1.setPrice(BigDecimal.valueOf(1000L));
+        roomHilton1.setCapacity(2);
+        roomHilton1.setRoomNumber("1");
+        roomHilton1.setHotel(hotelHilton);
+        roomHilton1.setType(RoomType.KING);
+        roomFacade.create(roomHilton1);
+
+        RoomDTO roomHilton2 = new RoomDTO();
+        roomHilton2.setPrice(BigDecimal.valueOf(5000L));
+        roomHilton2.setCapacity(4);
+        roomHilton2.setRoomNumber("2");
+        roomHilton2.setHotel(hotelHilton);
+        roomHilton2.setType(RoomType.QUEEN);
+        roomFacade.create(roomHilton2);
+
+        RoomDTO roomSlovan1 = new RoomDTO();
+        roomSlovan1.setPrice(BigDecimal.valueOf(300L));
+        roomSlovan1.setCapacity(1);
+        roomSlovan1.setRoomNumber("1");
+        roomSlovan1.setHotel(hotelSlovan);
+        roomSlovan1.setType(RoomType.SINGLE);
+        roomFacade.create(roomSlovan1);
+
+        RoomDTO roomSlovan2 = new RoomDTO();
+        roomSlovan2.setPrice(BigDecimal.valueOf(700L));
+        roomSlovan2.setCapacity(3);
+        roomSlovan2.setRoomNumber("2");
+        roomSlovan2.setHotel(hotelSlovan);
+        roomSlovan2.setType(RoomType.TRIPLE);
+        roomFacade.create(roomSlovan2);
     }
 
     private void storeUsers() {
@@ -99,4 +136,5 @@ public class SampleDataImpl implements SampleData {
         userJan.setRole(Role.USER);
         userFacade.registerUser(userJan, "password");
     }
+
 }
