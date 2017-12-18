@@ -14,7 +14,7 @@ class HotelItem {
     }
 
     getRooms() {
-        return this.rooms;
+        return 0;
     }
 }
 

@@ -17,7 +17,7 @@ const HotelStore = {
     async getAllItems() {
         try {
             const result = await axios('http://localhost:8080/pa165/rest/hotels');
-            return _mapToItem(result.data._embedded.hotelDTOList);
+            return _mapToItem(result.data._embedded.hotelWithoutRoomsDTOList);
         } catch (e) {
             //
         }
