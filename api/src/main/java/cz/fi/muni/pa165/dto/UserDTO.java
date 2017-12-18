@@ -3,9 +3,9 @@ package cz.fi.muni.pa165.dto;
 import cz.fi.muni.pa165.entity.Reservation;
 import cz.fi.muni.pa165.enums.Role;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 /**
  * @author Tomas Kopecky
@@ -24,7 +24,11 @@ public class UserDTO {
 
     private Role role;
 
-    private Set<Reservation> reservations = new HashSet<>();
+    private String password;
+
+    private String passwordHash;
+
+    private List<Reservation> reservations = new ArrayList<>();
 
     public UserDTO() {
 
@@ -78,11 +82,27 @@ public class UserDTO {
         this.role = role;
     }
 
-    public Set<Reservation> getReservations() {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public List<Reservation> getReservations() {
         return reservations;
     }
 
-    public void setReservations(Set<Reservation> reservations) {
+    public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
     }
 

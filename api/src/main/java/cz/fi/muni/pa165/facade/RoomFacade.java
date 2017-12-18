@@ -1,6 +1,8 @@
 package cz.fi.muni.pa165.facade;
 
 import cz.fi.muni.pa165.dto.HotelDTO;
+import cz.fi.muni.pa165.dto.HotelWithoutRoomsDTO;
+import cz.fi.muni.pa165.dto.RoomApiDTO;
 import cz.fi.muni.pa165.dto.RoomDTO;
 import cz.fi.muni.pa165.enums.RoomType;
 
@@ -28,6 +30,14 @@ public interface RoomFacade {
      * @return The list of rooms for the given hotel.
      */
     List<RoomDTO> findByHotel(HotelDTO hotel);
+
+    /**
+     * Returns collection of all rooms for the given hotel.
+     *
+     * @param hotel Hotel, where the rooms are.
+     * @return The list of rooms for the given hotel.
+     */
+    List<RoomApiDTO> findByHotel(HotelWithoutRoomsDTO hotel);
 
     /**
      * Returns collection of all rooms for the given hotel.

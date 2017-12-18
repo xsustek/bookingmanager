@@ -4,8 +4,8 @@ import cz.fi.muni.pa165.entity.Reservation;
 import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.enums.Role;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Peter Neupauer
@@ -19,7 +19,7 @@ public class UserBuilder {
     private String address;
     private String passwordHash;
     private Role role;
-    private Set<Reservation> reservations = new HashSet<>();
+    private List<Reservation> reservations = new ArrayList<>();
 
     public UserBuilder id(long id) {
         this.id = id;
@@ -56,7 +56,7 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder reservations(Set<Reservation> reservations) {
+    public UserBuilder reservations(List<Reservation> reservations) {
         this.reservations = reservations;
         return this;
     }

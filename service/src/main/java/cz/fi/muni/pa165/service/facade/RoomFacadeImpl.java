@@ -1,6 +1,8 @@
 package cz.fi.muni.pa165.service.facade;
 
 import cz.fi.muni.pa165.dto.HotelDTO;
+import cz.fi.muni.pa165.dto.HotelWithoutRoomsDTO;
+import cz.fi.muni.pa165.dto.RoomApiDTO;
 import cz.fi.muni.pa165.dto.RoomDTO;
 import cz.fi.muni.pa165.entity.Room;
 import cz.fi.muni.pa165.enums.RoomType;
@@ -44,6 +46,12 @@ public class RoomFacadeImpl implements RoomFacade {
     @Override
     public List<RoomDTO> findByHotel(HotelDTO hotel) {
         return findByHotel(hotel.getId());
+    }
+
+    @Override
+    public List<RoomApiDTO> findByHotel(HotelWithoutRoomsDTO hotel) {
+        List<RoomDTO> rooms = findByHotel(hotel.getId());
+        return beanMappingService.mapTo(rooms, RoomApiDTO.class);
     }
 
     @Override
