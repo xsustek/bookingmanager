@@ -7,7 +7,7 @@ Let us imagine a Booking Manager for hotels: every customer can choose desired h
 
 ## Web application
 Application runs natively at localhost:8080/pa165/, web UI is created in React
-For the proper running of the app is necessary run these commands:
+For the proper running of the app is necessary to have Node.js installed in your computer and run these commands:
 1. in parent folder mvn clean install
 2. in folder frontend npm install
 3. in folder frontend npm run dev
