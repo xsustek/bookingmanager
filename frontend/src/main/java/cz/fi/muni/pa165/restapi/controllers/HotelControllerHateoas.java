@@ -14,13 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,51 +36,85 @@ public class HotelControllerHateoas {
 
     @Inject
     private HotelResourceAssembler hotelResourceAssembler;
-    
+
     @Inject
     private HotelWithoutRoomResourceAssembler hotelWithoutRoomResourceAssembler;
 
+    @Inject
+    private JwtTokenUtils jwtTokenUtils;
+
     @RequestMapping(method = RequestMethod.GET)
-    public final HttpEntity<Resources<Resource<HotelWithoutRoomsDTO>>> getAllHotels() {
-        List<HotelWithoutRoomsDTO> hotels = hotelFacade.findAllWithoutRooms();
-        List<Resource<HotelWithoutRoomsDTO>> resourceList = new ArrayList<>();
+    public final HttpEntity<Resources<Resource<HotelWithoutRoomsDTO>>> getAllHotels(HttpServletRequest request) {
+        try {
+            String token = request.getHeader("Authorization");
+            if (jwtTokenUtils.isTokenValid(token)) {
 
-        hotels.stream().forEach(h -> resourceList.add(hotelWithoutRoomResourceAssembler.toResource(h)));
+                List<HotelWithoutRoomsDTO> hotels = hotelFacade.findAllWithoutRooms();
+                List<Resource<HotelWithoutRoomsDTO>> resourceList = new ArrayList<>();
 
-        Resources<Resource<HotelWithoutRoomsDTO>> hotelResources = new Resources<>(resourceList);
-        hotelResources.add(linkTo(HotelControllerHateoas.class).withSelfRel());
+                hotels.stream().forEach(h -> resourceList.add(hotelWithoutRoomResourceAssembler.toResource(h)));
 
-        return new ResponseEntity<>(hotelResources, HttpStatus.OK);
+                Resources<Resource<HotelWithoutRoomsDTO>> hotelResources = new Resources<>(resourceList);
+                hotelResources.add(linkTo(HotelControllerHateoas.class).withSelfRel());
+
+                return new ResponseEntity<>(hotelResources, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<HotelWithoutRoomsDTO>> getHotel(@PathVariable("id") long id) {
+    public final HttpEntity<Resource<HotelWithoutRoomsDTO>> getHotel(@PathVariable("id") long id, HttpServletRequest request) {
         try {
-            Resource<HotelWithoutRoomsDTO> resource = hotelWithoutRoomResourceAssembler.toResource(hotelFacade.findByIdWithoutRooms(id));
-            return new ResponseEntity<>(resource, HttpStatus.OK);
+            String token = request.getHeader("Authorization");
+            if (jwtTokenUtils.isTokenValid(token)) {
+                Resource<HotelWithoutRoomsDTO> resource = hotelWithoutRoomResourceAssembler.toResource(hotelFacade.findByIdWithoutRooms(id));
+                return new ResponseEntity<>(resource, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
         } catch (Exception e) {
             logger.error("getHotel exception", e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        return null;
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<HotelWithoutRoomsDTO>> createHotel(@RequestBody @Valid HotelDTO hotel, BindingResult bindingResult) {
-        logger.debug("rest createHotel()");
+    public final HttpEntity<Resource<HotelWithoutRoomsDTO>> createHotel(@RequestBody @Valid HotelDTO hotel, BindingResult bindingResult, HttpServletRequest request) {
+        try {
+            String token = request.getHeader("Authorization");
+            if (jwtTokenUtils.isTokenValid(token) && jwtTokenUtils.checkRole(token)) {
+                logger.debug("rest createHotel()");
 
-        hotelFacade.create(hotel);
-        Resource<HotelWithoutRoomsDTO> resource = hotelWithoutRoomResourceAssembler.toResource(hotelFacade.findByIdWithoutRooms(hotel.getId()));
-        return new ResponseEntity<>(resource, HttpStatus.OK);
+                hotelFacade.create(hotel);
+                Resource<HotelWithoutRoomsDTO> resource = hotelWithoutRoomResourceAssembler.toResource(hotelFacade.findByIdWithoutRooms(hotel.getId()));
+                return new ResponseEntity<>(resource, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        } catch (Exception e) {
+            logger.error("createHotel exception", e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public final void deleteHotel(@PathVariable("id") long id) {
+    public final HttpEntity<HttpStatus> deleteHotel(@PathVariable("id") long id, HttpServletRequest request) {
         try {
-            hotelFacade.delete(id);
-        } catch (Exception ex) {
-            logger.error("delete exception", ex);
+            String token = request.getHeader("Authorization");
+            if (jwtTokenUtils.isTokenValid(token) && jwtTokenUtils.checkRole(token)) {
+                hotelFacade.delete(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        } catch (Exception e) {
+            logger.error("createHotel exception", e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }
