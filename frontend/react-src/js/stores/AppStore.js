@@ -1,4 +1,5 @@
 import Bullet from 'bullet-pubsub';
+import {ApiCallerHelper} from '../ApiCallerHelper';
 
 const db = {
     auth: false,
@@ -8,7 +9,14 @@ const APP_EVENT_CHANGE = 'APP_EVENT_CHANGE';
 
 const AppStore = {
 
-    signin(credentials) {
+    async signin(credentials) {
+
+        console.log(credentials);
+
+        // todo - login
+        const token = await ApiCallerHelper.callPost("http://localhost:8080/pa165/rest/users/auth", credentials);
+
+        window.localStorage.setItem("userToken", token.data.token);
 
         console.log(credentials);
 
@@ -26,6 +34,7 @@ const AppStore = {
 
     signout() {
         db.auth = false;
+        window.localStorage.removeItem("userToken");
         AppStore.emitChangeListener();
     },
 

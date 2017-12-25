@@ -2,6 +2,7 @@ import axios from 'axios';
 import Bullet from 'bullet-pubsub';
 import HotelItem from './HotelItem';
 import HotelConstants from './HotelConstants';
+import {ApiCallerHelper} from '../../ApiCallerHelper';
 
 const HotelStore = {
 
@@ -26,11 +27,7 @@ const HotelStore = {
 
     async getAllItems() {
         try {
-            const result = await axios('http://localhost:8080/pa165/rest/hotels', {
-                headers: {
-                    'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYXJlbEBtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWQiOjE1MTM2MjgxMTI1ODMsImV4cCI6MTUxMzk4ODExMn0.ks-8T2nutC439GyyPVbd07hZGHJMRc9prOCzGuX4Y9k'
-                }
-            });
+            const result = await ApiCallerHelper.callGet("/pa165/rest/hotels");
             return _mapToItem(result.data._embedded.hotelWithoutRoomsDTOList);
         } catch (e) {
             //

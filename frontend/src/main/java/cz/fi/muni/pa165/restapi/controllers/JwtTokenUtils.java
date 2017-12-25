@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.restapi.controllers;
 
 import cz.fi.muni.pa165.dto.UserDTO;
+import cz.fi.muni.pa165.facade.UserFacade;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -26,6 +28,10 @@ public class JwtTokenUtils implements Serializable {
     private static final String CLAIM_KEY_ID = "id";
     private static final String CLAIM_KEY_CREATED = "created";
     private static final String CLAIM_KEY_ROLE = "role";
+
+
+    @Inject
+    private UserFacade userFacade;
 
     /**
      * Check from token, if token can be refreshed
@@ -137,5 +143,19 @@ public class JwtTokenUtils implements Serializable {
         logger.error(claims.toString());
 
         return claims.get("role").equals("ADMIN");
+    }
+
+    public Object getRole(String token) {
+        Claims claims = getClaimsFromToken(token);
+
+        logger.error(claims.toString());
+
+        return claims.get("role");
+    }
+
+    public UserDTO getUser(String token) {
+        Claims claims = getClaimsFromToken(token);
+        Integer id = (Integer) claims.get(CLAIM_KEY_ID);
+        return userFacade.findById(Long.valueOf(id));
     }
 }

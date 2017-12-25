@@ -1,8 +1,6 @@
 import React from "react";
 import AppStore from "../stores/AppStore";
-import {
-    Redirect
-} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 
 export default class LoginScreen extends React.Component {
 
@@ -19,10 +17,10 @@ export default class LoginScreen extends React.Component {
         this.handleSignIn = this.handleSignIn.bind(this);
     }
 
-    handleSignIn(e) {
+    async handleSignIn(e) {
         e.preventDefault();
 
-        const result = AppStore.signin({
+        const result = await AppStore.signin({
             email: this.state.formEmail,
             password: this.state.formPassword
         });

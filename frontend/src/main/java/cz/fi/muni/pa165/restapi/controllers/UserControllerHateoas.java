@@ -14,7 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -52,9 +56,6 @@ public class UserControllerHateoas {
      */
     @RequestMapping(method = RequestMethod.GET)
     public final HttpEntity<Resources<Resource<UserDTO>>> getAllUsers(HttpServletRequest request) {
-        try {
-            String token = request.getHeader("Authorization");
-            if (jwtTokenUtils.isTokenValid(token) && jwtTokenUtils.checkRole(token)) {
                 List<UserDTO> users = userFacade.getAllUsers();
                 List<Resource<UserDTO>> resourceList = new ArrayList<>();
 
@@ -64,11 +65,6 @@ public class UserControllerHateoas {
                 userResource.add(linkTo(UserControllerHateoas.class).withSelfRel());
 
                 return new ResponseEntity<>(userResource, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
     }
 
     /**
@@ -79,22 +75,14 @@ public class UserControllerHateoas {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final HttpEntity<Resource<UserDTO>> getUser(@PathVariable long id, HttpServletRequest request) {
+
         try {
-            String token = request.getHeader("Authorization");
-            if (jwtTokenUtils.isTokenValid(token) && jwtTokenUtils.checkRole(token)) {
-                try {
                     Resource<UserDTO> userDTOResource = userResourceAssembler.toResource(userFacade.findById(id));
                     return new ResponseEntity<>(userDTOResource, HttpStatus.OK);
                 } catch (Exception e) {
                     logger.error("getUser exception", e);
                 }
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            } else {
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
     }
 
     /**
@@ -122,10 +110,8 @@ public class UserControllerHateoas {
      */
     @RequestMapping(value = "/mail/{mail}", method = RequestMethod.GET)
     public final HttpEntity<Resource<UserDTO>> findeUserByMail(@PathVariable String mail, HttpServletRequest request) {
+
         try {
-            String token = request.getHeader("Authorization");
-            if (jwtTokenUtils.isTokenValid(token) && jwtTokenUtils.checkRole(token)) {
-                try {
                     mail = mail.replace("*", ".");
                     Resource<UserDTO> userDTOResource = userResourceAssembler.toResource(userFacade.findByEmail(mail));
                     return new ResponseEntity<>(userDTOResource, HttpStatus.OK);
@@ -133,12 +119,6 @@ public class UserControllerHateoas {
                     logger.error("getUserByMail exception", e);
                 }
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            } else {
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
     }
 
     /**
