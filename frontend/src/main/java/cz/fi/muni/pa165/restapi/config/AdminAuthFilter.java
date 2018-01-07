@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/rest/hotels/create", "/rest/hotels/edit"})
+@WebFilter(
+        urlPatterns = {"/rest/hotels/create", "/rest/hotels/edit", "/rest/hotels/delete"})
 public class AdminAuthFilter implements Filter {
 
     final static Logger log = LoggerFactory.getLogger(AdminAuthFilter.class);

@@ -1,8 +1,8 @@
 package cz.fi.muni.pa165.restapi.controllers;
 
-import cz.fi.muni.pa165.dto.HotelDTO;
-import cz.fi.muni.pa165.dto.HotelWithoutRoomsDTO;
-import cz.fi.muni.pa165.dto.RoomApiDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelWithoutRoomsDTO;
+import cz.fi.muni.pa165.dto.Room.RoomApiDTO;
 import cz.fi.muni.pa165.facade.HotelFacade;
 import cz.fi.muni.pa165.facade.RoomFacade;
 import cz.fi.muni.pa165.restapi.hateoas.HotelResourceAssembler;
@@ -72,8 +72,8 @@ public class HotelControllerHateoas {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<HotelWithoutRoomsDTO>> getHotel(@PathVariable("id") long id, HttpServletRequest request) {
-        Resource<HotelWithoutRoomsDTO> resource = hotelWithoutRoomResourceAssembler.toResource(hotelFacade.findByIdWithoutRooms(id));
+    public final HttpEntity<Resource<HotelDTO>> getHotel(@PathVariable("id") long id, HttpServletRequest request) {
+        Resource<HotelDTO> resource = hotelResourceAssembler.toResource(hotelFacade.findById(id));
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 

@@ -8,17 +8,7 @@ const HotelStore = {
 
     async getItemById(id) {
         try {
-            const rooms = await axios('/pa165/rest/hotels/room/' + id , {
-                headers: {
-                    'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYXJlbEBtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWQiOjE1MTM2MjgxMTI1ODMsImV4cCI6MTUxMzk4ODExMn0.ks-8T2nutC439GyyPVbd07hZGHJMRc9prOCzGuX4Y9k'
-                }
-            });
-            const result = await axios('http://localhost:8080/pa165/rest/hotels/' + id, {
-                headers: {
-                    'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrYXJlbEBtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImNyZWF0ZWQiOjE1MTM2MjgxMTI1ODMsImV4cCI6MTUxMzk4ODExMn0.ks-8T2nutC439GyyPVbd07hZGHJMRc9prOCzGuX4Y9k'
-                }
-            });
-            result.data.rooms = rooms.data._embedded.roomApiDTOList;
+            const result = await ApiCallerHelper.callGet('http://localhost:8080/pa165/rest/hotels/' + id);
             return Object.assign(new HotelItem, result.data);
         } catch (e) {
             console.log('Hotel Not Found');
@@ -30,7 +20,7 @@ const HotelStore = {
             const result = await ApiCallerHelper.callGet("/pa165/rest/hotels");
             return _mapToItem(result.data._embedded.hotelWithoutRoomsDTOList);
         } catch (e) {
-            //
+            console.log(e);
         }
     },
 

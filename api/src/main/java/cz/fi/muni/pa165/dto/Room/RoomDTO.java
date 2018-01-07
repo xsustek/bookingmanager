@@ -1,5 +1,7 @@
-package cz.fi.muni.pa165.dto;
+package cz.fi.muni.pa165.dto.Room;
 
+import cz.fi.muni.pa165.dto.Hotel.HotelDTO;
+import cz.fi.muni.pa165.dto.Reservation.ReservationDTO;
 import cz.fi.muni.pa165.enums.RoomType;
 
 import java.math.BigDecimal;

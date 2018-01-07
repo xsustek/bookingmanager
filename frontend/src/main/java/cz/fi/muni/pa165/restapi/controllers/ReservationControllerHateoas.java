@@ -1,29 +1,30 @@
 package cz.fi.muni.pa165.restapi.controllers;
 
-import cz.fi.muni.pa165.dto.ReservationDTO;
+import cz.fi.muni.pa165.dto.Reservation.ReservationDTO;
 import cz.fi.muni.pa165.facade.ReservationFacade;
 import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.restapi.hateoas.ReservationResourceAssembler;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Inject;
-import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.inject.Inject;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import org.springframework.http.MediaType;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @author Viktoria Tibenska

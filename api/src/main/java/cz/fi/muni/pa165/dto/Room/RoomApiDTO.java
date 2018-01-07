@@ -1,11 +1,10 @@
-package cz.fi.muni.pa165.dto;
+package cz.fi.muni.pa165.dto.Room;
 
+import cz.fi.muni.pa165.dto.Hotel.HotelWithoutRoomsDTO;
 import cz.fi.muni.pa165.enums.RoomType;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 public class RoomApiDTO {
 
@@ -18,8 +17,6 @@ public class RoomApiDTO {
     private String roomNumber;
 
     private int capacity;
-
-    private Set<ReservationDTO> reservations = new HashSet<>();
 
     private HotelWithoutRoomsDTO hotel;
 
@@ -55,14 +52,6 @@ public class RoomApiDTO {
         this.capacity = capacity;
     }
 
-    public Set<ReservationDTO> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(Set<ReservationDTO> reservations) {
-        this.reservations = reservations;
-    }
-
     public HotelWithoutRoomsDTO getHotel() {
         return hotel;
     }
@@ -82,11 +71,11 @@ public class RoomApiDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RoomDTO)) return false;
-        RoomDTO roomDTO = (RoomDTO) o;
-        return getType() == roomDTO.getType() &&
-                Objects.equals(getRoomNumber(), roomDTO.getRoomNumber()) &&
-                Objects.equals(getHotel(), roomDTO.getHotel());
+        if (!(o instanceof RoomApiDTO)) return false;
+        RoomApiDTO that = (RoomApiDTO) o;
+        return getType() == that.getType() &&
+                Objects.equals(getRoomNumber(), that.getRoomNumber()) &&
+                Objects.equals(getHotel(), that.getHotel());
     }
 
     @Override
@@ -97,8 +86,9 @@ public class RoomApiDTO {
 
     @Override
     public String toString() {
-        return "RoomDTO{" +
-                "price=" + price +
+        return "RoomApiDTO{" +
+                "id=" + id +
+                ", price=" + price +
                 ", type=" + type +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", capacity=" + capacity +

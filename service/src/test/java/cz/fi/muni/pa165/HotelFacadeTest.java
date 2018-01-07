@@ -1,7 +1,8 @@
 package cz.fi.muni.pa165;
 
-import cz.fi.muni.pa165.dto.HotelDTO;
-import cz.fi.muni.pa165.dto.RoomDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelWithoutRoomsDTO;
+import cz.fi.muni.pa165.dto.Room.RoomApiDTO;
 import cz.fi.muni.pa165.facade.HotelFacade;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -107,20 +108,20 @@ public class HotelFacadeTest {
 
     @Test
     public void addRoom() {
-        HotelDTO hotel = new HotelDTO();
+        HotelWithoutRoomsDTO hotel = new HotelWithoutRoomsDTO();
         hotel.setName("Hotel");
         hotel.setAddress("Address");
         hotelFacade.create(hotel);
 
-        HotelDTO hilton = new HotelDTO();
+        HotelWithoutRoomsDTO hilton = new HotelWithoutRoomsDTO();
         hilton.setName("Hilton");
         hilton.setAddress("Address");
         hotelFacade.create(hilton);
 
-        hotel = hotelFacade.findByName("Hotel").get(0);
-        hilton = hotelFacade.findByName("Hilton").get(0);
+        hotel = hotelFacade.findByNameWithoutRooms("Hotel").get(0);
+        hilton = hotelFacade.findByNameWithoutRooms("Hilton").get(0);
 
-        RoomDTO room = new RoomDTO();
+        RoomApiDTO room = new RoomApiDTO();
         room.setRoomNumber("A12");
         room.setCapacity(2);
         room.setPrice(BigDecimal.TEN);

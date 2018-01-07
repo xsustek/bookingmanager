@@ -1,7 +1,8 @@
 package cz.fi.muni.pa165.restapi.controllers;
 
-import cz.fi.muni.pa165.dto.UserAuthDTO;
-import cz.fi.muni.pa165.dto.UserDTO;
+import cz.fi.muni.pa165.dto.User.UserAuthDTO;
+import cz.fi.muni.pa165.dto.User.UserDTO;
+import cz.fi.muni.pa165.dto.User.UserTokenDTO;
 import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.restapi.hateoas.UserResourceAssembler;
 import net.minidev.json.JSONObject;
@@ -56,15 +57,15 @@ public class UserControllerHateoas {
      */
     @RequestMapping(method = RequestMethod.GET)
     public final HttpEntity<Resources<Resource<UserDTO>>> getAllUsers(HttpServletRequest request) {
-                List<UserDTO> users = userFacade.getAllUsers();
-                List<Resource<UserDTO>> resourceList = new ArrayList<>();
+        List<UserDTO> users = userFacade.getAllUsers();
+        List<Resource<UserDTO>> resourceList = new ArrayList<>();
 
-                users.stream().forEach(h -> resourceList.add(userResourceAssembler.toResource(h)));
+        users.stream().forEach(h -> resourceList.add(userResourceAssembler.toResource(h)));
 
-                Resources<Resource<UserDTO>> userResource = new Resources<>(resourceList);
-                userResource.add(linkTo(UserControllerHateoas.class).withSelfRel());
+        Resources<Resource<UserDTO>> userResource = new Resources<>(resourceList);
+        userResource.add(linkTo(UserControllerHateoas.class).withSelfRel());
 
-                return new ResponseEntity<>(userResource, HttpStatus.OK);
+        return new ResponseEntity<>(userResource, HttpStatus.OK);
     }
 
     /**
@@ -77,12 +78,12 @@ public class UserControllerHateoas {
     public final HttpEntity<Resource<UserDTO>> getUser(@PathVariable long id, HttpServletRequest request) {
 
         try {
-                    Resource<UserDTO> userDTOResource = userResourceAssembler.toResource(userFacade.findById(id));
-                    return new ResponseEntity<>(userDTOResource, HttpStatus.OK);
-                } catch (Exception e) {
-                    logger.error("getUser exception", e);
-                }
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            Resource<UserDTO> userDTOResource = userResourceAssembler.toResource(userFacade.findById(id));
+            return new ResponseEntity<>(userDTOResource, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("getUser exception", e);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -93,14 +94,14 @@ public class UserControllerHateoas {
      * @return New and fresh just created new UserDTO entity
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<UserDTO>> registerUser(@RequestBody @Valid UserDTO user, BindingResult bindingResult) {
+    public final HttpEntity<Resource<UserDTO>> registerUser(@RequestBody @Valid UserDTO user,
+                                                            BindingResult bindingResult) {
         logger.debug("rest registerUser()");
 
         userFacade.registerUser(user, user.getPassword());
         Resource<UserDTO> resource = userResourceAssembler.toResource(userFacade.findById(user.getId()));
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
-
 
     /**
      * Method to find user by mail, in request . was problem, so replaced by * and subsequently replaced by dot
@@ -112,13 +113,13 @@ public class UserControllerHateoas {
     public final HttpEntity<Resource<UserDTO>> findeUserByMail(@PathVariable String mail, HttpServletRequest request) {
 
         try {
-                    mail = mail.replace("*", ".");
-                    Resource<UserDTO> userDTOResource = userResourceAssembler.toResource(userFacade.findByEmail(mail));
-                    return new ResponseEntity<>(userDTOResource, HttpStatus.OK);
-                } catch (Exception e) {
-                    logger.error("getUserByMail exception", e);
-                }
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            mail = mail.replace("*", ".");
+            Resource<UserDTO> userDTOResource = userResourceAssembler.toResource(userFacade.findByEmail(mail));
+            return new ResponseEntity<>(userDTOResource, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("getUserByMail exception", e);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -129,7 +130,8 @@ public class UserControllerHateoas {
      * @return Static token valid to the next year, just for app simplification, in real case it would be more difficult
      */
     @RequestMapping(value = "/auth", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<JSONObject> authenticateUser(@RequestBody UserAuthDTO dto, BindingResult bindingResult) throws UnsupportedEncodingException {
+    public final HttpEntity<JSONObject> authenticateUser(@RequestBody UserAuthDTO dto, BindingResult bindingResult)
+            throws UnsupportedEncodingException {
         logger.debug("rest authenticateUser()");
 
         UserDTO user = new UserDTO();
@@ -158,7 +160,8 @@ public class UserControllerHateoas {
      * @return True if is ADMIN, false otherwise
      */
     @RequestMapping(value = "/admin", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<JSONObject> isUserAdmin(@RequestBody @Valid UserDTO user, BindingResult bindingResult, HttpServletRequest request) {
+    public final HttpEntity<JSONObject> isUserAdmin(@RequestBody @Valid UserDTO user, BindingResult bindingResult,
+                                                    HttpServletRequest request) {
         logger.debug("rest isUserAdmin()");
 
         try {
@@ -173,5 +176,17 @@ public class UserControllerHateoas {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @RequestMapping(value = "/isSignIn", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public final Boolean isSignIn(@RequestBody UserTokenDTO token, BindingResult bindingResult, HttpServletRequest request) {
+        try {
+            if (jwtTokenUtils.isTokenValid(token.getToken())) {
+                return true;
+            }
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+        return false;
     }
 }

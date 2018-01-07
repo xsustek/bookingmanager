@@ -1,8 +1,8 @@
 package cz.fi.muni.pa165.service.facade;
 
-import cz.fi.muni.pa165.dto.HotelDTO;
-import cz.fi.muni.pa165.dto.HotelWithoutRoomsDTO;
-import cz.fi.muni.pa165.dto.RoomDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelWithoutRoomsDTO;
+import cz.fi.muni.pa165.dto.Room.RoomApiDTO;
 import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Room;
 import cz.fi.muni.pa165.facade.HotelFacade;
@@ -32,6 +32,13 @@ public class HotelFacadeImpl implements HotelFacade {
     }
 
     @Override
+    public void create(HotelWithoutRoomsDTO hotel) {
+        Hotel hotelEntity = beanMappingService.mapTo(hotel, Hotel.class);
+        hotelService.create(hotelEntity);
+        hotel.setId(hotelEntity.getId());
+    }
+
+    @Override
     public HotelWithoutRoomsDTO findByIdWithoutRooms(long id) {
         return beanMappingService.mapTo(hotelService.findById(id), HotelWithoutRoomsDTO.class);
     }
@@ -52,18 +59,15 @@ public class HotelFacadeImpl implements HotelFacade {
         hotelService.delete(beanMappingService.mapTo(hotel, Hotel.class));
     }
 
-    /**
-     * Deletes hotel from DB
-     *
-     * @param id hotel id to delete
-     */
+
     @Override
     public void delete(long id) {
         hotelService.delete(hotelService.findById(id));
     }
 
+
     @Override
-    public void addRoom(HotelDTO hotel, RoomDTO room) {
+    public void addRoom(HotelWithoutRoomsDTO hotel, RoomApiDTO room) {
         hotelService.addRoom(beanMappingService.mapTo(hotel, Hotel.class), beanMappingService.mapTo(room, Room.class));
     }
 

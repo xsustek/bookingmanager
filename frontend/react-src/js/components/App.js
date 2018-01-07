@@ -1,24 +1,14 @@
 import React from "react";
-import {
-    HashRouter as Router,
-    Route,
-    Link,
-    Redirect,
-    withRouter
-} from 'react-router-dom'
+import {HashRouter as Router, Link, Redirect, Route, withRouter} from 'react-router-dom'
 
 import AppStore from './../stores/AppStore';
-import HotelStore from './../stores/Hotel/HotelStore';
 
 import HomeScreen from './../screens/HomeScreen';
-import AboutScreen from './../screens/AboutScreen';
-import AdminScreen from './../screens/AdminScreen';
 import LoginScreen from './../screens/LoginScreen';
 import UsersScreen from "../screens/UsersScreen";
 import HotelScreen from "../screens/HotelScreen";
 import HotelDetailScreen from "../screens/HotelDetailScreen";
 import UsersDetailScreen from "../screens/UsersDetailScreen";
-import ReservationScreen from "../screens/ReservationScreen";
 
 const SignOutButton = withRouter(({ history }) => {
     return (
@@ -58,9 +48,9 @@ export default class App extends React.Component {
         this.init();
     }
 
-    init() {
+    async init() {
         this.setState({
-            isSignedIn: AppStore.isSignedIn()
+            isSignedIn: await AppStore.isSignedInAsync()
         });
     }
 

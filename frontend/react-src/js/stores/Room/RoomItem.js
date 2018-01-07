@@ -12,6 +12,15 @@ class RoomItem {
     }
 
     /**
+     * Returns number of the room.
+     *
+     * @returns {string}
+     */
+    getRoomNumber() {
+        return this.roomNumber;
+    }
+
+    /**
      * Returns the room item identifier.
      * 
      * @returns {number}

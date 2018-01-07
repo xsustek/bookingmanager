@@ -1,6 +1,6 @@
 package cz.fi.muni.pa165.service.facade;
 
-import cz.fi.muni.pa165.dto.UserDTO;
+import cz.fi.muni.pa165.dto.User.UserDTO;
 import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.service.BeanMappingService;

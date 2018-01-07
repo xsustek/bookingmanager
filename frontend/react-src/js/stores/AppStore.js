@@ -14,28 +14,41 @@ const AppStore = {
         console.log(credentials);
 
         // todo - login
-        const token = await ApiCallerHelper.callPost("http://localhost:8080/pa165/rest/users/auth", credentials);
+        try {
+            const token = await ApiCallerHelper.callPost("/pa165/rest/users/auth", credentials);
+            if (token.data) {
+                window.localStorage.setItem("userToken", token.data.token);
+                if (db.auth) {
+                    return true;
+                }
+                db.auth = true;
+            }
+            else {
+                window.localStorage.removeItem("userToken");
+                db.auth = false;
+            }
 
-        window.localStorage.setItem("userToken", token.data.token);
 
-        console.log(credentials);
-
-        // todo - login
-        if (credentials.email != 'admin@gmail.com' || credentials.password != '000000') {
-            return false;
-        }
-        if (db.auth) {
+            AppStore.emitChangeListener();
             return true;
+        } catch (e) {
+            console.log(e);
         }
-        db.auth = true;
-        AppStore.emitChangeListener();
-        return true;
+
+        return false;
     },
 
     signout() {
         db.auth = false;
         window.localStorage.removeItem("userToken");
         AppStore.emitChangeListener();
+    },
+
+    async isSignedInAsync() {
+        if (!db.auth) {
+            db.auth = (await ApiCallerHelper.callPost("/pa165/rest/users/isSignIn", {token: window.localStorage.getItem("userToken")})).data;
+        }
+        return db.auth;
     },
 
     isSignedIn() {

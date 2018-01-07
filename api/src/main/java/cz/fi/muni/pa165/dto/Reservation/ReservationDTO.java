@@ -1,4 +1,7 @@
-package cz.fi.muni.pa165.dto;
+package cz.fi.muni.pa165.dto.Reservation;
+
+import cz.fi.muni.pa165.dto.Room.RoomDTO;
+import cz.fi.muni.pa165.dto.User.UserDTO;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -119,19 +122,22 @@ public class ReservationDTO {
         if (!(o instanceof ReservationDTO)) return false;
         ReservationDTO that = (ReservationDTO) o;
         return Objects.equals(getUser(), that.getUser()) &&
-                Objects.equals(getRoom(), that.getRoom());
+                Objects.equals(getRoom(), that.getRoom()) &&
+                Objects.equals(getStartTime(), that.getStartTime()) &&
+                Objects.equals(getEndTime(), that.getEndTime());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getUser(), getRoom());
+        return Objects.hash(getUser(), getRoom(), getStartTime(), getEndTime());
     }
 
     @Override
     public String toString() {
         return "ReservationDTO{" +
-                "user=" + user +
+                "id=" + id +
+                ", user=" + user +
                 ", room=" + room +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +

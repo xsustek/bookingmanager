@@ -1,5 +1,6 @@
 import React from "react";
 import HotelStore from './../stores/Hotel/HotelStore';
+import RoomList from "../components/RoomList";
 
 export default class HotelDetailScreen extends React.Component {
 
@@ -38,7 +39,7 @@ export default class HotelDetailScreen extends React.Component {
                 <h2>{item.getName()}</h2>
 
                 <p>Address: {item.getAddress()}</p>
-                <p>Rooms: {item.getRooms().length}</p>
+                {item && <RoomList items={item.rooms} onRemove={this.handleOnRemove}/>}
             </div>
         );
     }

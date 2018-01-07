@@ -1,6 +1,6 @@
 package cz.fi.muni.pa165.restapi.hateoas;
 
-import cz.fi.muni.pa165.dto.HotelDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelDTO;
 import cz.fi.muni.pa165.restapi.controllers.HotelControllerHateoas;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;

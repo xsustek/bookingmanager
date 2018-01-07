@@ -1,9 +1,7 @@
-package cz.fi.muni.pa165.dto;
+package cz.fi.muni.pa165.dto.User;
 
 import cz.fi.muni.pa165.enums.Role;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,8 +24,6 @@ public class UserDTO {
     private String password;
 
     private String passwordHash;
-
-    private List<ReservationDTO> reservations = new ArrayList<>();
 
     public UserDTO() {
 
@@ -97,40 +93,32 @@ public class UserDTO {
         this.passwordHash = passwordHash;
     }
 
-    public List<ReservationDTO> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<ReservationDTO> reservations) {
-        this.reservations = reservations;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserDTO)) return false;
         UserDTO userDTO = (UserDTO) o;
         return Objects.equals(getFullName(), userDTO.getFullName()) &&
-                Objects.equals(getEmail(), userDTO.getEmail()) &&
-                Objects.equals(getPhoneNumber(), userDTO.getPhoneNumber()) &&
-                Objects.equals(getAddress(), userDTO.getAddress()) &&
-                getRole() == userDTO.getRole();
+                Objects.equals(getEmail(), userDTO.getEmail());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getFullName(), getEmail(), getPhoneNumber(), getAddress(), getRole());
+        return Objects.hash(getFullName(), getEmail());
     }
 
     @Override
     public String toString() {
         return "UserDTO{" +
-                "fullName='" + fullName + '\'' +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", address='" + address + '\'' +
                 ", role=" + role +
+                ", password='" + password + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
                 '}';
     }
 }
