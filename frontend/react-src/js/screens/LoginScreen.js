@@ -10,8 +10,8 @@ export default class LoginScreen extends React.Component {
         this.state = {
             error: false,
             redirectToReferrer: false,
-            formEmail: 'admin@gmail.com',
-            formPassword: '000000',
+            formEmail: 'karel@mail.com',
+            formPassword: 'password',
         };
 
         this.handleSignIn = this.handleSignIn.bind(this);

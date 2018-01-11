@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -30,6 +29,7 @@ public class JwtTokenUtils implements Serializable {
     private static final String CLAIM_KEY_ID = "id";
     private static final String CLAIM_KEY_CREATED = "created";
     private static final String CLAIM_KEY_ROLE = "role";
+    private static final String CLAIM_KEY_FULL_NAME = "fullName";
 
 
     @Inject
@@ -108,6 +108,7 @@ public class JwtTokenUtils implements Serializable {
         claims.put(CLAIM_KEY_ID, dto.getId());
         claims.put(CLAIM_KEY_CREATED, new Date());
         claims.put(CLAIM_KEY_ROLE, dto.getRole());
+        claims.put(CLAIM_KEY_FULL_NAME, dto.getFullName());
         return generateToken(claims);
     }
 

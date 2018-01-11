@@ -16,7 +16,7 @@ const SignOutButton = withRouter(({ history }) => {
         <a onClick={() => {
             AppStore.signout();
             history.push('/');
-        }}>Sign out</a>
+        }} style={{cursor: 'pointer'}}>Sign out</a>
     );
 });
 
@@ -39,7 +39,7 @@ export default class App extends React.Component {
         super(props);
 
         this.state = {
-            isSignedIn: false
+            authUser: AppStore.getAuthUser()
         };
 
         this.init = this.init.bind(this);
@@ -49,10 +49,10 @@ export default class App extends React.Component {
         this.init();
     }
 
-    async init() {
+    init() {
         this.setState({
-            isSignedIn: await AppStore.isSignedInAsync()
-        });
+            authUser: AppStore.getAuthUser()
+        })
     }
 
     componentWillUnmount() {
@@ -61,7 +61,7 @@ export default class App extends React.Component {
 
     render() {
 
-        const { isSignedIn } = this.state;
+        const { authUser } = this.state;
 
         return (
             <Router>
@@ -79,14 +79,19 @@ export default class App extends React.Component {
                             </div>
 
                             <div className="collapse navbar-collapse">
+
                                 <ul className="nav navbar-nav">
                                     {/* <li><Link to="/reservations">Reservations</Link></li> */}
                                     <li><Link to="/hotels">Hotels</Link></li>
                                     <li><Link to="/users">Users</Link></li>
                                 </ul>
+
                                 <ul className="nav navbar-nav navbar-right">
-                                    {isSignedIn
-                                        ? <li><SignOutButton /></li>
+                                    {!!authUser
+                                        ? [
+                                            <p className="text-muted navbar-text" key='welcome'>Signed in as {authUser.getName()}</p>,
+                                            <li key='logout'><SignOutButton /></li>
+                                        ]
                                         : <li><Link to="/login">Sign In</Link></li>}
                                 </ul>
                             </div>

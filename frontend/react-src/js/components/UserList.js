@@ -34,7 +34,7 @@ const UserList = ({ items, onRemove }) => (
                         {item.getAddress()}
                     </td>
                     <td>
-                        {item.getReservations().length}
+                        {/*{item.getReservations().length}*/}
                     </td>
                     {/* <td>
                         <button className="btn btn-danger btn-xs" onClick={() => onRemove(item.getId())}>DELETE</button>

@@ -1,3 +1,4 @@
+import AppStore from "./stores/AppStore";
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 
 export class ApiCallerHelper {
@@ -8,7 +9,7 @@ export class ApiCallerHelper {
      * @returns {AxiosResponse<any>}
      */
     static async callGet(url, config) {
-        let token = window.localStorage.getItem("userToken");
+        const token = AppStore.getToken();
         if (token && token.length > 0) {
             if (!config) {
                 config = {
@@ -26,7 +27,7 @@ export class ApiCallerHelper {
     }
 
     static async callPost(url, data, config) {
-        let token = window.localStorage.getItem("userToken");
+        const token = AppStore.getToken();
         if (token && token.length > 0) {
             if (!config) {
                 config = {
@@ -44,7 +45,7 @@ export class ApiCallerHelper {
     }
 
     static async callDelete(url, config) {
-        let token = window.localStorage.getItem("userToken");
+        const token = AppStore.getToken();
         if (token && token.length > 0) {
             if (!config) {
                 config = {
