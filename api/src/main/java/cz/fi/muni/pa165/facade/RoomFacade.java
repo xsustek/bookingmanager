@@ -58,4 +58,25 @@ public interface RoomFacade {
      * @param room Rooms to create.
      */
     public void create(RoomApiDTO room);
+    
+    /**
+     * Creates room.
+     *
+     * @param room Rooms to create.
+     */
+    public void create(RoomDTO room);
+    
+    /**
+     * Deletes room.
+     *
+     * @param id Id of a room to be deleted.
+     */
+    public void delete(long id);
+    
+    /**
+     * Deletes room.
+     *
+     * @param room Rooms to be deleted.
+     */
+    public void delete(RoomApiDTO room);
 }

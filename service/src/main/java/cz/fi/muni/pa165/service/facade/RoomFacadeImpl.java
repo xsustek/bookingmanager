@@ -66,4 +66,21 @@ public class RoomFacadeImpl implements RoomFacade {
         roomService.create(roomEntity);
         room.setId(roomEntity.getId());
     }
+    
+    @Override
+    public void create(RoomDTO room) {
+        Room roomEntity = beanMappingService.mapTo(room, Room.class);
+        roomService.create(roomEntity);
+        room.setId(roomEntity.getId());
+    }
+
+    @Override
+    public void delete(long id) {
+        roomService.remove(id);
+    }
+
+    @Override
+    public void delete(RoomApiDTO room) {
+        roomService.remove(beanMappingService.mapTo(room, Room.class));
+    }
 }

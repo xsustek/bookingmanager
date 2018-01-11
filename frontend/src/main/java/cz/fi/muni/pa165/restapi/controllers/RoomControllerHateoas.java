@@ -70,4 +70,13 @@ public class RoomControllerHateoas {
         Resource<RoomApiDTO> resource = roomResourceAssembler.toResource(roomFacade.findById(room.getId()));
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
+    
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public final void deleteRoom(@PathVariable("id") long id) {
+        try {
+            roomFacade.delete(id);
+        } catch (Exception ex) {
+            logger.error("delete reservation exception", ex);
+        }
+    }
 }
