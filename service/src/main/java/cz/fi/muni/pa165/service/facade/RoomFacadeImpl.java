@@ -26,9 +26,9 @@ public class RoomFacadeImpl implements RoomFacade {
     private BeanMappingService beanMappingService;
 
     @Override
-    public RoomDTO findById(Long id) {
+    public RoomApiDTO findById(Long id) {
         Room room = roomService.findById(id);
-        return beanMappingService.mapTo(room, RoomDTO.class);
+        return beanMappingService.mapTo(room, RoomApiDTO.class);
     }
 
     @Override
@@ -55,13 +55,13 @@ public class RoomFacadeImpl implements RoomFacade {
     }
 
     @Override
-    public List<RoomDTO> findAll() {
+    public List<RoomApiDTO> findAll() {
         List<Room> rooms = roomService.findAll();
-        return beanMappingService.mapTo(rooms, RoomDTO.class);
+        return beanMappingService.mapTo(rooms, RoomApiDTO.class);
     }
 
     @Override
-    public void create(RoomDTO room) {
+    public void create(RoomApiDTO room) {
         Room roomEntity = beanMappingService.mapTo(room, Room.class);
         roomService.create(roomEntity);
         room.setId(roomEntity.getId());

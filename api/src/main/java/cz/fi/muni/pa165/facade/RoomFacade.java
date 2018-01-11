@@ -15,7 +15,7 @@ public interface RoomFacade {
      * @param id Room's ID.
      * @return The room with the given ID.
      */
-    RoomDTO findById(Long id);
+    RoomApiDTO findById(Long id);
 
     /**
      * Returns collection of rooms for the given type.
@@ -50,12 +50,12 @@ public interface RoomFacade {
      * Returns collection of all rooms.
      * @return The list of all rooms.
      */
-    List<RoomDTO> findAll();
+    List<RoomApiDTO> findAll();
 
     /**
      * Creates room.
      *
      * @param room Rooms to create.
      */
-    public void create(RoomDTO room);
+    public void create(RoomApiDTO room);
 }
