@@ -2,6 +2,7 @@ package cz.fi.muni.pa165.restapi.controllers;
 
 import cz.fi.muni.pa165.dto.ReservationDTO;
 import cz.fi.muni.pa165.facade.ReservationFacade;
+import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.restapi.hateoas.ReservationResourceAssembler;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,9 @@ public class ReservationControllerHateoas {
 
     @Inject
     private ReservationFacade reservationFacade;
+    
+    @Inject
+    private UserFacade userFacade;
     
     @Inject
     private ReservationResourceAssembler reservationResourceAssembler;
@@ -82,4 +86,22 @@ public class ReservationControllerHateoas {
         }
     }
 
+    /**
+     * Finds and returns all reservation of a user specified by id.
+     * 
+     * @param id Id of a user
+     * @return list of reservations of given user
+     */
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final HttpEntity<Resources<Resource<ReservationDTO>>> getReservationsOfUser(@PathVariable("id") long id) {
+        List<ReservationDTO> reservations = userFacade.findById(id).getReservations();
+        List<Resource<ReservationDTO>> resourceList = new ArrayList<>();
+
+        reservations.stream().forEach(h -> resourceList.add(reservationResourceAssembler.toResource(h)));
+
+        Resources<Resource<ReservationDTO>> reservationResources = new Resources<>(resourceList);
+        reservationResources.add(linkTo(ReservationControllerHateoas.class).withSelfRel());
+
+        return new ResponseEntity<>(reservationResources, HttpStatus.OK);
+    }
 }
