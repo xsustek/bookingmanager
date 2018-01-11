@@ -18,8 +18,9 @@ import java.io.IOException;
 
 @WebFilter(
         urlPatterns = {"/rest/hotels/create", "/rest/hotels/edit", "/rest/hotels/delete",
-                        "/rest/users", "/rest/users/{id}",
-                        "/rest/reservation/", "/rest/reservation/{id}"})
+                "/rest/users", "/rest/users/{id}",
+                "/rest/reservation/", "/rest/reservation/{id}",
+                "/rest/rooms/create", "/rest/rooms/create/delete/{id}", "/rest/rooms/{id}/reservations"})
 public class AdminAuthFilter implements Filter {
 
     final static Logger log = LoggerFactory.getLogger(AdminAuthFilter.class);
