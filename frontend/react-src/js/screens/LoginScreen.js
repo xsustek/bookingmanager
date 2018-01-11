@@ -107,6 +107,12 @@ export default class LoginScreen extends React.Component {
                                     <i className="fa fa-btn fa-sign-in"></i> Sign In
                                 </button>
                             </div>
+
+                            <div className="form-group">
+                                <p className="help-block"><small>sample users</small></p>
+                                <p className="help-block"><strong>ADMIN:</strong><br/>karel@mail.com<br/>password</p>
+                                <p className="help-block"><strong>USER:</strong><br/>ivan@mail.com<br/>password</p>
+                            </div>
                         </form>
                     </div>
                 </div>

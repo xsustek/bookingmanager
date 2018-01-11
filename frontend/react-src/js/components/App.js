@@ -83,8 +83,8 @@ export default class App extends React.Component {
 
                                 <ul className="nav navbar-nav">
                                     <li><Link to="/reservations">Reservations</Link></li>
-                                    <li><Link to="/hotels">Hotels</Link></li>
-                                    <li><Link to="/users">Users</Link></li>
+                                    {/*<li><Link to="/hotels">Hotels</Link></li>*/}
+                                    {/*<li><Link to="/users">Users</Link></li>*/}
                                 </ul>
 
                                 <ul className="nav navbar-nav navbar-right">
@@ -98,6 +98,22 @@ export default class App extends React.Component {
                             </div>
                         </div>
                     </nav>
+
+                    {!!authUser && authUser.isAdmin() && (
+                        <nav className="navbar navbar-inverse navbar-static-top">
+                            <div className="container">
+                                <div className="collapse navbar-collapse">
+                                    <ul className="nav navbar-nav">
+                                        <p className="navbar-text">ADMINISTRATION</p>
+                                        {/*<li><Link to="/reservations">Reservations</Link></li>*/}
+                                        <li><Link to="/hotels">Hotels</Link></li>
+                                        <li><Link to="/users">Users</Link></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    )}
+
                     <div className="container">
                         <Route exact path="/" component={HomeScreen} />
                         <Route exact path="/reservations" component={ReservationScreen} />
