@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -153,7 +155,17 @@ public class JwtTokenUtils implements Serializable {
         return claims.get("role");
     }
 
-    public UserDTO getUser(String token) {
+    public UserDTO getUser(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if(token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("invalid token");
+        }
+
+        token = token.split(" ")[1];
+        if(token == null || token.isEmpty()){
+            throw new IllegalArgumentException("invalid token format");
+        }
+
         Claims claims = getClaimsFromToken(token);
         Integer id = (Integer) claims.get(CLAIM_KEY_ID);
         return userFacade.findById(Long.valueOf(id));

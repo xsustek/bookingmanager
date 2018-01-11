@@ -9,6 +9,7 @@ import UsersScreen from "../screens/UsersScreen";
 import HotelScreen from "../screens/HotelScreen";
 import HotelDetailScreen from "../screens/HotelDetailScreen";
 import UsersDetailScreen from "../screens/UsersDetailScreen";
+import RoomDetailScreen from "../screens/RoomDetailScreen";
 
 const SignOutButton = withRouter(({ history }) => {
     return (
@@ -98,6 +99,7 @@ export default class App extends React.Component {
                         <PrivateRoute path="/hotels/:id" component={HotelDetailScreen} />
                         <PrivateRoute exact path="/users" component={UsersScreen} />
                         <PrivateRoute path="/users/:id" component={UsersDetailScreen} />
+                        <PrivateRoute path="/rooms/:id" component={RoomDetailScreen} />
                         {/* <Route path="/about" component={AboutScreen} /> */}
 
                         <Route path="/login" component={LoginScreen} />

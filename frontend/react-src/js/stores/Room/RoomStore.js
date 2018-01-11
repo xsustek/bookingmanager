@@ -2,12 +2,13 @@ import axios from 'axios';
 import Bullet from 'bullet-pubsub';
 import RoomItem from './RoomItem';
 import RoomConstants from './RoomConstants';
+import { ApiCallerHelper } from '../../ApiCallerHelper';
 
 const RoomStore = {
 
     async getItemById(id) {
         try {
-            return await axios('/api/v1/rooms/' + id);
+            return await ApiCallerHelper.callGet('/api/v1/rooms/' + id);
         } catch (e) {
             //
         }
@@ -15,7 +16,7 @@ const RoomStore = {
 
     async getAllItems() {
         try {
-            return await axios('/api/v1/rooms');
+            return await ApiCallerHelper.callGet('/api/v1/rooms');
         } catch (e) {
             //
         }
