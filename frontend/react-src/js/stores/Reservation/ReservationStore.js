@@ -1,12 +1,13 @@
 import { ApiCallerHelper } from "../../ApiCallerHelper";
+import Bullet from "bullet-pubsub";
 import ReservationItem from "./ReservationItem";
 import ReservationConstants from "./ReservationConstants";
 
 const ReservationStore = {
     async getItemById(id) {
         try {
-            const reservation = ApiCallerHelper.callGet("/pa165/rest/reservations/" + id);
-            return Object.assign(new ReservationItem, reservation.data);
+            const reservation = await ApiCallerHelper.callGet("/pa165/rest/reservations/" + id);
+            return Object.assign(ReservationItem, reservation.data);
         } catch(e) {
             console.log(e);
         }
@@ -14,11 +15,45 @@ const ReservationStore = {
 
     async getAllItems() {
         try {
-            const reservations = ApiCallerHelper.callGet("/pa165/rest/reservations");
-            return ApiCallerHelper.mapTo(new ReservationItem, reservations.data._embedded);
+            const reservations = await ApiCallerHelper.callGet("/pa165/rest/reservations");
+            return ApiCallerHelper.mapTo(ReservationItem, reservations.data._embedded);
         } catch(e) {
             console.log(e);
         }
+    },
+
+    async getUserReservationItem() {
+        try {
+            const reservations = await ApiCallerHelper.callGet("/pa165/rest/reservations/user");
+            return ApiCallerHelper.mapTo(ReservationItem, reservations.data._embedded.reservationDTOList);
+        } catch(e) {
+            console.log(e);
+        }
+    },
+
+    /**
+     * Emits the change event listener.
+     */
+    emitChangeListener() {
+        Bullet.trigger(ReservationConstants.EVENT_CHANGE);
+    },
+
+    /**
+     * Adds the change event listener.
+     *
+     * @param {Function} callback
+     */
+    addChangeListener(callback) {
+        Bullet.on(ReservationConstants.EVENT_CHANGE, callback);
+    },
+
+    /**
+     * Removes the change event listener.
+     *
+     * @param {Function} callback
+     */
+    removeChangeListener(callback) {
+        Bullet.off(ReservationConstants.EVENT_CHANGE, callback);
     },
 
     dispatchIndex: (payload) => {

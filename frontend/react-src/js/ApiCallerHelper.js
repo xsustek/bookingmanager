@@ -62,6 +62,6 @@ export class ApiCallerHelper {
     }
 
     static mapTo(target, collection) {
-        return collection.map(d => Object.assign(target, d));
+        return collection.map(d => Object.assign(Object.create(target.prototype), d));
     }
 }
