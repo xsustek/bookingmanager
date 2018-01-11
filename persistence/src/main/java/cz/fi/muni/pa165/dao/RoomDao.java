@@ -1,6 +1,8 @@
 package cz.fi.muni.pa165.dao;
 
+import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Room;
+import cz.fi.muni.pa165.enums.RoomType;
 
 import java.util.List;
 
@@ -46,4 +48,19 @@ public interface RoomDao {
      * @return Collection of rooms.
      */
     List<Room> findAll();
+
+    /**
+     * Finds all rooms by Room type.
+     *
+     * @return Collection of rooms.
+     */
+    List<Room> findByType(RoomType type);
+
+
+    /**
+     * Finds all rooms by Hotel.
+     *
+     * @return Collection of rooms.
+     */
+    List<Room> findByHotel(Hotel hotel);
 }

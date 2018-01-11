@@ -30,20 +30,12 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> findByType(RoomType type) {
-        return roomDao
-                .findAll()
-                .stream()
-                .filter(room -> room.getType().equals(type))
-                .collect(Collectors.toList());
+        return roomDao.findByType(type);
     }
 
     @Override
     public List<Room> findByHotel(Hotel hotel) {
-        return roomDao
-                .findAll()
-                .stream()
-                .filter(room -> room.getHotel().equals(hotel))
-                .collect(Collectors.toList());
+        return roomDao.findByHotel(hotel);
     }
 
     @Override
