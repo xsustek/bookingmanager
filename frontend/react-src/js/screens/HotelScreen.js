@@ -67,7 +67,7 @@ export default class HotelScreen extends React.Component {
     validateForm() {
         const { formName, formAddress } = this.state;
 
-        if (formName.trim().length <= 3) {
+        if (formName.trim().length < 3) {
             this.setState({
                 errors: {
                     name: 'The name must be at least 3 characters.'
@@ -76,7 +76,7 @@ export default class HotelScreen extends React.Component {
             return false;
         }
 
-        if (formAddress.trim().length <= 3) {
+        if (formAddress.trim().length < 3) {
             this.setState({
                 errors: {
                     address: 'The address must be at least 3 characters.'

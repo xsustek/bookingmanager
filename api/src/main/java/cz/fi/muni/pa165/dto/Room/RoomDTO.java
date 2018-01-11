@@ -1,7 +1,6 @@
 package cz.fi.muni.pa165.dto.Room;
 
-import cz.fi.muni.pa165.dto.Hotel.HotelDTO;
-import cz.fi.muni.pa165.dto.Reservation.ReservationDTO;
+import cz.fi.muni.pa165.dto.Reservation.ReservationWithoutRoomDTO;
 import cz.fi.muni.pa165.enums.RoomType;
 
 import java.math.BigDecimal;
@@ -21,9 +20,7 @@ public class RoomDTO {
 
     private int capacity;
 
-    private Set<ReservationDTO> reservations = new HashSet<>();
-
-    private HotelDTO hotel;
+    private Set<ReservationWithoutRoomDTO> reservations = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -57,20 +54,12 @@ public class RoomDTO {
         this.capacity = capacity;
     }
 
-    public Set<ReservationDTO> getReservations() {
+    public Set<ReservationWithoutRoomDTO> getReservations() {
         return reservations;
     }
 
-    public void setReservations(Set<ReservationDTO> reservations) {
+    public void setReservations(Set<ReservationWithoutRoomDTO> reservations) {
         this.reservations = reservations;
-    }
-
-    public HotelDTO getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(HotelDTO hotel) {
-        this.hotel = hotel;
     }
 
     public String getRoomNumber() {
@@ -87,14 +76,13 @@ public class RoomDTO {
         if (!(o instanceof RoomDTO)) return false;
         RoomDTO roomDTO = (RoomDTO) o;
         return getType() == roomDTO.getType() &&
-                Objects.equals(getRoomNumber(), roomDTO.getRoomNumber()) &&
-                Objects.equals(getHotel(), roomDTO.getHotel());
+                Objects.equals(getRoomNumber(), roomDTO.getRoomNumber());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getType(), getRoomNumber(), getHotel());
+        return Objects.hash(getType(), getRoomNumber());
     }
 
     @Override
@@ -104,7 +92,6 @@ public class RoomDTO {
                 ", type=" + type +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", capacity=" + capacity +
-                ", hotel=" + hotel +
                 '}';
     }
 }

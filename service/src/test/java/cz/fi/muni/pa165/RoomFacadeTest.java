@@ -1,5 +1,6 @@
 package cz.fi.muni.pa165;
 
+import cz.fi.muni.pa165.dto.Room.RoomApiDTO;
 import cz.fi.muni.pa165.dto.Room.RoomDTO;
 import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Reservation;
@@ -80,7 +81,7 @@ public class RoomFacadeTest {
 
     @Test
     public void findById() {
-        RoomDTO roomDTO = roomFacade.findById(room.getId());
+        RoomApiDTO roomDTO = roomFacade.findById(room.getId());
 
         assertThat(roomDTO.getRoomNumber()).isEqualTo("7C");
         assertThat(roomDTO.getType()).isEqualTo(RoomType.KING);
@@ -90,7 +91,7 @@ public class RoomFacadeTest {
 
     @Test
     public void findAll() {
-        List<RoomDTO> roomsDTO = roomFacade.findAll();
+        List<RoomApiDTO> roomsDTO = roomFacade.findAll();
 
         assertThat(roomsDTO).isNotEmpty().hasSize(2);
     }

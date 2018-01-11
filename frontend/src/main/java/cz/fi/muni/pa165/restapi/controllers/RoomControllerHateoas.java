@@ -1,30 +1,28 @@
 package cz.fi.muni.pa165.restapi.controllers;
 
-import cz.fi.muni.pa165.dto.ReservationDTO;
-import cz.fi.muni.pa165.dto.RoomApiDTO;
+import cz.fi.muni.pa165.dto.Reservation.ReservationDTO;
+import cz.fi.muni.pa165.dto.Room.RoomApiDTO;
 import cz.fi.muni.pa165.facade.ReservationFacade;
 import cz.fi.muni.pa165.facade.RoomFacade;
 import cz.fi.muni.pa165.restapi.hateoas.ReservationResourceAssembler;
 import cz.fi.muni.pa165.restapi.hateoas.RoomResourceAssembler;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Inject;
-import javax.validation.Valid;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**
  * @author Viktoria Tibenska
@@ -39,13 +37,13 @@ public class RoomControllerHateoas {
     
     @Inject
     private ReservationFacade reservationFacade;
-    
+
     @Inject
     private RoomResourceAssembler roomResourceAssembler;
     
     @Inject
     private ReservationResourceAssembler reservationResourceAssembler;
-    
+
     @RequestMapping(method = RequestMethod.GET)
     public final HttpEntity<Resources<Resource<RoomApiDTO>>> getAllRooms(){
         List<RoomApiDTO> rooms = roomFacade.findAll();
@@ -88,17 +86,17 @@ public class RoomControllerHateoas {
             logger.error("delete reservation exception", ex);
         }
     }
-    
+
     /**
      * Finds and returns reservations of a room specified by its ID.
-     * 
+     *
      * @param id Id of a room
      * @return List of ReservationDTOs
      */
     @RequestMapping(value = "/{id}/reservations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final HttpEntity<Resources<Resource<ReservationDTO>>> getReservationsOfRoom(@PathVariable("id") long id) {
         RoomApiDTO room = roomFacade.findById(id);
-        
+
         List<ReservationDTO> reservations = reservationFacade.getReservationsByRoom(room);
         List<Resource<ReservationDTO>> resourceList = new ArrayList<>();
 

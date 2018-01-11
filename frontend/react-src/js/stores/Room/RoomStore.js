@@ -8,17 +8,19 @@ const RoomStore = {
 
     async getItemById(id) {
         try {
-            return await ApiCallerHelper.callGet('/api/v1/rooms/' + id);
+            let room = await ApiCallerHelper.callGet('/pa165/rest/rooms/' + id);
+            return Object.assign(new RoomItem, room.data);
         } catch (e) {
-            //
+            console.log(e);
         }
     },
 
     async getAllItems() {
         try {
-            return await ApiCallerHelper.callGet('/api/v1/rooms');
+            let rooms = await ApiCallerHelper.callGet('/pa165/rest/rooms');
+            return ApiCallerHelper.mapTo(new RoomItem, rooms.data._embedded.roomApiDTOList);
         } catch (e) {
-            //
+            console.log(e);
         }
     },
 
