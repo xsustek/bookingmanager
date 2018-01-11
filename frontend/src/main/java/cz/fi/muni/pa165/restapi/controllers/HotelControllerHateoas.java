@@ -17,14 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +51,13 @@ public class HotelControllerHateoas {
     @Inject
     private RoomResourceAssembler roomResourceAssembler;
 
+    /**
+     * Server endpoint to get all hotels in DB, does not require authentication
+     *
+     * @return List of all HotelDTOs from system
+     */
     @RequestMapping(method = RequestMethod.GET)
-    public final HttpEntity<Resources<Resource<HotelWithoutRoomsDTO>>> getAllHotels(HttpServletRequest request) {
-
-
+    public final HttpEntity<Resources<Resource<HotelWithoutRoomsDTO>>> getAllHotels() {
         List<HotelWithoutRoomsDTO> hotels = hotelFacade.findAllWithoutRooms();
         List<Resource<HotelWithoutRoomsDTO>> resourceList = new ArrayList<>();
 
@@ -71,12 +69,24 @@ public class HotelControllerHateoas {
         return new ResponseEntity<>(hotelResources, HttpStatus.OK);
     }
 
+    /**
+     * Server endpoint to get single hotel by it's ID, does not require authentication
+     *
+     * @param id ID of the hotel we are looking for
+     * @return Single instance of HotelDTO entity
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<HotelDTO>> getHotel(@PathVariable("id") long id, HttpServletRequest request) {
+    public final HttpEntity<Resource<HotelDTO>> getHotel(@PathVariable("id") long id) {
         Resource<HotelDTO> resource = hotelResourceAssembler.toResource(hotelFacade.findById(id));
         return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 
+    /**
+     * Server endpoint to get all rooms of specified hotel, does not require authentication
+     *
+     * @param id ID of the hotel
+     * @return List of RoomDTOs from system
+     */
     @RequestMapping(value = "/room/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final HttpEntity<Resources<Resource<RoomApiDTO>>> getHotelRooms(@PathVariable("id") long id) {
         HotelWithoutRoomsDTO hotelWithoutRoomsDTO = new HotelWithoutRoomsDTO();
@@ -92,20 +102,40 @@ public class HotelControllerHateoas {
         return new ResponseEntity<>(roomResource, HttpStatus.OK);
     }
 
+    /**
+     * Server endpoint for creating new Hotel, does require authentication (Admin privileges)
+     *
+     * @param hotel         HotelDTO with information
+     * @param bindingResult
+     * @return New created HotelDTO and OK status
+     */
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<HotelWithoutRoomsDTO>> createHotel(@RequestBody @Valid HotelDTO hotel, BindingResult bindingResult, HttpServletRequest request) {
-
+    public final HttpEntity<Resource<HotelWithoutRoomsDTO>> createHotel(@RequestBody @Valid HotelDTO hotel, BindingResult bindingResult) {
         logger.debug("rest createHotel()");
-
-        hotelFacade.create(hotel);
-        Resource<HotelWithoutRoomsDTO> resource = hotelWithoutRoomResourceAssembler.toResource(hotelFacade.findByIdWithoutRooms(hotel.getId()));
-        return new ResponseEntity<>(resource, HttpStatus.OK);
+        try {
+            hotelFacade.create(hotel);
+            Resource<HotelWithoutRoomsDTO> resource = hotelWithoutRoomResourceAssembler.toResource(hotelFacade.findByIdWithoutRooms(hotel.getId()));
+            return new ResponseEntity<>(resource, HttpStatus.OK);
+        } catch (Exception ex) {
+            logger.error("delete reservation exception", ex);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-
+    /**
+     * Server endpoint for deleting hotel from system, does require authentication (Admin privileges)
+     *
+     * @param id ID of the hotel
+     * @return HttpStatus dependable if successful or not
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public final HttpEntity<HttpStatus> deleteHotel(@PathVariable("id") long id, HttpServletRequest request) {
-        hotelFacade.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public final HttpEntity<HttpStatus> deleteHotel(@PathVariable("id") long id) {
+        try {
+            hotelFacade.delete(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception ex) {
+            logger.error("delete reservation exception", ex);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

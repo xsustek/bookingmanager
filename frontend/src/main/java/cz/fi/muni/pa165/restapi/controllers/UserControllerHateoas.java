@@ -15,11 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -165,8 +161,7 @@ public class UserControllerHateoas {
         logger.debug("rest isUserAdmin()");
 
         try {
-            String token = request.getHeader("Authorization");
-            if (jwtTokenUtils.isTokenValid(token) && jwtTokenUtils.checkRole(token)) {
+            if (jwtTokenUtils.isTokenValid(request) && jwtTokenUtils.checkRole(request)) {
                 JSONObject json = new JSONObject();
                 json.put("isAdmin", userFacade.isAdmin(user));
                 return new ResponseEntity<>(json, HttpStatus.OK);

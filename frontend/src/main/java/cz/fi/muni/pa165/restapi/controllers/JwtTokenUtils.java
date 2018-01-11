@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -38,7 +37,23 @@ public class JwtTokenUtils implements Serializable {
     /**
      * Check from token, if token can be refreshed
      *
-     * @param token token to be used
+     * @param request HttpServletRequest request to be used to get token
+     * @return True if token can be refreshed False otherwise
+     */
+    public Boolean isTokenValid(HttpServletRequest request) {
+        String token = getTokenFromRequest(request);
+
+        try {
+            return !isTokenExpired(token);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Token is invalid");
+        }
+    }
+
+    /**
+     * Check from token, if token can be refreshed
+     *
+     * @param token token as a string
      * @return True if token can be refreshed False otherwise
      */
     public Boolean isTokenValid(String token) {
@@ -139,7 +154,8 @@ public class JwtTokenUtils implements Serializable {
      *
      * @return expiration time
      */
-    public Boolean checkRole(String token) {
+    public Boolean checkRole(HttpServletRequest request) {
+        String token = getTokenFromRequest(request);
         Claims claims = getClaimsFromToken(token);
 
         logger.error(claims.toString());
@@ -147,7 +163,15 @@ public class JwtTokenUtils implements Serializable {
         return claims.get("role").equals("ADMIN");
     }
 
-    public Object getRole(String token) {
+    /**
+     * Method for getting user Role from token
+     *
+     * @param request HttpServletRequest with token
+     * @return Role of the user
+     */
+    public Object getRole(HttpServletRequest request) {
+        String token = getTokenFromRequest(request);
+
         Claims claims = getClaimsFromToken(token);
 
         logger.error(claims.toString());
@@ -155,23 +179,63 @@ public class JwtTokenUtils implements Serializable {
         return claims.get("role");
     }
 
+    /**
+     * Method for getting user Role from token
+     *
+     * @param token JWT token as string
+     * @return Role of the user
+     */
+    public Object getRole(String token) {
+
+        Claims claims = getClaimsFromToken(token);
+
+        logger.error(claims.toString());
+
+        return claims.get("role");
+    }
+
+    /**
+     * Method for getting user from token
+     *
+     * @param request HttpServletRequest with token
+     * @return UserDTO if user was found
+     */
     public UserDTO getUser(HttpServletRequest request) {
         return userFacade.findById(getUserID(request));
     }
 
+    /**
+     * Method for getting user's ID from token
+     *
+     * @param request HttpServletRequest with token
+     * @return ID of the user from token
+     */
     public Long getUserID(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if(token == null || token.isEmpty()) {
-            throw new IllegalArgumentException("invalid token");
-        }
-
-        token = token.split(" ")[1];
-        if(token == null || token.isEmpty()){
-            throw new IllegalArgumentException("invalid token format");
-        }
+        String token = getTokenFromRequest(request);
 
         Claims claims = getClaimsFromToken(token);
         Integer id = (Integer) claims.get(CLAIM_KEY_ID);
         return Long.valueOf(id);
     }
+
+    /**
+     * Private method for getting token from HttpServletRequest
+     *
+     * @param request HttpServletRequest with token
+     * @return token as string
+     */
+    private String getTokenFromRequest(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("invalid token");
+        }
+
+        token = token.split(" ")[1];
+        if (token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("invalid token format");
+        }
+
+        return token;
+    }
+
 }
