@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.facade;
 
 import cz.fi.muni.pa165.dto.ReservationDTO;
+import cz.fi.muni.pa165.dto.RoomApiDTO;
 import cz.fi.muni.pa165.dto.RoomDTO;
 
 import java.time.LocalDateTime;
@@ -59,4 +60,6 @@ public interface ReservationFacade {
      * @return List of all reservations of a room
      */
     List<ReservationDTO> getReservationsByRoom(RoomDTO room);
+    
+    List<ReservationDTO> getReservationsByRoom(RoomApiDTO room);
 }

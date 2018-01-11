@@ -1,7 +1,10 @@
 package cz.fi.muni.pa165.restapi.controllers;
 
+import cz.fi.muni.pa165.dto.ReservationDTO;
 import cz.fi.muni.pa165.dto.RoomApiDTO;
+import cz.fi.muni.pa165.facade.ReservationFacade;
 import cz.fi.muni.pa165.facade.RoomFacade;
+import cz.fi.muni.pa165.restapi.hateoas.ReservationResourceAssembler;
 import cz.fi.muni.pa165.restapi.hateoas.RoomResourceAssembler;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +38,13 @@ public class RoomControllerHateoas {
     private RoomFacade roomFacade;
     
     @Inject
+    private ReservationFacade reservationFacade;
+    
+    @Inject
     private RoomResourceAssembler roomResourceAssembler;
+    
+    @Inject
+    private ReservationResourceAssembler reservationResourceAssembler;
     
     @RequestMapping(method = RequestMethod.GET)
     public final HttpEntity<Resources<Resource<RoomApiDTO>>> getAllRooms(){
@@ -78,5 +87,26 @@ public class RoomControllerHateoas {
         } catch (Exception ex) {
             logger.error("delete reservation exception", ex);
         }
+    }
+    
+    /**
+     * Finds and returns reservations of a room specified by its ID.
+     * 
+     * @param id Id of a room
+     * @return List of ReservationDTOs
+     */
+    @RequestMapping(value = "/{id}/reservations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final HttpEntity<Resources<Resource<ReservationDTO>>> getReservationsOfRoom(@PathVariable("id") long id) {
+        RoomApiDTO room = roomFacade.findById(id);
+        
+        List<ReservationDTO> reservations = reservationFacade.getReservationsByRoom(room);
+        List<Resource<ReservationDTO>> resourceList = new ArrayList<>();
+
+        reservations.stream().forEach(h -> resourceList.add(reservationResourceAssembler.toResource(h)));
+
+        Resources<Resource<ReservationDTO>> reservationResources = new Resources<>(resourceList);
+        reservationResources.add(linkTo(ReservationControllerHateoas.class).withSelfRel());
+
+        return new ResponseEntity<>(reservationResources, HttpStatus.OK);
     }
 }

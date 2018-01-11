@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.service.facade;
 
 import cz.fi.muni.pa165.dto.ReservationDTO;
+import cz.fi.muni.pa165.dto.RoomApiDTO;
 import cz.fi.muni.pa165.dto.RoomDTO;
 import cz.fi.muni.pa165.entity.Reservation;
 import cz.fi.muni.pa165.entity.Room;
@@ -60,6 +61,13 @@ public class ReservationFacadeImpl implements ReservationFacade {
 
     @Override
     public List<ReservationDTO> getReservationsByRoom(RoomDTO room) {
+        return beanMappingService
+                .mapTo(reservationService.getReservationsByRoom(beanMappingService.mapTo(room, Room.class)),
+                        ReservationDTO.class);
+    }
+
+    @Override
+    public List<ReservationDTO> getReservationsByRoom(RoomApiDTO room) {
         return beanMappingService
                 .mapTo(reservationService.getReservationsByRoom(beanMappingService.mapTo(room, Room.class)),
                         ReservationDTO.class);
