@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.service;
 
 import cz.fi.muni.pa165.dao.UserDao;
+import cz.fi.muni.pa165.entity.Reservation;
 import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.enums.Role;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -65,6 +66,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void remove(User user) {
         userDao.remove(user);
+    }
+
+    @Override
+    public List<Reservation> findUserReservation(Long id) {
+        return findUserById(id).getReservations();
     }
 
     private String hashPassword(String unHashedPassword) {

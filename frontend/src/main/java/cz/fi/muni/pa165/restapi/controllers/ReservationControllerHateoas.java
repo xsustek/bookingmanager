@@ -95,7 +95,7 @@ public class ReservationControllerHateoas {
      */
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final HttpEntity<Resources<Resource<ReservationDTO>>> getReservationsOfUser(@PathVariable("id") long id) {
-        List<ReservationDTO> reservations = userFacade.findById(id).getReservations();
+        List<ReservationDTO> reservations = userFacade.findUserReservations(id);
         List<Resource<ReservationDTO>> resourceList = new ArrayList<>();
 
         reservations.stream().forEach(h -> resourceList.add(reservationResourceAssembler.toResource(h)));
