@@ -1,5 +1,6 @@
 package cz.fi.muni.pa165.dto.Room;
 
+import cz.fi.muni.pa165.dto.Hotel.HotelDTO;
 import cz.fi.muni.pa165.dto.Reservation.ReservationWithoutRoomDTO;
 import cz.fi.muni.pa165.enums.RoomType;
 
@@ -21,6 +22,8 @@ public class RoomDTO {
     private int capacity;
 
     private Set<ReservationWithoutRoomDTO> reservations = new HashSet<>();
+
+    private HotelDTO hotel;
 
     public Long getId() {
         return id;
@@ -62,6 +65,14 @@ public class RoomDTO {
         this.reservations = reservations;
     }
 
+    public HotelDTO getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(HotelDTO hotel) {
+        this.hotel = hotel;
+    }
+
     public String getRoomNumber() {
         return roomNumber;
     }
@@ -76,13 +87,14 @@ public class RoomDTO {
         if (!(o instanceof RoomDTO)) return false;
         RoomDTO roomDTO = (RoomDTO) o;
         return getType() == roomDTO.getType() &&
-                Objects.equals(getRoomNumber(), roomDTO.getRoomNumber());
+                Objects.equals(getRoomNumber(), roomDTO.getRoomNumber()) &&
+                Objects.equals(getHotel(), roomDTO.getHotel());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getType(), getRoomNumber());
+        return Objects.hash(getType(), getRoomNumber(), getHotel());
     }
 
     @Override
@@ -92,6 +104,7 @@ public class RoomDTO {
                 ", type=" + type +
                 ", roomNumber='" + roomNumber + '\'' +
                 ", capacity=" + capacity +
+                ", hotel=" + hotel +
                 '}';
     }
 }
