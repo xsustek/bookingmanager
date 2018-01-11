@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,9 @@ public class ReservationControllerHateoas {
     
     @Inject
     private ReservationResourceAssembler reservationResourceAssembler;
+
+    @Inject
+    private JwtTokenUtils jwtTokenUtils;
     
     @RequestMapping(method = RequestMethod.GET)
     public final HttpEntity<Resources<Resource<ReservationDTO>>> getAllReservations(){
@@ -89,13 +93,13 @@ public class ReservationControllerHateoas {
 
     /**
      * Finds and returns all reservation of a user specified by id.
-     * 
-     * @param id Id of a user
+     *
      * @return list of reservations of given user
      */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resources<Resource<ReservationDTO>>> getReservationsOfUser(@PathVariable("id") long id) {
-        List<ReservationDTO> reservations = userFacade.findUserReservations(id);
+    @RequestMapping(value = "/user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final HttpEntity<Resources<Resource<ReservationDTO>>> getReservationsOfUser(HttpServletRequest request) {
+        Long userID = jwtTokenUtils.getUserID(request);
+        List<ReservationDTO> reservations = userFacade.findUserReservations(userID);
         List<Resource<ReservationDTO>> resourceList = new ArrayList<>();
 
         reservations.stream().forEach(h -> resourceList.add(reservationResourceAssembler.toResource(h)));

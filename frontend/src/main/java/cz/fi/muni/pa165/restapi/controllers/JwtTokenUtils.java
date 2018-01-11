@@ -157,6 +157,10 @@ public class JwtTokenUtils implements Serializable {
     }
 
     public UserDTO getUser(HttpServletRequest request) {
+        return userFacade.findById(getUserID(request));
+    }
+
+    public Long getUserID(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if(token == null || token.isEmpty()) {
             throw new IllegalArgumentException("invalid token");
@@ -169,6 +173,6 @@ public class JwtTokenUtils implements Serializable {
 
         Claims claims = getClaimsFromToken(token);
         Integer id = (Integer) claims.get(CLAIM_KEY_ID);
-        return userFacade.findById(Long.valueOf(id));
+        return Long.valueOf(id);
     }
 }
