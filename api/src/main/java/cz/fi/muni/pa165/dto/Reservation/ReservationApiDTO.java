@@ -4,9 +4,9 @@ public class ReservationApiDTO {
 
     private Long id;
 
-    private String userId;
+    private Long userId;
 
-    private String roomId;
+    private Long roomId;
 
     private String from;
 
@@ -20,19 +20,19 @@ public class ReservationApiDTO {
         this.id = id;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public String getRoomId() {
+    public Long getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(String roomId) {
+    public void setRoomId(Long roomId) {
         this.roomId = roomId;
     }
 

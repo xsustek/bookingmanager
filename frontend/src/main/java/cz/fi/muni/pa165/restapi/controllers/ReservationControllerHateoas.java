@@ -2,6 +2,7 @@ package cz.fi.muni.pa165.restapi.controllers;
 
 import cz.fi.muni.pa165.dto.Reservation.ReservationApiDTO;
 import cz.fi.muni.pa165.dto.Reservation.ReservationDTO;
+import cz.fi.muni.pa165.dto.Room.RoomApiDTO;
 import cz.fi.muni.pa165.facade.ReservationFacade;
 import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.restapi.hateoas.ReservationResourceAssembler;
@@ -95,20 +96,19 @@ public class ReservationControllerHateoas {
      */
 
         @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<ReservationApiDTO>> createReservation(@RequestBody ReservationApiDTO reservation, BindingResult bindingResult, HttpServletRequest request) {
+    public final HttpEntity<Resource<ReservationDTO>> createReservation(@RequestBody ReservationApiDTO reservation, BindingResult bindingResult, HttpServletRequest request) {
         logger.debug("rest createReservation()");
         logger.info(reservation.toString());
 
-        // TODO
-        // vytvorit rezervaciu
-
-//        if (reservation.getUser().getId() == jwtTokenUtils.getUserID(request)) {
-//            reservationFacade.createReservation(reservation);
-//            Resource<ReservationDTO> resource = reservationResourceAssembler.toResource(reservationFacade.getReservationById(reservation.getId()));
-//            return new ResponseEntity<>(resource, HttpStatus.OK);
-//        }
-
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        try {
+            reservationFacade.createReservation(reservation);
+            ReservationDTO reservationDTO = reservationFacade.getReservationById(reservation.getId());
+            Resource<ReservationDTO> resource = reservationResourceAssembler.toResource(reservationDTO);
+            return new ResponseEntity<>(resource, HttpStatus.OK);
+        } catch (Exception ex) {
+            logger.error("create reservation exception", ex);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

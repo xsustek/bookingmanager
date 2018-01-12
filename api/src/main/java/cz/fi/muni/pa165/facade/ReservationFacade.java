@@ -1,5 +1,6 @@
 package cz.fi.muni.pa165.facade;
 
+import cz.fi.muni.pa165.dto.Reservation.ReservationApiDTO;
 import cz.fi.muni.pa165.dto.Reservation.ReservationDTO;
 import cz.fi.muni.pa165.dto.Room.RoomApiDTO;
 import cz.fi.muni.pa165.dto.Room.RoomDTO;
@@ -14,6 +15,13 @@ public interface ReservationFacade {
      * @param reservation new booking to add
      */
     void createReservation(ReservationDTO reservation);
+
+    /**
+     * Method to add a new reservation.
+     *
+     * @param reservation new booking to add
+     */
+    void createReservation(ReservationApiDTO reservation);
 
     /**
      * Method to delete a specific reservation.
