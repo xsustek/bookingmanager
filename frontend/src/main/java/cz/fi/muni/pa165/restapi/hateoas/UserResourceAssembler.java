@@ -1,6 +1,6 @@
 package cz.fi.muni.pa165.restapi.hateoas;
 
-import cz.fi.muni.pa165.dto.UserDTO;
+import cz.fi.muni.pa165.dto.User.UserDTO;
 import cz.fi.muni.pa165.restapi.controllers.UserControllerHateoas;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;

@@ -1,12 +1,14 @@
 package cz.fi.muni.pa165.restapi.hateoas;
 
-import cz.fi.muni.pa165.dto.HotelWithoutRoomsDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelWithoutRoomsDTO;
 import cz.fi.muni.pa165.restapi.controllers.HotelControllerHateoas;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.inject.Named;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
+
+import javax.inject.Named;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 /**

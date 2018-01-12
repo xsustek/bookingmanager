@@ -1,8 +1,6 @@
 import React from "react";
 import AppStore from "../stores/AppStore";
-import {
-    Redirect
-} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 
 export default class LoginScreen extends React.Component {
 
@@ -12,17 +10,17 @@ export default class LoginScreen extends React.Component {
         this.state = {
             error: false,
             redirectToReferrer: false,
-            formEmail: 'admin@gmail.com',
-            formPassword: '000000',
+            formEmail: 'karel@mail.com',
+            formPassword: 'password',
         };
 
         this.handleSignIn = this.handleSignIn.bind(this);
     }
 
-    handleSignIn(e) {
+    async handleSignIn(e) {
         e.preventDefault();
 
-        const result = AppStore.signin({
+        const result = await AppStore.signin({
             email: this.state.formEmail,
             password: this.state.formPassword
         });
@@ -108,6 +106,12 @@ export default class LoginScreen extends React.Component {
                                 <button type="submit" className="btn btn-primary">
                                     <i className="fa fa-btn fa-sign-in"></i> Sign In
                                 </button>
+                            </div>
+
+                            <div className="form-group">
+                                <p className="help-block"><small>sample users</small></p>
+                                <p className="help-block"><strong>ADMIN:</strong><br/>karel@mail.com<br/>password</p>
+                                <p className="help-block"><strong>USER:</strong><br/>ivan@mail.com<br/>password</p>
                             </div>
                         </form>
                     </div>

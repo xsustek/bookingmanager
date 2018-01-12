@@ -1,6 +1,6 @@
 package cz.fi.muni.pa165;
 
-import cz.fi.muni.pa165.dto.UserDTO;
+import cz.fi.muni.pa165.dto.User.UserDTO;
 import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.enums.Role;
 import cz.fi.muni.pa165.facade.UserFacade;

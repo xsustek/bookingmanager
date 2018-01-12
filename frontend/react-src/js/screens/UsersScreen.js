@@ -240,18 +240,10 @@ export default class UsersScreen extends React.Component {
                                             className="form-control"
                                             id="inputRole"
                                             placeholder="Role"
-                                            className="form-control"
                                         >
                                             <option value="USER">USER</option>
                                             <option value="ADMIN">ADMIN</option>
                                         </select>
-                                        {/* <input name="role"
-                                            onChange={e => this.setState({ formRole: e.target.value })}
-                                            value={this.state.formRole}
-                                            type="text"
-                                            className="form-control"
-                                            id="inputRole"
-                                            placeholder="Role" /> */}
                                     </div>
                                 </div>
                             </div>

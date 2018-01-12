@@ -1,4 +1,4 @@
-package cz.fi.muni.pa165.dto;
+package cz.fi.muni.pa165.dto.User;
 
 /**
  * @author Tomas Kopecky

@@ -1,5 +1,7 @@
-package cz.fi.muni.pa165.dto;
+package cz.fi.muni.pa165.dto.Room;
 
+import cz.fi.muni.pa165.dto.Hotel.HotelDTO;
+import cz.fi.muni.pa165.dto.Reservation.ReservationWithoutRoomDTO;
 import cz.fi.muni.pa165.enums.RoomType;
 
 import java.math.BigDecimal;
@@ -19,7 +21,7 @@ public class RoomDTO {
 
     private int capacity;
 
-    private Set<ReservationDTO> reservations = new HashSet<>();
+    private Set<ReservationWithoutRoomDTO> reservations = new HashSet<>();
 
     private HotelDTO hotel;
 
@@ -55,11 +57,11 @@ public class RoomDTO {
         this.capacity = capacity;
     }
 
-    public Set<ReservationDTO> getReservations() {
+    public Set<ReservationWithoutRoomDTO> getReservations() {
         return reservations;
     }
 
-    public void setReservations(Set<ReservationDTO> reservations) {
+    public void setReservations(Set<ReservationWithoutRoomDTO> reservations) {
         this.reservations = reservations;
     }
 

@@ -1,9 +1,9 @@
 package cz.fi.muni.pa165;
 
-import cz.fi.muni.pa165.dto.HotelDTO;
-import cz.fi.muni.pa165.dto.ReservationDTO;
-import cz.fi.muni.pa165.dto.RoomDTO;
-import cz.fi.muni.pa165.dto.UserDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelDTO;
+import cz.fi.muni.pa165.dto.Reservation.ReservationDTO;
+import cz.fi.muni.pa165.dto.Room.RoomDTO;
+import cz.fi.muni.pa165.dto.User.UserDTO;
 import cz.fi.muni.pa165.enums.Role;
 import cz.fi.muni.pa165.enums.RoomType;
 import cz.fi.muni.pa165.facade.HotelFacade;

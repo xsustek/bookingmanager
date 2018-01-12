@@ -1,9 +1,9 @@
 package cz.fi.muni.pa165.facade;
 
-import cz.fi.muni.pa165.dto.HotelDTO;
-import cz.fi.muni.pa165.dto.HotelWithoutRoomsDTO;
-import cz.fi.muni.pa165.dto.RoomApiDTO;
-import cz.fi.muni.pa165.dto.RoomDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelWithoutRoomsDTO;
+import cz.fi.muni.pa165.dto.Room.RoomApiDTO;
+import cz.fi.muni.pa165.dto.Room.RoomDTO;
 import cz.fi.muni.pa165.enums.RoomType;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public interface RoomFacade {
      * @param id Room's ID.
      * @return The room with the given ID.
      */
-    RoomDTO findById(Long id);
+    RoomApiDTO findById(Long id);
 
     /**
      * Returns collection of rooms for the given type.
@@ -50,12 +50,33 @@ public interface RoomFacade {
      * Returns collection of all rooms.
      * @return The list of all rooms.
      */
-    List<RoomDTO> findAll();
+    List<RoomApiDTO> findAll();
 
     /**
      * Creates room.
      *
      * @param room Rooms to create.
      */
+    public void create(RoomApiDTO room);
+    
+    /**
+     * Creates room.
+     *
+     * @param room Rooms to create.
+     */
     public void create(RoomDTO room);
+    
+    /**
+     * Deletes room.
+     *
+     * @param id Id of a room to be deleted.
+     */
+    public void delete(long id);
+    
+    /**
+     * Deletes room.
+     *
+     * @param room Rooms to be deleted.
+     */
+    public void delete(RoomApiDTO room);
 }

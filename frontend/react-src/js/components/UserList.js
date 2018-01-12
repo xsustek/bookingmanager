@@ -12,7 +12,6 @@ const UserList = ({ items, onRemove }) => (
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Address</th>
-                <th>Reservations</th>
             </tr>
         </thead>
         <tbody>
@@ -33,12 +32,7 @@ const UserList = ({ items, onRemove }) => (
                     <td>
                         {item.getAddress()}
                     </td>
-                    <td>
-                        {item.getReservations().length}
-                    </td>
-                    {/* <td>
-                        <button className="btn btn-danger btn-xs" onClick={() => onRemove(item.getId())}>DELETE</button>
-                    </td> */}
+
                 </tr>
             ))}
         </tbody>

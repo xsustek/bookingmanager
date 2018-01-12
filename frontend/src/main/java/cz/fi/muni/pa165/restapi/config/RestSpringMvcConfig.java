@@ -31,7 +31,7 @@ import static org.springframework.hateoas.config.EnableHypermediaSupport.Hyperme
 @EnableWebMvc
 @Configuration
 @Import(SampleDataApplicationContext.class)
-@ComponentScan(basePackages = {"cz.fi.muni.pa165.restapi.controllers"})
+@ComponentScan()
 public class RestSpringMvcConfig extends WebMvcConfigurerAdapter {
 
     @Override

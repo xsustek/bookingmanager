@@ -1,5 +1,7 @@
-package cz.fi.muni.pa165.dto;
+package cz.fi.muni.pa165.dto.Hotel;
 
+
+import cz.fi.muni.pa165.dto.Room.RoomApiDTO;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -13,7 +15,7 @@ public class HotelDTO {
     private String name;
 
 
-    private Set<RoomDTO> rooms = new HashSet<>();
+    private Set<RoomApiDTO> rooms = new HashSet<>();
 
     private String address;
 
@@ -46,7 +48,7 @@ public class HotelDTO {
      *
      * @return Room reservations.
      */
-    public Set<RoomDTO> getRooms() {
+    public Set<RoomApiDTO> getRooms() {
         return rooms;
     }
 
@@ -55,7 +57,7 @@ public class HotelDTO {
      *
      * @param rooms New value for set of rooms in hotel.
      */
-    public void setRooms(Set<RoomDTO> rooms) {
+    public void setRooms(Set<RoomApiDTO> rooms) {
         this.rooms = rooms;
     }
 

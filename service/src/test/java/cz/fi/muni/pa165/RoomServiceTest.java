@@ -81,6 +81,8 @@ public class RoomServiceTest {
 
         when(roomDao.findById(1L)).thenReturn(roomSingle);
         when(roomDao.findAll()).thenReturn(asList(roomSingle, roomDouble, roomKing));
+        when(roomDao.findByType(roomKing.getType())).thenReturn(asList(roomKing));
+        when(roomDao.findByHotel(hotelRoyal)).thenReturn(asList(roomSingle, roomKing));
     }
 
 

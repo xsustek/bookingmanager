@@ -1,33 +1,39 @@
 import React from "react";
-import {
-    HashRouter as Router,
-    Route,
-    Link,
-    Redirect,
-    withRouter
-} from 'react-router-dom'
+import {HashRouter as Router, Link, Redirect, Route, withRouter} from 'react-router-dom'
 
 import AppStore from './../stores/AppStore';
-import HotelStore from './../stores/Hotel/HotelStore';
 
 import HomeScreen from './../screens/HomeScreen';
-import AboutScreen from './../screens/AboutScreen';
-import AdminScreen from './../screens/AdminScreen';
 import LoginScreen from './../screens/LoginScreen';
 import UsersScreen from "../screens/UsersScreen";
 import HotelScreen from "../screens/HotelScreen";
 import HotelDetailScreen from "../screens/HotelDetailScreen";
 import UsersDetailScreen from "../screens/UsersDetailScreen";
+import RoomDetailScreen from "../screens/RoomDetailScreen";
 import ReservationScreen from "../screens/ReservationScreen";
+import ReservationCreateScreen from "../screens/ReservationCreateScreen";
 
 const SignOutButton = withRouter(({ history }) => {
     return (
         <a onClick={() => {
             AppStore.signout();
             history.push('/');
-        }}>Sign out</a>
+        }} style={{cursor: 'pointer'}}>Sign out</a>
     );
 });
+
+const AdminRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={props => (
+        AppStore.isSignedIn() && AppStore.getAuthUser().isAdmin() ? (
+            <Component {...props} />
+        ) : (
+            <Redirect to={{
+                pathname: '/login',
+                state: { from: props.location }
+            }} />
+        )
+    )} />
+);
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (
@@ -48,7 +54,7 @@ export default class App extends React.Component {
         super(props);
 
         this.state = {
-            isSignedIn: false
+            authUser: AppStore.getAuthUser()
         };
 
         this.init = this.init.bind(this);
@@ -60,8 +66,8 @@ export default class App extends React.Component {
 
     init() {
         this.setState({
-            isSignedIn: AppStore.isSignedIn()
-        });
+            authUser: AppStore.getAuthUser()
+        })
     }
 
     componentWillUnmount() {
@@ -70,7 +76,7 @@ export default class App extends React.Component {
 
     render() {
 
-        const { isSignedIn } = this.state;
+        const { authUser } = this.state;
 
         return (
             <Router>
@@ -88,27 +94,47 @@ export default class App extends React.Component {
                             </div>
 
                             <div className="collapse navbar-collapse">
+
                                 <ul className="nav navbar-nav">
-                                    {/* <li><Link to="/reservations">Reservations</Link></li> */}
-                                    <li><Link to="/hotels">Hotels</Link></li>
-                                    <li><Link to="/users">Users</Link></li>
+                                    <li><Link to="/reservations">My Reservations</Link></li>
                                 </ul>
+
                                 <ul className="nav navbar-nav navbar-right">
-                                    {isSignedIn
-                                        ? <li><SignOutButton /></li>
+                                    {!!authUser
+                                        ? [
+                                            <p className="text-muted navbar-text" key='welcome'>Signed in as {authUser.getName()}</p>,
+                                            <li key='logout'><SignOutButton /></li>
+                                        ]
                                         : <li><Link to="/login">Sign In</Link></li>}
                                 </ul>
                             </div>
                         </div>
                     </nav>
+
+                    {!!authUser && authUser.isAdmin() && (
+                        <nav className="navbar navbar-inverse navbar-static-top">
+                            <div className="container">
+                                <div className="collapse navbar-collapse">
+                                    <ul className="nav navbar-nav">
+                                        <p className="navbar-text">ADMINISTRATION</p>
+                                        {/*<li><Link to="/reservations">Reservations</Link></li>*/}
+                                        <li><Link to="/hotels">Hotels</Link></li>
+                                        <li><Link to="/users">Users</Link></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    )}
+
                     <div className="container">
                         <Route exact path="/" component={HomeScreen} />
-                        {/* <Route exact path="/reservations" component={ReservationScreen} /> */}
-                        <PrivateRoute exact path="/hotels" component={HotelScreen} />
-                        <PrivateRoute path="/hotels/:id" component={HotelDetailScreen} />
-                        <PrivateRoute exact path="/users" component={UsersScreen} />
-                        <PrivateRoute path="/users/:id" component={UsersDetailScreen} />
-                        {/* <Route path="/about" component={AboutScreen} /> */}
+                        <PrivateRoute exact path="/reservations" component={ReservationScreen} />
+                        <PrivateRoute exact path="/reservations/create" component={ReservationCreateScreen} />
+                        <AdminRoute exact path="/hotels" component={HotelScreen} />
+                        <AdminRoute path="/hotels/:id" component={HotelDetailScreen} />
+                        <AdminRoute exact path="/users" component={UsersScreen} />
+                        <AdminRoute path="/users/:id" component={UsersDetailScreen} />
+                        <AdminRoute path="/rooms/:id" component={RoomDetailScreen} />
 
                         <Route path="/login" component={LoginScreen} />
                     </div>

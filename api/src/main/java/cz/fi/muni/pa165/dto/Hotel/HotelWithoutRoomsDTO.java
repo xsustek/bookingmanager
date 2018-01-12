@@ -1,4 +1,4 @@
-package cz.fi.muni.pa165.dto;
+package cz.fi.muni.pa165.dto.Hotel;
 
 import java.util.Objects;
 
@@ -79,9 +79,9 @@ public class HotelWithoutRoomsDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof HotelWithoutRoomsDTO)) return false;
-        HotelWithoutRoomsDTO hotelWithoutRoomsDTO = (HotelWithoutRoomsDTO) o;
-        return Objects.equals(getName(), hotelWithoutRoomsDTO.getName()) &&
-                Objects.equals(getAddress(), hotelWithoutRoomsDTO.getAddress());
+        HotelWithoutRoomsDTO that = (HotelWithoutRoomsDTO) o;
+        return Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getAddress(), that.getAddress());
     }
 
     @Override
@@ -93,7 +93,8 @@ public class HotelWithoutRoomsDTO {
     @Override
     public String toString() {
         return "HotelWithoutRoomsDTO{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 '}';
     }

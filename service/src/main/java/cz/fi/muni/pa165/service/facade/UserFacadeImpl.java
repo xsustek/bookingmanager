@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.service.facade;
 
-import cz.fi.muni.pa165.dto.UserDTO;
+import cz.fi.muni.pa165.dto.Reservation.ReservationDTO;
+import cz.fi.muni.pa165.dto.User.UserDTO;
 import cz.fi.muni.pa165.entity.User;
 import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.service.BeanMappingService;
@@ -59,5 +60,10 @@ public class UserFacadeImpl implements UserFacade {
     public boolean isAdmin(UserDTO dto) {
         User user = beanMappingService.mapTo(dto, User.class);
         return userService.isAdmin(user);
+    }
+
+    @Override
+    public List<ReservationDTO> findUserReservations(Long userID) {
+        return beanMappingService.mapTo(userService.findUserReservation(userID), ReservationDTO.class);
     }
 }

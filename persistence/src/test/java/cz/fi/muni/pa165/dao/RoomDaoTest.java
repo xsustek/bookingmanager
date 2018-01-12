@@ -145,6 +145,64 @@ public class RoomDaoTest {
         Assert.assertEquals(roomDao.findAll().size(), 2);
     }
 
+    @Test
+    public void findByType() {
+        Hotel tmpHotel = new Hotel();
+        tmpHotel.setName("Hotel");
+        tmpHotel.setAddress("Brno");
+
+        hotelDao.create(tmpHotel);
+
+        Room tmpRoom1 = new Room();
+        tmpRoom1.setCapacity(6);
+        tmpRoom1.setPrice(BigDecimal.valueOf(666));
+        tmpRoom1.setType(RoomType.KING);
+        tmpRoom1.setHotel(tmpHotel);
+        roomDao.create(tmpRoom1);
+
+        Room tmpRoom2 = new Room();
+        tmpRoom2.setCapacity(1);
+        tmpRoom2.setPrice(BigDecimal.valueOf(100));
+        tmpRoom2.setType(RoomType.QUAD);
+        tmpRoom2.setHotel(tmpHotel);
+        roomDao.create(tmpRoom2);
+
+        Assert.assertEquals(roomDao.findByType(RoomType.KING).size(), 1);
+        Assert.assertTrue(roomDao.findByType(RoomType.KING).contains(tmpRoom1));
+    }
+
+
+    @Test
+    public void findByHotel() {
+        Hotel tmpHotel = new Hotel();
+        tmpHotel.setName("Hotel");
+        tmpHotel.setAddress("Brno");
+
+        Hotel tmpHotel2 = new Hotel();
+        tmpHotel2.setName("Hilton");
+        tmpHotel2.setAddress("Praha");
+
+        hotelDao.create(tmpHotel);
+        hotelDao.create(tmpHotel2);
+
+        Room tmpRoom1 = new Room();
+        tmpRoom1.setCapacity(6);
+        tmpRoom1.setPrice(BigDecimal.valueOf(666));
+        tmpRoom1.setType(RoomType.KING);
+        tmpRoom1.setHotel(tmpHotel);
+        roomDao.create(tmpRoom1);
+
+        Room tmpRoom2 = new Room();
+        tmpRoom2.setCapacity(1);
+        tmpRoom2.setPrice(BigDecimal.valueOf(100));
+        tmpRoom2.setType(RoomType.QUAD);
+        tmpRoom2.setHotel(tmpHotel2);
+        roomDao.create(tmpRoom2);
+
+        Assert.assertEquals(roomDao.findByHotel(tmpHotel).size(), 1);
+        Assert.assertTrue(roomDao.findByHotel(tmpHotel).contains(tmpRoom1));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void createNull() {
         roomDao.create(null);

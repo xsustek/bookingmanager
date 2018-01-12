@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.facade;
 
-import cz.fi.muni.pa165.dto.UserDTO;
+import cz.fi.muni.pa165.dto.Reservation.ReservationDTO;
+import cz.fi.muni.pa165.dto.User.UserDTO;
 
 import java.util.List;
 
@@ -47,4 +48,6 @@ public interface UserFacade {
      * Check if the given user is admin.
      */
     boolean isAdmin(UserDTO user);
+
+    List<ReservationDTO> findUserReservations(Long userID);
 }

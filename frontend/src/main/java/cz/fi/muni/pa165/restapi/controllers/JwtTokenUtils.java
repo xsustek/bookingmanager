@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.restapi.controllers;
 
-import cz.fi.muni.pa165.dto.UserDTO;
+import cz.fi.muni.pa165.dto.User.UserDTO;
+import cz.fi.muni.pa165.facade.UserFacade;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
@@ -26,11 +29,32 @@ public class JwtTokenUtils implements Serializable {
     private static final String CLAIM_KEY_ID = "id";
     private static final String CLAIM_KEY_CREATED = "created";
     private static final String CLAIM_KEY_ROLE = "role";
+    private static final String CLAIM_KEY_FULL_NAME = "fullName";
+
+
+    @Inject
+    private UserFacade userFacade;
 
     /**
      * Check from token, if token can be refreshed
      *
-     * @param token token to be used
+     * @param request HttpServletRequest request to be used to get token
+     * @return True if token can be refreshed False otherwise
+     */
+    public Boolean isTokenValid(HttpServletRequest request) {
+        String token = getTokenFromRequest(request);
+
+        try {
+            return !isTokenExpired(token);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Token is invalid");
+        }
+    }
+
+    /**
+     * Check from token, if token can be refreshed
+     *
+     * @param token token as a string
      * @return True if token can be refreshed False otherwise
      */
     public Boolean isTokenValid(String token) {
@@ -100,6 +124,7 @@ public class JwtTokenUtils implements Serializable {
         claims.put(CLAIM_KEY_ID, dto.getId());
         claims.put(CLAIM_KEY_CREATED, new Date());
         claims.put(CLAIM_KEY_ROLE, dto.getRole());
+        claims.put(CLAIM_KEY_FULL_NAME, dto.getFullName());
         return generateToken(claims);
     }
 
@@ -131,11 +156,88 @@ public class JwtTokenUtils implements Serializable {
      *
      * @return expiration time
      */
-    public Boolean checkRole(String token) {
+    public Boolean checkRole(HttpServletRequest request) {
+        String token = getTokenFromRequest(request);
         Claims claims = getClaimsFromToken(token);
 
         logger.error(claims.toString());
 
         return claims.get("role").equals("ADMIN");
     }
+
+    /**
+     * Method for getting user Role from token
+     *
+     * @param request HttpServletRequest with token
+     * @return Role of the user
+     */
+    public Object getRole(HttpServletRequest request) {
+        String token = getTokenFromRequest(request);
+
+        Claims claims = getClaimsFromToken(token);
+
+        logger.error(claims.toString());
+
+        return claims.get("role");
+    }
+
+    /**
+     * Method for getting user Role from token
+     *
+     * @param token JWT token as string
+     * @return Role of the user
+     */
+    public Object getRole(String token) {
+
+        Claims claims = getClaimsFromToken(token);
+
+        logger.error(claims.toString());
+
+        return claims.get("role");
+    }
+
+    /**
+     * Method for getting user from token
+     *
+     * @param request HttpServletRequest with token
+     * @return UserDTO if user was found
+     */
+    public UserDTO getUser(HttpServletRequest request) {
+        return userFacade.findById(getUserID(request));
+    }
+
+    /**
+     * Method for getting user's ID from token
+     *
+     * @param request HttpServletRequest with token
+     * @return ID of the user from token
+     */
+    public Long getUserID(HttpServletRequest request) {
+        String token = getTokenFromRequest(request);
+
+        Claims claims = getClaimsFromToken(token);
+        Integer id = (Integer) claims.get(CLAIM_KEY_ID);
+        return Long.valueOf(id);
+    }
+
+    /**
+     * Private method for getting token from HttpServletRequest
+     *
+     * @param request HttpServletRequest with token
+     * @return token as string
+     */
+    private String getTokenFromRequest(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("invalid token");
+        }
+
+        token = token.split(" ")[1];
+        if (token == null || token.isEmpty()) {
+            throw new IllegalArgumentException("invalid token format");
+        }
+
+        return token;
+    }
+
 }

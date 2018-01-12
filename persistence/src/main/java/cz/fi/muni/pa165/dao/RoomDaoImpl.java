@@ -1,10 +1,13 @@
 package cz.fi.muni.pa165.dao;
 
+import cz.fi.muni.pa165.entity.Hotel;
 import cz.fi.muni.pa165.entity.Room;
+import cz.fi.muni.pa165.enums.RoomType;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -46,5 +49,29 @@ public class RoomDaoImpl implements RoomDao {
     @Override
     public List<Room> findAll() {
         return entityManager.createQuery(SELECT_ALL_QUERY, Room.class).getResultList();
+    }
+
+    @Override
+    public List<Room> findByType(RoomType type) {
+        try {
+            return entityManager
+                    .createQuery("select r from Room r where type=:type",
+                            Room.class).setParameter("type", type)
+                    .getResultList();
+        } catch (NoResultException nre) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Room> findByHotel(Hotel hotel) {
+        try {
+            return entityManager
+                    .createQuery("select r from Room r where hotel=:hotel",
+                            Room.class).setParameter("hotel", hotel)
+                    .getResultList();
+        } catch (NoResultException nre) {
+            return null;
+        }
     }
 }

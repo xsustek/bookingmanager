@@ -1,5 +1,6 @@
 package cz.fi.muni.pa165.service;
 
+import cz.fi.muni.pa165.entity.Reservation;
 import cz.fi.muni.pa165.entity.User;
 import org.springframework.stereotype.Service;
 
@@ -62,4 +63,6 @@ public interface UserService {
      * @param user ID of user which will be deleted.
      */
     void remove(User user);
+
+    List<Reservation> findUserReservation(Long id);
 }

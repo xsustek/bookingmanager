@@ -1,8 +1,8 @@
 package cz.fi.muni.pa165.facade;
 
-import cz.fi.muni.pa165.dto.HotelDTO;
-import cz.fi.muni.pa165.dto.HotelWithoutRoomsDTO;
-import cz.fi.muni.pa165.dto.RoomDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelDTO;
+import cz.fi.muni.pa165.dto.Hotel.HotelWithoutRoomsDTO;
+import cz.fi.muni.pa165.dto.Room.RoomApiDTO;
 
 import java.util.List;
 
@@ -19,6 +19,14 @@ public interface HotelFacade {
      * @param hotel to create
      */
     void create(HotelDTO hotel);
+
+
+    /**
+     * Method to create hotel in DB
+     *
+     * @param hotel to create
+     */
+    void create(HotelWithoutRoomsDTO hotel);
 
     /**
      * Finds hotel with provided id
@@ -79,7 +87,7 @@ public interface HotelFacade {
      * @param hotel to which may be add room
      * @param room  which may be add to hotel
      */
-    void addRoom(HotelDTO hotel, RoomDTO room);
+    void addRoom(HotelWithoutRoomsDTO hotel, RoomApiDTO room);
 
     /**
      * Finds all hotels

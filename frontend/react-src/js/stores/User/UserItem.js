@@ -65,6 +65,10 @@ class UserItem {
         return this.reservations;
     }
 
+    isAdmin() {
+        return this.getRole() == 'ADMIN';
+    }
+
     /**
      * Returns presenter for the item.
      *
