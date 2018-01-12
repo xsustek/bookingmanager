@@ -52,14 +52,12 @@ const RoomStore = {
     dispatchIndex: (payload) => {
         switch (payload.type) {
             case RoomConstants.ROOM_CREATE:
-                // Create room
-                axios.post('/api/v1/rooms', {
-                    price: payload.data.price,
-                    capacity: payload.data.capacity,
-                    type: payload.data.type,
-                }).then(function (response) {
-                    console.log(response);
-                }).catch(function (error) {
+                console.log(payload);
+                ApiCallerHelper.callPost('/pa165/rest/rooms/create', payload.data)
+                    .then(function (response) {
+                        RoomStore.emitChangeListener();
+                        console.log('Room created.');
+                    }).catch(function (error) {
                     console.log(error);
                 });
                 break;
