@@ -37,7 +37,9 @@ export default class UserDetailScreen extends React.Component {
             <div>
                 <h2>{item.getName()}</h2>
 
-                <p>Address: {item.getAddress()}</p>
+                <p><strong>Email:</strong> {item.getEmail()}</p>
+                <p><strong>Phone:</strong> {item.getPhoneNumber()}</p>
+                <p><strong>Address:</strong> {item.getAddress()}</p>
             </div>
         );
     }
