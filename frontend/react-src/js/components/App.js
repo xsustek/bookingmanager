@@ -21,6 +21,19 @@ const SignOutButton = withRouter(({ history }) => {
     );
 });
 
+const AdminRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={props => (
+        AppStore.isSignedIn() && AppStore.getAuthUser().isAdmin() ? (
+            <Component {...props} />
+        ) : (
+            <Redirect to={{
+                pathname: '/login',
+                state: { from: props.location }
+            }} />
+        )
+    )} />
+);
+
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (
         AppStore.isSignedIn() ? (
@@ -82,9 +95,7 @@ export default class App extends React.Component {
                             <div className="collapse navbar-collapse">
 
                                 <ul className="nav navbar-nav">
-                                    <li><Link to="/reservations">Reservations</Link></li>
-                                    {/*<li><Link to="/hotels">Hotels</Link></li>*/}
-                                    {/*<li><Link to="/users">Users</Link></li>*/}
+                                    <li><Link to="/reservations">My Reservations</Link></li>
                                 </ul>
 
                                 <ul className="nav navbar-nav navbar-right">
@@ -116,12 +127,12 @@ export default class App extends React.Component {
 
                     <div className="container">
                         <Route exact path="/" component={HomeScreen} />
-                        <Route exact path="/reservations" component={ReservationScreen} />
-                        <PrivateRoute exact path="/hotels" component={HotelScreen} />
-                        <PrivateRoute path="/hotels/:id" component={HotelDetailScreen} />
-                        <PrivateRoute exact path="/users" component={UsersScreen} />
-                        <PrivateRoute path="/users/:id" component={UsersDetailScreen} />
-                        <PrivateRoute path="/rooms/:id" component={RoomDetailScreen} />
+                        <PrivateRoute exact path="/reservations" component={ReservationScreen} />
+                        <AdminRoute exact path="/hotels" component={HotelScreen} />
+                        <AdminRoute path="/hotels/:id" component={HotelDetailScreen} />
+                        <AdminRoute exact path="/users" component={UsersScreen} />
+                        <AdminRoute path="/users/:id" component={UsersDetailScreen} />
+                        <AdminRoute path="/rooms/:id" component={RoomDetailScreen} />
                         {/* <Route path="/about" component={AboutScreen} /> */}
 
                         <Route path="/login" component={LoginScreen} />

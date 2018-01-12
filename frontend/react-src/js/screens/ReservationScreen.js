@@ -32,11 +32,14 @@ export default class ReservationScreen extends React.Component {
 
     render() {
         const {reservations} = this.state;
-        return reservations && (
+        return (
             <div>
-                <h2>ReservationScreen</h2>
+                <h2>My Reservations</h2>
 
-                {reservations && <ReservationList items={reservations} />}
+                {reservations
+                    ? <ReservationList items={reservations} />
+                    : <p>You do not have any reservation yet.</p>
+                }
             </div>
         );
     }
