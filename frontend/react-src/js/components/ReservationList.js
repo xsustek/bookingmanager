@@ -5,7 +5,7 @@ const ReservationList = ({items}) => (
     <table className="table">
     <thead>
         <tr>
-            <th>#</th>
+            <th>Hotel</th>
             <th>Room number</th>
             <th>Starts</th>
             <th>Ends</th>
@@ -16,7 +16,7 @@ const ReservationList = ({items}) => (
             
             <tr key={i}>
                 <td>
-                <Link to={`/reservations/${item.getId()}`}>{i}</Link>
+                    {item.getRoom().hotel.name}
                 </td>
                 <td>
                     {item.getRoom().roomNumber}

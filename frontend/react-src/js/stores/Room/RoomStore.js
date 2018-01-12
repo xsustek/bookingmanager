@@ -52,16 +52,22 @@ const RoomStore = {
     dispatchIndex: (payload) => {
         switch (payload.type) {
             case RoomConstants.ROOM_CREATE:
-                // Create room
-                axios.post('/api/v1/rooms', {
-                    price: payload.data.price,
-                    capacity: payload.data.capacity,
-                    type: payload.data.type,
-                }).then(function (response) {
-                    console.log(response);
-                }).catch(function (error) {
-                    console.log(error);
-                });
+                ApiCallerHelper.callPost('/pa165/rest/rooms/create', payload.data)
+                    .then(function (response) {
+                        RoomStore.emitChangeListener();
+                        console.log('Room created.');
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                break;
+            case RoomConstants.ROOM_DELETE:
+                ApiCallerHelper.callDelete('/pa165/rest/rooms/' + payload.data.id)
+                    .then(function (response) {
+                        RoomStore.emitChangeListener();
+                        console.log('Room deleted.');
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
                 break;
         }
     },

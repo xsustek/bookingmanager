@@ -24,6 +24,8 @@ public class HotelServiceImpl implements HotelService {
     @Inject
     private RoomDao roomDao;
 
+    @Inject RoomService roomService;
+
     @Override
     public void create(Hotel hotel) {
         hotelDao.create(hotel);
@@ -46,6 +48,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public void delete(Hotel hotel) {
+        hotel.getRooms().forEach(room -> roomService.remove(room));
         hotelDao.remove(hotel);
     }
 

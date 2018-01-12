@@ -21,6 +21,9 @@ public class RoomServiceImpl implements RoomService {
     private RoomDao roomDao;
 
     @Inject
+    private ReservationService reservationService;
+
+    @Inject
     private HotelDao hotelDao;
 
     @Override
@@ -69,6 +72,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void remove(Room room) {
+        room.getReservations().forEach(r -> reservationService.removeReservation(r));
         roomDao.remove(room);
     }
 }

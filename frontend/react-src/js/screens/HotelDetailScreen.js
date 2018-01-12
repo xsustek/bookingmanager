@@ -1,6 +1,9 @@
 import React from "react";
 import HotelStore from './../stores/Hotel/HotelStore';
 import RoomList from "../components/RoomList";
+import {removeRoomItem} from "../stores/Room/RoomActions";
+import RoomConstants from "../stores/Room/RoomConstants";
+import RoomStore from "../stores/Room/RoomStore";
 
 export default class HotelDetailScreen extends React.Component {
 
@@ -12,14 +15,15 @@ export default class HotelDetailScreen extends React.Component {
         }
 
         this.loadItem = this.loadItem.bind(this);
+        this.handleOnRemove = this.handleOnRemove.bind(this);
 
         // init
-        HotelStore.addChangeListener(this.loadItem);
+        RoomStore.addChangeListener(this.loadItem);
         this.loadItem();
     }
 
     componentWillUnmount() {
-        HotelStore.removeChangeListener(this.loadItem);
+        RoomStore.removeChangeListener(this.loadItem);
     }
 
     loadItem() {
@@ -27,6 +31,12 @@ export default class HotelDetailScreen extends React.Component {
             this.setState({
                 item: item
             })
+        });
+    }
+
+    handleOnRemove(id) {
+        removeRoomItem({
+            id: id
         });
     }
 
