@@ -1,7 +1,7 @@
 import React from "react";
 import {Link,} from 'react-router-dom'
 
-const ReservationList = ({items}) => (
+const ReservationList = ({items, onRemove}) => (
     <table className="table">
     <thead>
         <tr>
@@ -9,6 +9,7 @@ const ReservationList = ({items}) => (
             <th>Room number</th>
             <th>Starts</th>
             <th>Ends</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -16,7 +17,7 @@ const ReservationList = ({items}) => (
             
             <tr key={i}>
                 <td>
-                <Link to={`/reservations/${item.getId()}`}>{i}</Link>
+                    {i}
                 </td>
                 <td>
                     {item.getRoom().roomNumber}
@@ -26,6 +27,9 @@ const ReservationList = ({items}) => (
                 </td>
                 <td>
                 {`${item.getEndTime().dayOfMonth}. ${item.getEndTime().monthValue}. ${item.getEndTime().year} ${item.getEndTime().hour}:${pad2(item.getEndTime().minute)}`}
+                </td>
+                <td>
+                    <button className="btn btn-danger btn-xs" onClick={() => onRemove(item)}>x</button>
                 </td>
             </tr>
             
