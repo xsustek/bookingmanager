@@ -5,6 +5,7 @@ const ReservationList = ({items, onRemove}) => (
     <table className="table">
     <thead>
         <tr>
+            <th>#</th>
             <th>Hotel</th>
             <th>Room number</th>
             <th>Starts</th>
