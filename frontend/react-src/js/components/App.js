@@ -135,7 +135,6 @@ export default class App extends React.Component {
                         <AdminRoute exact path="/users" component={UsersScreen} />
                         <AdminRoute path="/users/:id" component={UsersDetailScreen} />
                         <AdminRoute path="/rooms/:id" component={RoomDetailScreen} />
-                        {/* <Route path="/about" component={AboutScreen} /> */}
 
                         <Route path="/login" component={LoginScreen} />
                     </div>

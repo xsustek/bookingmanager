@@ -1,5 +1,6 @@
 import React from "react";
 import ReservationStore from "../stores/Reservation/ReservationStore";
+import {deleteReservationItem} from "../stores/Reservation/ReservationActions";
 import ReservationList from "../components/ReservationList";
 
 export default class ReservationScreen extends React.Component {
@@ -11,7 +12,9 @@ export default class ReservationScreen extends React.Component {
             reservations: null
         };
 
+
         this.loadItems = this.loadItems.bind(this);
+        this.onRemove = this.onRemove.bind(this);
 
         ReservationStore.addChangeListener(this.loadItems);
 
@@ -30,6 +33,12 @@ export default class ReservationScreen extends React.Component {
         ReservationStore.removeChangeListener(this.loadItems);
     }
 
+    onRemove(item) {
+        deleteReservationItem({
+            id: item.id
+        })
+    }
+
     render() {
         const {reservations} = this.state;
         return (
@@ -37,7 +46,7 @@ export default class ReservationScreen extends React.Component {
                 <h2>My Reservations</h2>
 
                 {reservations
-                    ? <ReservationList items={reservations} />
+                    ? <ReservationList items={reservations} onRemove={this.onRemove}/>
                     : <p>You do not have any reservation yet.</p>
                 }
             </div>
