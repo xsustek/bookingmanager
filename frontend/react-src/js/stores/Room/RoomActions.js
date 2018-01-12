@@ -16,6 +16,13 @@ function createRoomItem(data) {
     });
 }
 
+function removeRoomItem(data) {
+    Dispatcher({
+        type: RoomConstants.ROOM_DELETE,
+        data: data
+    })
+}
+
 export {
-    createRoomItem,
+    createRoomItem, removeRoomItem
 };

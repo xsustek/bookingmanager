@@ -1,5 +1,6 @@
 package cz.fi.muni.pa165.restapi.controllers;
 
+import cz.fi.muni.pa165.dto.Reservation.ReservationApiDTO;
 import cz.fi.muni.pa165.dto.Reservation.ReservationDTO;
 import cz.fi.muni.pa165.facade.ReservationFacade;
 import cz.fi.muni.pa165.facade.UserFacade;
@@ -92,15 +93,21 @@ public class ReservationControllerHateoas {
      * @param bindingResult
      * @return HttpStatus OK if successful
      */
-    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<ReservationDTO>> createReservation(@RequestBody @Valid ReservationDTO reservation, BindingResult bindingResult, HttpServletRequest request) {
-        logger.debug("rest createReservation()");
 
-        if (reservation.getUser().getId() == jwtTokenUtils.getUserID(request)) {
-            reservationFacade.createReservation(reservation);
-            Resource<ReservationDTO> resource = reservationResourceAssembler.toResource(reservationFacade.getReservationById(reservation.getId()));
-            return new ResponseEntity<>(resource, HttpStatus.OK);
-        }
+        @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public final HttpEntity<Resource<ReservationApiDTO>> createReservation(@RequestBody ReservationApiDTO reservation, BindingResult bindingResult, HttpServletRequest request) {
+        logger.debug("rest createReservation()");
+        logger.info(reservation.toString());
+
+        // TODO
+        // vytvorit rezervaciu
+
+//        if (reservation.getUser().getId() == jwtTokenUtils.getUserID(request)) {
+//            reservationFacade.createReservation(reservation);
+//            Resource<ReservationDTO> resource = reservationResourceAssembler.toResource(reservationFacade.getReservationById(reservation.getId()));
+//            return new ResponseEntity<>(resource, HttpStatus.OK);
+//        }
+
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 

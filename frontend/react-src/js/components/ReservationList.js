@@ -5,7 +5,7 @@ const ReservationList = ({items, onRemove}) => (
     <table className="table">
     <thead>
         <tr>
-            <th>#</th>
+            <th>Hotel</th>
             <th>Room number</th>
             <th>Starts</th>
             <th>Ends</th>
@@ -18,6 +18,9 @@ const ReservationList = ({items, onRemove}) => (
             <tr key={i}>
                 <td>
                     {i}
+                </td>
+                <td>
+                    {item.getRoom().hotel.name}
                 </td>
                 <td>
                     {item.getRoom().roomNumber}

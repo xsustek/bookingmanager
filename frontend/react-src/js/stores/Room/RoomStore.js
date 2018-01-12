@@ -52,14 +52,22 @@ const RoomStore = {
     dispatchIndex: (payload) => {
         switch (payload.type) {
             case RoomConstants.ROOM_CREATE:
-                console.log(payload);
                 ApiCallerHelper.callPost('/pa165/rest/rooms/create', payload.data)
                     .then(function (response) {
                         RoomStore.emitChangeListener();
                         console.log('Room created.');
                     }).catch(function (error) {
-                    console.log(error);
-                });
+                        console.log(error);
+                    });
+                break;
+            case RoomConstants.ROOM_DELETE:
+                ApiCallerHelper.callDelete('/pa165/rest/rooms/' + payload.data.id)
+                    .then(function (response) {
+                        RoomStore.emitChangeListener();
+                        console.log('Room deleted.');
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
                 break;
         }
     },

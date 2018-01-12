@@ -109,7 +109,7 @@ public class RoomControllerHateoas {
      * @param id ID of the room
      * @return HttpStatus dependable if successful or not
      */
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public final HttpEntity<JSONObject> deleteRoom(@PathVariable("id") long id) {
         try {
             roomFacade.delete(id);
