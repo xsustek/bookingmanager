@@ -43,11 +43,10 @@ export default class ReservationCreateScreen extends React.Component {
         }
 
         createReservationItem({
-            'from': this.state.formFrom,
-            'to': this.state.formTo,
+            'from': new Date(this.state.formFrom).toISOString(),
+            'to': new Date(this.state.formTo).toISOString(),
             'userId': AppStore.getAuthUser().getId(),
             'roomId': this.props.location.state.room.id,
-            // 'hotel': this.props.location.state.room.hotel
         });
 
         this.setState({
@@ -111,7 +110,7 @@ export default class ReservationCreateScreen extends React.Component {
                        <label htmlFor="inputFrom" className="col-lg-2 control-label">From</label>
                        <div className="col-lg-10">
                            <input
-                               type="text"
+                               type="datetime-local"
                                className="form-control"
                                id="inputFrom"
                                placeholder="From"
@@ -127,7 +126,7 @@ export default class ReservationCreateScreen extends React.Component {
                            <input name="to"
                                   onChange={e => this.setState({ formTo: e.target.value })}
                                   value={this.state.formTo}
-                                  type="text"
+                                  type="datetime-local"
                                   className="form-control"
                                   id="inputTo"
                                   placeholder="To" />
