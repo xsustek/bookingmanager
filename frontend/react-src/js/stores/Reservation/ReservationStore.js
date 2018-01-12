@@ -16,7 +16,7 @@ const ReservationStore = {
     async getAllItems() {
         try {
             const reservations = await ApiCallerHelper.callGet("/pa165/rest/reservations");
-            return ApiCallerHelper.mapTo(ReservationItem, reservations.data._embedded);
+            return ApiCallerHelper.mapTo(ReservationItem, reservations.data._embedded.reservationDTOList);
         } catch(e) {
             console.log(e);
         }
