@@ -68,7 +68,7 @@ const ReservationStore = {
                     });
                 break;
             case ReservationConstants.RESERVATION_CREATE:
-
+                console.log( payload.data );
                 ApiCallerHelper.callPost('/pa165/rest/reservations/create', payload.data)
                     .then(function (response) {
                         ReservationStore.emitChangeListener();

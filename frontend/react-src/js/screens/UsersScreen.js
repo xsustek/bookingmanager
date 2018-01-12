@@ -240,7 +240,6 @@ export default class UsersScreen extends React.Component {
                                             className="form-control"
                                             id="inputRole"
                                             placeholder="Role"
-                                            className="form-control"
                                         >
                                             <option value="USER">USER</option>
                                             <option value="ADMIN">ADMIN</option>
