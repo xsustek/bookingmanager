@@ -34,7 +34,7 @@ public class SampleDataImpl implements SampleData {
     private HotelDTO hotelHilton, hotelSlovan, hotelInter, hotelContinental, hotelJamka, hotelPasaz;
     private RoomDTO roomKing, roomQuad, roomDouble, roomSingle, roomTriple;
     private UserDTO adminKarel, userJosef, userIvan, userJan;
-    private ReservationDTO karelFirstReservation, karelSecondReservation;
+    private ReservationDTO karelFirstReservation, karelSecondReservation, ivanReservation;
 
 
     @Override
@@ -165,6 +165,13 @@ public class SampleDataImpl implements SampleData {
         karelSecondReservation.setStartTime(LocalDateTime.of(2018, 12, 24, 14, 0));
         karelSecondReservation.setEndTime(LocalDateTime.of(2018, 12, 26, 10, 0));
         reservationFacade.createReservation(karelSecondReservation);
+
+        ivanReservation = new ReservationDTO();
+        ivanReservation.setRoom(roomQuad);
+        ivanReservation.setUser(userIvan);
+        ivanReservation.setStartTime(LocalDateTime.of(2017, 12, 24, 14, 0));
+        ivanReservation.setEndTime(LocalDateTime.of(2017, 12, 26, 10, 0));
+        reservationFacade.createReservation(ivanReservation);
     }
 
 

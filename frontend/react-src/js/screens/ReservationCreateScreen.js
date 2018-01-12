@@ -43,8 +43,8 @@ export default class ReservationCreateScreen extends React.Component {
         }
 
         createReservationItem({
-            'startTime': this.state.formFrom,
-            'endTime': this.state.formTo,
+            'from': this.state.formFrom,
+            'to': this.state.formTo,
             'userId': AppStore.getAuthUser().getId(),
             'roomId': this.props.location.state.room.id,
             // 'hotel': this.props.location.state.room.hotel
