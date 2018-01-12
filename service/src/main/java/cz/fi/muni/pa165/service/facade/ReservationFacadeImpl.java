@@ -47,8 +47,8 @@ public class ReservationFacadeImpl implements ReservationFacade {
         Reservation reservation = new Reservation();
         reservation.setRoom(roomService.findById(reservationApiDTO.getRoomId()));
         reservation.setUser(userService.findUserById(reservationApiDTO.getUserId()));
-        reservation.setStartTime(LocalDateTime.parse(reservationApiDTO.getFrom()));
-        reservation.setEndTime(LocalDateTime.parse(reservationApiDTO.getTo()));
+        reservation.setStartTime(LocalDateTime.parse(reservationApiDTO.getFrom().substring(0, 19)));
+        reservation.setEndTime(LocalDateTime.parse(reservationApiDTO.getTo().substring(0, 19)));
 
         reservationService.createReservation(reservation);
         reservationApiDTO.setId(reservation.getId());
